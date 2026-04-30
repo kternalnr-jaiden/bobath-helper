@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>항응고제 / 항혈소판제</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --primary: #1a5276;
+    --primary-dark: #154360;
+    --primary-fg: #ffffff;
+    --accent: #2e86c1;
+    --accent-light: #d6eaf8;
+    --bg: #f4f6f9;
+    --surface: #ffffff;
+    --border: #d5d8dc;
+    --text: #1c2833;
+    --text-muted: #717d7e;
+    --blue-row: #eaf4fb;
+    --danger: #c0392b;
+    --danger-light: #fadbd8;
+    --success: #1a8a5a;
+    --warning-bg: #fef9e7;
+    --radius: 10px;
+    --shadow: 0 2px 12px rgba(0,0,0,0.08);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Noto Sans KR', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    font-size: 14px;
+  }
+
+  /* ── Header ── */
+  header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--primary);
+    color: var(--primary-fg);
+    box-shadow: 0 2px 12px rgba(0,0,0,0.18);
+  }
+  .header-inner {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    border-radius: 7px;
+    font-size: 13px;
+    font-weight: 500;
+    border: none;
+    cursor: pointer;
+    transition: background 0.15s, transform 0.1s;
+    font-family: inherit;
+  }
+  .btn:active { transform: scale(0.97); }
+  .btn-secondary {
+    background: rgba(255,255,255,0.18);
+    color: #fff;
+    border: 1px solid rgba(255,255,255,0.3);
+  }
+  .btn-secondary:hover { background: rgba(255,255,255,0.28); }
+  .header-title {
+    font-size: 18px;
+    font-weight: 700;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  /* ── Main ── */
+  main {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 24px 16px 48px;
+  }
+
+  /* ── Tabs ── */
+  .tabs { margin-bottom: 20px; }
+  .tab-list {
+    display: inline-flex;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 4px;
+    gap: 4px;
+    box-shadow: var(--shadow);
+  }
+  .tab-btn {
+    padding: 8px 24px;
+    border-radius: 7px;
+    border: none;
+    background: transparent;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-muted);
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.18s;
+  }
+  .tab-btn.active {
+    background: var(--primary);
+    color: #fff;
+    box-shadow: 0 2px 8px rgba(26,82,118,0.3);
+  }
+  .tab-btn:not(.active):hover { background: var(--accent-light); color: var(--primary); }
+  .tab-pane { display: none; }
+  .tab-pane.active { display: block; }
+
+  /* ── Card ── */
+  .card {
+    background: var(--surface);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+    overflow: hidden;
+    margin-bottom: 20px;
+  }
+  .card-header {
+    padding: 16px 20px 12px;
+    border-bottom: 1px solid var(--border);
+  }
+  .card-title { font-size: 15px; font-weight: 700; color: var(--primary); }
+  .card-subtitle { font-size: 12.5px; color: var(--text-muted); margin-top: 4px; line-height: 1.5; }
+  .card-body { padding: 0; }
+  .card-body-pad { padding: 14px 18px; }
+
+  /* ── Table ── */
+  .table-wrap { overflow-x: auto; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+  }
+  thead tr {
+    background: #eaf0f6;
+    border-bottom: 2px solid var(--border);
+  }
+  th {
+    padding: 10px 12px;
+    text-align: left;
+    font-weight: 600;
+    color: var(--primary-dark);
+    white-space: nowrap;
+    font-size: 12px;
+  }
+  td {
+    padding: 10px 12px;
+    border-bottom: 1px solid #eaecee;
+    vertical-align: top;
+    line-height: 1.6;
+    white-space: pre-line;
+  }
+  tr:last-child td { border-bottom: none; }
+  tr.has-drug { background: var(--blue-row); }
+  tr.has-drug:hover { background: #d4e9f7; }
+  tr:not(.has-drug):hover { background: #f8fafb; }
+
+  th:nth-child(1) { min-width: 155px; }
+  th:nth-child(2) { min-width: 130px; }
+  th:nth-child(3) { min-width: 210px; }
+  th:nth-child(4) { min-width: 150px; }
+  th:nth-child(5) { min-width: 175px; }
+  th:nth-child(6) { min-width: 105px; }
+  th:nth-child(7) { min-width: 130px; }
+  th:nth-child(8) { min-width: 180px; }
+
+  /* ── Drug cell ── */
+  .drug-name { font-weight: 600; font-size: 13px; margin-bottom: 4px; }
+  .drug-badges { display: flex; flex-direction: column; gap: 4px; margin-top: 5px; }
+  .badge-row { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+  .code-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: var(--primary);
+    color: #fff;
+    border-radius: 5px;
+    padding: 2px 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    cursor: pointer;
+    border: none;
+    transition: background 0.15s, transform 0.1s;
+    white-space: nowrap;
+  }
+  .code-badge:hover { background: var(--accent); }
+  .code-badge:active { transform: scale(0.95); }
+  .code-badge.copied { background: var(--success); }
+  .badge-label { font-size: 11px; color: var(--accent); font-weight: 500; }
+  .reversal-tag {
+    display: inline-block;
+    margin-top: 5px;
+    font-size: 11px;
+    color: var(--danger);
+    font-weight: 600;
+    background: var(--danger-light);
+    padding: 2px 7px;
+    border-radius: 4px;
+  }
+
+  /* ── Guide grid ── */
+  .guide-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+  @media (max-width: 700px) { .guide-grid { grid-template-columns: 1fr; } }
+  .guide-card .card-body-pad p { margin-bottom: 7px; font-size: 13px; line-height: 1.6; }
+  .guide-card .card-body-pad p:last-child { margin-bottom: 0; }
+
+  /* ── Highlight box ── */
+  .highlight-box {
+    background: var(--warning-bg);
+    border: 1px solid #f0e68c;
+    border-radius: 8px;
+    padding: 12px 14px;
+    margin: 10px 0;
+  }
+  .highlight-box p { margin-bottom: 5px; font-size: 13px; line-height: 1.6; }
+  .highlight-box p:last-child { margin-bottom: 0; }
+  .text-danger { color: var(--danger); font-weight: 600; }
+  .text-muted-sm { font-size: 11.5px; color: var(--text-muted); margin-top: 8px; }
+
+  /* ── Summary table (surgical hold) ── */
+  .summary-table th { min-width: 90px; }
+  .summary-table td { white-space: normal; }
+
+  /* ── Toast ── */
+  .toast {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%) translateY(60px);
+    background: var(--primary);
+    color: #fff;
+    padding: 10px 22px;
+    border-radius: 30px;
+    font-size: 13px;
+    font-weight: 500;
+    opacity: 0;
+    transition: opacity 0.25s, transform 0.25s;
+    z-index: 999;
+    pointer-events: none;
+    white-space: nowrap;
+  }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+</style>
+</head>
+<body>
+
+  <a href="index.html" style="
+position:fixed;
+top:10px;
+left:10px;
+background:#333;
+color:white;
+padding:8px 12px;
+border-radius:8px;
+text-decoration:none;
+z-index:999;
+">🏠 홈</a>
+
+<header>
+  <div class="header-inner">
+    <button class="btn btn-secondary" onclick="history.back()">← 뒤로</button>
+    <button class="btn btn-secondary" onclick="location.href='/'">🏠 홈으로</button>
+    <div class="header-title"><span>💉</span> 항응고제 / 항혈소판제</div>
+  </div>
+</header>
+
+<main>
+  <div class="tabs">
+    <div class="tab-list">
+      <button class="tab-btn active" onclick="switchTab('doac', this)">DOAC (항응고제)</button>
+      <button class="tab-btn" onclick="switchTab('antiplatelet', this)">항혈소판제</button>
+    </div>
+  </div>
+
+  <!-- ══ DOAC Tab ══ -->
+  <div class="tab-pane active" id="tab-doac">
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">DOAC (Direct Oral Anticoagulants)</div>
+        <div class="card-subtitle">기존 NOAC(Novel Oral Anticoagulants)에서 현재는 <strong>DOAC</strong>(Direct Oral Anticoagulants)으로 용어가 변경되었습니다.</div>
+      </div>
+      <div class="card-body">
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>약물명</th>
+                <th>분류</th>
+                <th>용법·용량</th>
+                <th>신기능 조절</th>
+                <th>수술 전 중단</th>
+                <th>적응증</th>
+                <th>부작용</th>
+                <th>참고사항</th>
+              </tr>
+            </thead>
+            <tbody id="doac-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="guide-grid">
+      <div class="card guide-card">
+        <div class="card-header"><div class="card-title">📌 DOAC 선택 가이드</div></div>
+        <div class="card-body-pad">
+          <p><strong>1일 1회 선호:</strong> Rivaroxaban 또는 Edoxaban</p>
+          <p><strong>1일 2회 (안정적 혈중 농도):</strong> Apixaban 또는 Dabigatran</p>
+          <p><strong>신기능 저하 (CrCl 15-30):</strong> Apixaban 가장 안전</p>
+          <p><strong>GI 출혈 위험:</strong> Apixaban 선호 (GI 출혈 가장 적음)</p>
+          <p><strong>소화불량 이슈:</strong> Dabigatran 피하기</p>
+          <p><strong>역전제 필요:</strong> Dabigatran (Idarucizumab), Apixaban/Rivaroxaban (Andexanet alfa)</p>
+        </div>
+      </div>
+
+      <div class="card guide-card">
+        <div class="card-header"><div class="card-title">📌 Apixaban 감량 기준 (2 of 3)</div></div>
+        <div class="card-body-pad">
+          <p class="text-danger">아래 3가지 중 2개 이상 해당 시 → 2.5mg bid</p>
+          <div class="highlight-box">
+            <p>① 나이 ≥ <strong>80</strong>세</p>
+            <p>② 체중 ≤ <strong>60</strong>kg</p>
+            <p>③ 혈청 Cr ≥ <strong>1.5</strong> mg/dL</p>
+          </div>
+          <p class="text-muted-sm">※ VTE 치료/예방 시에는 별도 용량 기준 적용</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><div class="card-title">⏱️ DOAC 수술 전 중단 시기 요약</div></div>
+      <div class="card-body">
+        <div class="table-wrap">
+          <table class="summary-table">
+            <thead>
+              <tr>
+                <th>약물</th>
+                <th>CrCl ≥50</th>
+                <th>CrCl 30-49</th>
+                <th>CrCl 15-29</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td style="font-weight:600">Apixaban</td><td>24-48h</td><td>48h</td><td>48-72h</td></tr>
+              <tr><td style="font-weight:600">Rivaroxaban</td><td>24-48h</td><td>48h</td><td>권장하지 않음</td></tr>
+              <tr><td style="font-weight:600">Edoxaban</td><td>24-48h</td><td>48h</td><td>권장하지 않음</td></tr>
+              <tr><td style="font-weight:600">Dabigatran</td><td>24-48h</td><td>48-96h</td><td>권장하지 않음</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div style="padding:10px 16px">
+          <p class="text-muted-sm">※ 출혈 고위험 수술 시 더 긴 중단 기간 적용. 저위험 수술(치과 등)은 중단 불필요할 수 있음.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ Antiplatelet Tab ══ -->
+  <div class="tab-pane" id="tab-antiplatelet">
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">항혈소판제 (Antiplatelet Agents)</div>
+      </div>
+      <div class="card-body">
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>약물명</th>
+                <th>분류</th>
+                <th>용법·용량</th>
+                <th>수술 전 중단</th>
+                <th>적응증</th>
+                <th>부작용</th>
+                <th>참고사항</th>
+              </tr>
+            </thead>
+            <tbody id="antiplatelet-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="guide-grid">
+      <div class="card guide-card">
+        <div class="card-header"><div class="card-title">📌 항혈소판제 선택 가이드</div></div>
+        <div class="card-body-pad">
+          <p><strong>뇌경색 2차 예방 (기본):</strong> Aspirin 100mg 또는 Clopidogrel 75mg</p>
+          <p><strong>DAPT (급성기/스텐트):</strong> Aspirin + Clopidogrel (기간은 상황에 따라)</p>
+          <p><strong>Aspirin 불내성:</strong> Clopidogrel 단독</p>
+          <p><strong>말초동맥질환/파행:</strong> Cilostazol 추가 고려</p>
+          <p><strong>혈관성 인지장애:</strong> Cilostazol 고려 (아시아 데이터)</p>
+        </div>
+      </div>
+
+      <div class="card guide-card">
+        <div class="card-header"><div class="card-title">📌 수술 전 중단 시기 요약</div></div>
+        <div class="card-body-pad">
+          <div class="highlight-box">
+            <p><strong>Aspirin:</strong> 7일 (저위험 수술은 유지 가능)</p>
+            <p><strong>Clopidogrel:</strong> 5-7일</p>
+            <p><strong>Cilostazol:</strong> 2-3일</p>
+          </div>
+          <p class="text-muted-sm">※ 스텐트 삽입 환자는 DAPT 중단 전 반드시 심장내과/시술의 상의</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const doacs = [
+  {
+    name: 'Apixaban (엘리퀴스)', cls: 'Direct Factor Xa inhibitor',
+    dosing: `NVAF: 5mg bid (기본)
+→ 2.5mg bid 감량 기준 (2개 이상 해당 시):
+  ① 나이 ≥80세
+  ② 체중 ≤60kg
+  ③ Cr ≥1.5mg/dL
+VTE 치료: 10mg bid x 7일 → 5mg bid
+VTE 예방: 2.5mg bid`,
+    renalAdjust: `CrCl 15-29: 사용 가능 (감량 기준 적용)
+CrCl <15 또는 투석: 권장하지 않음`,
+    surgicalHold: `출혈 저위험: 24시간 전 중단
+출혈 고위험: 48시간 전 중단
+CrCl <30: 추가 24-48시간 연장 고려
+응급수술: Andexanet alfa 고려`,
+    indications: '비판막성 심방세동(NVAF) 뇌졸중 예방, DVT/PE 치료 및 예방',
+    sideEffects: '출혈, 빈혈, 오심, 멍',
+    reversal: 'Andexanet alfa (승인된 역전제)',
+    notes: '신기능 저하 환자에서 비교적 안전, 음식과 무관하게 복용 가능',
+    drugs: [{ code: 'ELIQ5', label: '엘리퀴스 정 5mg' }, { code: 'ELIQ2', label: '엘리퀴스 정 2.5mg' }]
+  },
+  {
+    name: 'Rivaroxaban (리바로코르)', cls: 'Direct Factor Xa inhibitor',
+    dosing: `NVAF: 20mg qd 식사와 함께
+→ CrCl 15-50: 15mg qd
+VTE 치료: 15mg bid x 21일 → 20mg qd
+VTE 예방: 10mg qd`,
+    renalAdjust: `CrCl 15-50: 15mg qd
+CrCl <15: 권장하지 않음`,
+    surgicalHold: `출혈 저위험: 24시간 전 중단
+출혈 고위험: 48시간 전 중단
+CrCl <30: 추가 24시간 연장 고려`,
+    indications: 'NVAF 뇌졸중 예방, DVT/PE 치료 및 예방',
+    sideEffects: '출혈, 어지러움, 두통, 간효소 상승',
+    reversal: 'Andexanet alfa',
+    notes: '식사와 함께 복용 필수 (흡수율↑), 1일 1회 복용 편의성',
+    drugs: [{ code: 'RIVAC15', label: '리바코르 정 15mg' }, { code: 'RIVAC20', label: '리바코르 정 20mg' }]
+  },
+  {
+    name: 'Edoxaban (릭시아나)', cls: 'Direct Factor Xa inhibitor',
+    dosing: `NVAF: 60mg qd
+→ 30mg qd 감량 기준 (1개 이상):
+  ① CrCl 15-50
+  ② 체중 ≤60kg
+  ③ P-gp 억제제 병용
+VTE: 60mg qd (초기 5일 이상 비경구 항응고 후)`,
+    renalAdjust: `CrCl 15-50: 30mg qd
+CrCl <15: 권장하지 않음
+CrCl >95: 효과 감소 우려 (NVAF에서)`,
+    surgicalHold: `출혈 저위험: 24시간 전 중단
+출혈 고위험: 48시간 전 중단`,
+    indications: 'NVAF 뇌졸중 예방, DVT/PE 치료 및 예방',
+    sideEffects: '출혈, 빈혈, 발진, 간기능 이상',
+    reversal: '특이 역전제 없음 (Andexanet alfa off-label 고려)',
+    notes: 'CrCl >95에서 NVAF 적응증 시 효과 감소 보고, VTE 치료 시 초기 비경구 항응고 필요',
+    drugs: [{ code: 'LIX3', label: '릭시아나 정 30mg' }, { code: 'LIX6', label: '릭시아나 정 60mg' }]
+  },
+  {
+    name: 'Dabigatran (프라닥사)', cls: 'Direct Thrombin (Factor IIa) inhibitor',
+    dosing: `NVAF: 150mg bid (기본)
+→ 110mg bid (고령, 출혈 위험 높은 경우)
+VTE 치료: 150mg bid (초기 5일 이상 비경구 항응고 후)`,
+    renalAdjust: `CrCl 30-50: 주의 사용 (110mg bid 고려)
+CrCl <30: 권장하지 않음`,
+    surgicalHold: `CrCl ≥50: 1-2일 전 (저위험), 2-4일 전 (고위험)
+CrCl 30-50: 2-3일 전 (저위험), 4일 이상 (고위험)`,
+    indications: 'NVAF 뇌졸중 예방, DVT/PE 치료 및 예방',
+    sideEffects: '출혈, 소화불량 (가장 흔함), 위장관 출혈',
+    reversal: 'Idarucizumab (프락스바인드) — 승인된 특이 역전제',
+    notes: '캡슐 째로 복용 (분쇄/개봉 금지), 소화불량 비교적 흔함, 특이 역전제 있는 유일한 DOAC',
+    drugs: []
+  },
+];
+
+const antiplatelets = [
+  {
+    name: 'Aspirin (아스피린)', cls: 'COX-1 inhibitor',
+    dosing: `2차 예방: 100mg qd
+ACS 급성기: 300mg loading → 100mg qd
+뇌경색 급성기: 100-300mg → 100mg qd`,
+    surgicalHold: `일반: 7일 전 중단
+심혈관 고위험 (스텐트 등): 중단하지 않거나 주치의 상의
+치과/소수술: 유지 가능`,
+    indications: '심뇌혈관질환 2차 예방, ACS, 뇌경색 급성기',
+    sideEffects: 'GI 출혈, 소화불량, 위궤양, 천식 악화',
+    reversal: null,
+    notes: 'PPI 병용 고려 (GI 보호), 장용정 사용 시 위장관 부작용 감소',
+    drugs: [
+      { code: 'ASPI', label: '아스피린 프로텍트 정 100mg' },
+      { code: 'AST', label: '보령바이오 아스트릭스 캡슐 100mg' },
+      { code: 'ASRAZ', label: '아스라졸 캡슐 100/5mg' },
+    ]
+  },
+  {
+    name: 'Clopidogrel (프리그렐/베라실)', cls: 'P2Y12 receptor antagonist (Thienopyridine)',
+    dosing: `2차 예방: 75mg qd
+ACS/PCI: 300-600mg loading → 75mg qd
+DAPT: Aspirin 100mg + Clopidogrel 75mg`,
+    surgicalHold: `일반: 5-7일 전 중단
+약물 용출 스텐트 (DES): 최소 6-12개월 DAPT 유지 후 중단 가능
+응급수술: 혈소판 수혈 고려`,
+    indications: '뇌경색/TIA 2차 예방, ACS, PCI 후 DAPT, Aspirin 불내성 시 대체',
+    sideEffects: '출혈, 멍, TTP (드묾), 발진',
+    reversal: null,
+    notes: 'CYP2C19 poor metabolizer에서 효과 감소 가능, PPI 중 omeprazole 병용 시 효과 감소 우려 (pantoprazole 선호)',
+    drugs: [{ code: 'CLOVO', label: '클로본스 정' }, { code: 'BERA', label: '베라실 정' }]
+  },
+  {
+    name: 'Cilostazol (실로스탄/써큐스타)', cls: 'PDE3 inhibitor',
+    dosing: `표준: 100mg bid (식전 30분 또는 식후 2시간)
+→ 감량: 50mg bid (부작용 시)
+서방정: 100-200mg qd`,
+    surgicalHold: `일반: 2-3일 전 중단
+(반감기 약 11시간으로 비교적 짧음)`,
+    indications: '말초동맥질환 (간헐적 파행), 뇌경색 2차 예방 (아시아 근거), 혈관성 인지장애',
+    sideEffects: '두통 (가장 흔함), 설사, 심계항진, 어지러움',
+    reversal: null,
+    notes: '심부전 환자 금기 (PDE3 억제 → 부정맥 위험), 두통은 보통 수일 내 완화, CYP3A4/2C19 억제제 병용 시 감량',
+    drugs: [
+      { code: 'CILO1', label: '실로스탄 씨알 정 100mg' },
+      { code: 'CILO2', label: '실로스탄 씨알 정 200mg' },
+      { code: 'CIRCU', label: '써큐스타 정' },
+    ]
+  },
+];
+
+function buildDrugCell(med) {
+  const hasDrug = med.drugs.length > 0;
+  const badgesHtml = hasDrug
+    ? `<div class="drug-badges">${med.drugs.map(d => `
+        <div class="badge-row">
+          <button class="code-badge" onclick="copyCode('${d.code}', this)">📋 ${d.code}</button>
+          <span class="badge-label">${d.label}</span>
+        </div>`).join('')}</div>`
+    : '';
+  const reversalHtml = med.reversal
+    ? `<div class="reversal-tag">역전제: ${med.reversal}</div>`
+    : '';
+  return `<div class="drug-name">${med.name}</div>${badgesHtml}${reversalHtml}`;
+}
+
+function buildDoacTable() {
+  document.getElementById('doac-tbody').innerHTML = doacs.map(med => {
+    const hasDrug = med.drugs.length > 0;
+    return `<tr class="${hasDrug ? 'has-drug' : ''}">
+      <td>${buildDrugCell(med)}</td>
+      <td style="color:var(--text-muted);font-size:11.5px">${med.cls}</td>
+      <td>${med.dosing}</td>
+      <td>${med.renalAdjust || '—'}</td>
+      <td>${med.surgicalHold}</td>
+      <td>${med.indications}</td>
+      <td>${med.sideEffects}</td>
+      <td>${med.notes}</td>
+    </tr>`;
+  }).join('');
+}
+
+function buildAntiplateletTable() {
+  document.getElementById('antiplatelet-tbody').innerHTML = antiplatelets.map(med => {
+    const hasDrug = med.drugs.length > 0;
+    return `<tr class="${hasDrug ? 'has-drug' : ''}">
+      <td>${buildDrugCell(med)}</td>
+      <td style="color:var(--text-muted);font-size:11.5px">${med.cls}</td>
+      <td>${med.dosing}</td>
+      <td>${med.surgicalHold}</td>
+      <td>${med.indications}</td>
+      <td>${med.sideEffects}</td>
+      <td>${med.notes}</td>
+    </tr>`;
+  }).join('');
+}
+
+function switchTab(tabId, btn) {
+  document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + tabId).classList.add('active');
+  btn.classList.add('active');
+}
+
+function copyCode(code, btn) {
+  navigator.clipboard.writeText(code).then(() => {
+    const orig = btn.innerHTML;
+    btn.innerHTML = '✓ 복사됨';
+    btn.classList.add('copied');
+    showToast(`"${code}" 복사되었습니다`);
+    setTimeout(() => { btn.innerHTML = orig; btn.classList.remove('copied'); }, 1800);
+  });
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2000);
+}
+
+buildDoacTable();
+buildAntiplateletTable();
+</script>
+</body>
+</html>
