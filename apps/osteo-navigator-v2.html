@@ -1,0 +1,1095 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Osteo-Navigator v2.1</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f0f2f5; --card: #ffffff; --primary: #1a2744;
+  --accent: #2f6fe0; --accent2: #0ea472; --warn: #d94f3d;
+  --orange: #e07a2f; --text: #2d3748; --muted: #718096;
+  --border: #e2e8f0; --radius: 14px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+.header { background: var(--primary); padding: 24px 40px 0; }
+.header-top { padding-bottom: 18px; }
+.header-title h1 { font-family: 'DM Serif Display', serif; font-size: 2rem; color:#fff; letter-spacing:-0.5px; line-height:1; }
+.header-title p { color: #8fa3c8; font-size: 0.82rem; margin-top:5px; }
+.version-badge { background: var(--accent); color:#fff; font-size:0.72rem; font-weight:600; padding:3px 10px; border-radius:20px; margin-left:10px; vertical-align:middle; }
+
+.tab-bar { display:flex; }
+.tab-btn { padding:12px 28px; font-family:'DM Sans',sans-serif; font-size:0.88rem; font-weight:600; cursor:pointer; border:none; background:transparent; color:#8fa3c8; border-bottom:3px solid transparent; transition:color 0.2s,border-color 0.2s; display:flex; align-items:center; gap:7px; }
+.tab-btn.active { color:#fff; border-bottom-color:var(--accent); }
+.tab-btn:hover:not(.active) { color:#c8d8f0; }
+
+.main { max-width: 960px; margin: 0 auto; padding: 30px 20px 60px; }
+.tab-panel { display:none; }
+.tab-panel.active { display:block; }
+
+.card { background:var(--card); border-radius:var(--radius); box-shadow:0 2px 12px rgba(0,0,0,0.07); padding:28px 30px; margin-bottom:22px; }
+.card-title { font-family:'DM Serif Display',serif; font-size:1.2rem; color:var(--primary); margin-bottom:20px; padding-bottom:12px; border-bottom:1.5px solid var(--border); display:flex; align-items:center; gap:9px; }
+
+.form-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+@media(max-width:640px){ .form-grid { grid-template-columns:1fr; } }
+.field label { display:block; font-size:0.82rem; font-weight:600; color:var(--muted); letter-spacing:0.4px; text-transform:uppercase; margin-bottom:6px; }
+.field label .opt { font-size:0.7rem; color:#a0aec0; font-weight:400; text-transform:none; margin-left:4px; }
+.field select, .field input[type=number] { width:100%; padding:10px 14px; border:1.5px solid var(--border); border-radius:8px; font-family:'DM Sans',sans-serif; font-size:0.95rem; color:var(--text); background:#fafbfc; transition:border-color 0.2s; -moz-appearance:textfield; }
+.field select:focus, .field input[type=number]:focus { outline:none; border-color:var(--accent); background:#fff; }
+.field input[type=number]::-webkit-inner-spin-button { opacity:0.5; }
+
+.tscore-group { display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; align-items:end; }
+@media(max-width:640px){ .tscore-group { grid-template-columns:1fr; } }
+.avg-display { background:#eef3fd; border-radius:8px; padding:10px 14px; font-size:0.9rem; color:var(--accent); font-weight:600; text-align:center; border:1.5px solid #c4d7f8; }
+.avg-display small { display:block; font-size:0.7rem; color:var(--muted); font-weight:400; margin-bottom:3px; }
+
+.check-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+@media(max-width:640px){ .check-grid { grid-template-columns:1fr; } }
+.check-item { display:flex; align-items:center; gap:10px; padding:11px 14px; border-radius:9px; border:1.5px solid var(--border); cursor:pointer; transition:border-color 0.2s,background 0.2s; background:#fafbfc; }
+.check-item:hover { border-color:var(--accent); background:#f0f5ff; }
+.check-item input[type=checkbox] { width:16px; height:16px; accent-color:var(--accent); cursor:pointer; flex-shrink:0; }
+.check-item span { font-size:0.88rem; line-height:1.4; }
+
+.btn-analyze { width:100%; padding:15px; background:var(--primary); color:#fff; border:none; border-radius:10px; font-family:'DM Sans',sans-serif; font-size:1rem; font-weight:600; cursor:pointer; margin-top:18px; letter-spacing:0.3px; transition:background 0.2s,transform 0.1s; display:flex; align-items:center; justify-content:center; gap:8px; }
+.btn-analyze:hover { background:#263560; }
+.btn-analyze:active { transform:scale(0.99); }
+
+.alert { border-radius:9px; padding:13px 16px; font-size:0.9rem; line-height:1.6; margin-bottom:12px; display:flex; gap:10px; align-items:flex-start; }
+.alert-icon { font-size:1.1rem; flex-shrink:0; margin-top:1px; }
+.alert-warn   { background:#fff5f5; border-left:4px solid var(--warn); }
+.alert-info   { background:#eff6ff; border-left:4px solid var(--accent); }
+.alert-ok     { background:#f0fdf4; border-left:4px solid var(--accent2); }
+.alert-orange { background:#fffbf0; border-left:4px solid var(--orange); }
+
+.drug-table-wrap { overflow-x:auto; margin-top:6px; }
+table.drug-table { width:100%; border-collapse:collapse; font-size:0.85rem; }
+table.drug-table th { background:var(--primary); color:#fff; padding:10px 13px; text-align:left; font-weight:500; }
+table.drug-table th:first-child { border-radius:8px 0 0 0; }
+table.drug-table th:last-child  { border-radius:0 8px 0 0; }
+table.drug-table td { padding:10px 13px; border-bottom:1px solid var(--border); vertical-align:top; line-height:1.5; }
+table.drug-table tr:last-child td { border-bottom:none; }
+table.drug-table tr:nth-child(even) td { background:#fafbff; }
+table.drug-table tr:hover td { background:#f0f5ff; }
+.drug-name { font-weight:700; color:var(--primary); }
+.drug-sub  { font-size:0.78rem; color:var(--muted); font-weight:400; }
+
+.badge { display:inline-block; padding:2px 8px; border-radius:10px; font-size:0.72rem; font-weight:700; margin:1px 2px; }
+.b-spine   { background:#dbeafe; color:#1d4ed8; }
+.b-femur   { background:#ede9fe; color:#6d28d9; }
+.b-both    { background:#d1fae5; color:#065f46; }
+.b-no      { background:#fee2e2; color:#991b1b; }
+.b-iv      { background:#fef9c3; color:#854d0e; }
+.b-oral    { background:#f3f4f6; color:#374151; }
+.b-sub     { background:#fce7f3; color:#9d174d; }
+.b-tier1   { background:#d1fae5; color:#065f46; }  /* 1차 */
+.b-tier2   { background:#dbeafe; color:#1d4ed8; }  /* 1차-2순위 (데노수맙) */
+.b-tier3   { background:#ffedd5; color:#9a3412; }  /* 2차 - BP 실패 필수 */
+.b-code    { background:#1a2744; color:#fff; font-family:monospace; letter-spacing:0.5px; }
+.b-out     { background:#7c3aed; color:#fff; font-family:monospace; letter-spacing:0.5px; } /* 원외 코드 */
+.out-label { display:inline-block; font-size:0.65rem; font-weight:700; background:#ede9fe; color:#6d28d9; padding:1px 5px; border-radius:4px; margin-right:3px; vertical-align:middle; }
+
+.pros { color:#065f46; } .cons { color:#991b1b; }
+ul.pc { padding-left:14px; margin:0; }
+ul.pc li { margin-bottom:3px; }
+
+.ins-box { background:#f8faff; border:1.5px solid #c4d7f8; border-radius:10px; padding:16px 18px; margin-top:6px; }
+.ins-box .ins-title { font-size:0.8rem; font-weight:700; color:var(--accent); text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px; }
+.ins-row { display:flex; gap:8px; margin-bottom:6px; font-size:0.88rem; }
+.ins-key { font-weight:600; color:var(--primary); min-width:110px; flex-shrink:0; }
+
+.guideline-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+@media(max-width:640px){ .guideline-grid { grid-template-columns:1fr; } }
+.g-item { background:#fafbfc; border:1.5px solid var(--border); border-radius:9px; padding:13px 15px; }
+.g-item .g-drug { font-weight:700; font-size:0.88rem; color:var(--primary); margin-bottom:4px; }
+.g-item .g-desc { font-size:0.82rem; color:var(--muted); line-height:1.5; }
+
+.cond-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+@media(max-width:640px){ .cond-grid { grid-template-columns:1fr; } }
+.cond-item { border-radius:10px; padding:14px 16px; border:1.5px solid var(--border); background:#fafbfc; }
+.cond-item.highlight { border-color:#86efac; background:#f0fff4; }
+.cond-item.caution   { border-color:#fca5a5; background:#fff5f5; }
+.cond-item .cond-label { font-size:0.78rem; font-weight:700; text-transform:uppercase; letter-spacing:0.5px; color:var(--muted); margin-bottom:7px; }
+.cond-item .cond-drugs { font-size:0.88rem; font-weight:600; color:var(--primary); margin-bottom:5px; line-height:1.5; }
+.cond-item .cond-reason { font-size:0.82rem; color:var(--muted); line-height:1.5; }
+.cond-item .cond-codes { margin-top:8px; padding-top:8px; border-top:1px dashed var(--border); font-size:0.8rem; color:var(--muted); line-height:1.8; }
+
+/* 원내코드 탭 */
+.code-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(270px,1fr)); gap:14px; }
+.code-card { background:#fff; border:1.5px solid var(--border); border-radius:12px; padding:16px 18px; transition:box-shadow 0.2s,border-color 0.2s; }
+.code-card:hover { box-shadow:0 4px 16px rgba(47,111,224,0.12); border-color:#93b4f0; }
+.cc-code { font-family:monospace; font-size:1.1rem; font-weight:700; color:var(--primary); background:#eef3fd; display:inline-block; padding:3px 12px; border-radius:6px; margin-bottom:9px; letter-spacing:0.8px; }
+.cc-name { font-size:0.9rem; font-weight:600; color:var(--text); margin-bottom:4px; }
+.cc-ingr { font-size:0.78rem; color:var(--muted); line-height:1.5; margin-bottom:8px; }
+.cc-meta { display:flex; flex-wrap:wrap; gap:5px; margin-bottom:6px; }
+.cc-ins  { font-size:0.72rem; font-weight:700; padding:2px 8px; border-radius:8px; background:#d1fae5; color:#065f46; }
+.cc-form { font-size:0.72rem; padding:2px 8px; border-radius:8px; background:#f3f4f6; color:#374151; }
+.cc-note { font-size:0.75rem; color:var(--orange); margin-top:4px; }
+.code-group-title { font-family:'DM Serif Display',serif; font-size:1.05rem; color:var(--primary); margin:22px 0 12px; padding-left:10px; border-left:3px solid var(--accent); }
+.btn-copy { background:none; border:1px solid var(--border); border-radius:6px; padding:4px 10px; font-size:0.72rem; cursor:pointer; color:var(--muted); transition:background 0.15s; }
+.btn-copy:hover { background:#eef3fd; color:var(--accent); border-color:var(--accent); }
+/* 인라인 복사 버튼 (코드 배지 옆) */
+.code-inline-wrap { display:inline-flex; align-items:center; gap:4px; vertical-align:middle; }
+.btn-copy-inline { background:none; border:1px solid #c4d7f8; border-radius:5px; padding:1px 6px; font-size:0.68rem; cursor:pointer; color:#6b8dd6; transition:background 0.15s, color 0.15s; line-height:1.4; white-space:nowrap; }
+.btn-copy-inline:hover { background:#eef3fd; color:var(--accent); border-color:var(--accent); }
+.btn-copy-inline.copied { background:#d1fae5; color:#065f46; border-color:#86efac; }
+
+#result { display:none; }
+
+/* ── 투여주기 탭 ── */
+.sched-filter {
+  padding:6px 14px; border-radius:20px; border:1.5px solid var(--border);
+  background:#fafbfc; color:var(--muted); font-family:'DM Sans',sans-serif;
+  font-size:0.82rem; font-weight:600; cursor:pointer;
+  transition:background 0.15s,border-color 0.15s,color 0.15s;
+}
+.sched-filter:hover { border-color:var(--accent); color:var(--accent); background:#f0f5ff; }
+.sched-filter.active { background:var(--primary); color:#fff; border-color:var(--primary); }
+.interval-pill {
+  display:inline-block; padding:3px 10px; border-radius:12px;
+  font-size:0.75rem; font-weight:700; white-space:nowrap;
+}
+.iv-daily   { background:#fce7f3; color:#9d174d; }
+.iv-weekly  { background:#dbeafe; color:#1d4ed8; }
+.iv-monthly { background:#ede9fe; color:#6d28d9; }
+.iv-quarter { background:#fef9c3; color:#854d0e; }
+.iv-half    { background:#d1fae5; color:#065f46; }
+.iv-annual  { background:#ffedd5; color:#9a3412; }
+.iv-3month  { background:#e0f2fe; color:#0369a1; }
+.sortable:hover { background:#263560; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-top">
+    <div class="header-title">
+      <h1>Osteo-Navigator <span class="version-badge">v2.1</span></h1>
+      <p>골다공증 약제 선택 가이드 · 급여 기준 통합 · 원내코드 연동</p>
+    </div>
+  </div>
+  <div class="tab-bar">
+    <button class="tab-btn active" onclick="switchTab('analyze',this)">🔍 약제 분석</button>
+    <button class="tab-btn" onclick="switchTab('codes',this)">🏷️ 원내코드 조회</button>
+    <button class="tab-btn" onclick="switchTab('schedule',this)">📆 투여주기/용법</button>
+  </div>
+</div>
+
+<div class="main">
+
+<!-- ── 탭 1: 약제 분석 ── -->
+<div id="tab-analyze" class="tab-panel active">
+
+  <div class="card">
+    <div class="card-title"><span>👤</span> 환자 기본 정보</div>
+    <div class="form-grid" style="margin-bottom:18px;">
+      <div class="field">
+        <label>성별</label>
+        <select id="gender">
+          <option value="female">여성 (폐경 후)</option>
+          <option value="male">남성</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>연령 <span class="opt">(선택)</span></label>
+        <input type="number" id="age" placeholder="예: 72" min="40" max="100">
+      </div>
+    </div>
+
+    <div class="field" style="margin-bottom:18px;">
+      <label>T-score 입력 <span class="opt">— 선택 사항 (미입력 시 임상 조건만으로 분석)</span></label>
+      <div class="tscore-group">
+        <div class="field">
+          <label style="margin-bottom:5px;">척추 L1 <span class="opt">(선택)</span></label>
+          <input type="number" id="ts_l1" step="0.1" placeholder="-2.5" oninput="calcSpineAvg()">
+        </div>
+        <div class="field">
+          <label style="margin-bottom:5px;">척추 L2~L4 <span class="opt">(선택)</span></label>
+          <input type="number" id="ts_l2" step="0.1" placeholder="-2.8" oninput="calcSpineAvg()">
+        </div>
+        <div>
+          <div class="avg-display">
+            <small>척추 평균 T-score</small>
+            <span id="spine_avg_display">—</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-grid" style="margin-bottom:20px;">
+      <div class="field">
+        <label>대퇴골 T-score (최저치) <span class="opt">(선택)</span></label>
+        <input type="number" id="ts_femur" step="0.1" placeholder="-2.1">
+      </div>
+    </div>
+
+    <div class="card-title" style="margin-top:4px;"><span>⚕️</span> 임상 조건 (복수 선택)</div>
+    <div class="check-grid">
+      <label class="check-item"><input type="checkbox" id="stroke"><span>1년 이내 뇌경색/심근경색 병력</span></label>
+      <label class="check-item"><input type="checkbox" id="dental"><span>치과 질환 / 임플란트 계획 (ONJ 우려)</span></label>
+      <label class="check-item"><input type="checkbox" id="femur_focus"><span>대퇴골 골밀도 현저히 낮음</span></label>
+      <label class="check-item"><input type="checkbox" id="fracture"><span>골다공증성 골절 과거력</span></label>
+      <label class="check-item"><input type="checkbox" id="renal"><span>신기능 저하 (eGFR &lt;35)</span></label>
+      <label class="check-item"><input type="checkbox" id="breast"><span>유방암 / 에스트로겐 금기</span></label>
+    </div>
+    <button class="btn-analyze" onclick="analyze()"><span>🔍</span> 약제 분석 실행</button>
+  </div>
+
+  <div id="result">
+    <div class="card">
+      <div class="card-title"><span>⚠️</span> 주의 사항</div>
+      <div id="alertContent"></div>
+    </div>
+    <div class="card">
+      <div class="card-title"><span>🎯</span> 조건별 권장 약제 & 원내코드</div>
+      <div id="conditionContent"></div>
+    </div>
+    <div class="card">
+      <div class="card-title"><span>💊</span> 약제별 장단점 비교</div>
+      <div class="drug-table-wrap"><table class="drug-table" id="drugTable"></table></div>
+    </div>
+    <div class="card">
+      <div class="card-title"><span>📋</span> 급여 기준 판정</div>
+      <div id="insuranceContent"></div>
+    </div>
+    <div class="card">
+      <div class="card-title"><span>📅</span> 순차치료 가이드 (급여 기준 연계)</div>
+      <div style="display:flex;flex-direction:column;gap:10px;" id="guidelineContent"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><span>📖</span> 급여 BMD 기준 참조</div>
+    <div style="overflow-x:auto;">
+      <table class="drug-table">
+        <tr><th>구분</th><th>기준</th></tr>
+        <tr><td>BMD 검사 급여</td><td>65세 이상 여성, 70세 이상 남성 / 생애주기(54세·66세 여성)</td></tr>
+        <tr><td>약제 급여 (일반)</td><td>T-score ≤ −2.5 또는 골절 확인 시 1년, 이후 유지 시 연장</td></tr>
+        <tr><td>급여 T-score 기준</td><td><b>척추: 평균 T-score</b> / 대퇴골: 최저치 (Ward's triangle 제외)</td></tr>
+        <tr><td>이베니티 급여</td><td>T-score ≤ −2.5 + 골절 2회 이상 또는 기존 약제 1년 이상 실패</td></tr>
+        <tr><td>치료 기간</td><td>BP/프롤리아: 제한 없음 / 이베니티: 12개월 / 포스테오: 24개월</td></tr>
+        <tr style="background:#fffbeb;">
+          <td style="border-left:3px solid #f59e0b;">
+            <b style="color:#92400e;">📢 칼슘/VitD 복합경구제</b><br>
+            <span style="font-size:0.78rem; color:#b45309;">2026.02.01 고시 변경</span>
+          </td>
+          <td style="font-size:0.85rem;">
+            <b style="color:#991b1b;">BMD 필요:</b> 골다공증치료제 목적 → T-score <b>−1.0 이상</b> 기존 유지<br>
+            <b style="color:#065f46;">BMD 불필요:</b> 비타민제·폐경기증후군·만성신부전(필수경구)·갑상선전절제술로 인한 부갑상선기능장애 → 해당 상병만으로 급여 인정
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+</div><!-- /tab-analyze -->
+
+
+<!-- ── 탭 2: 원내코드 조회 ── -->
+<div id="tab-codes" class="tab-panel">
+
+  <div class="card">
+    <div class="card-title"><span>🏷️</span> 골다공증 약제 원내코드 목록</div>
+    <p style="font-size:0.85rem;color:var(--muted);margin-bottom:4px;">하남보바스병원 원내코드 기준 · 코드 복사 버튼으로 바로 사용 가능</p>
+
+    <div class="code-group-title">경구 약제 (Oral)</div>
+    <div class="code-grid">
+      <div class="code-card">
+        <div class="cc-code" style="display:flex;align-items:center;gap:8px;">BONPL<button class="btn-copy-inline" style="font-size:0.7rem;padding:2px 8px;" onclick="doCopy('BONPL',this)">복사</button></div>
+        <div class="cc-name">본필 정 70mg</div>
+        <div class="cc-ingr">alendronate sodium hydrate<br>70㎎ as alendronic acid</div>
+        <div class="cc-meta"><span class="cc-ins">급여</span><span class="cc-form">tab · 경구 주 1회</span></div>
+        <div style="margin-top:8px;padding-top:8px;border-top:1px dashed var(--border);">
+          <div style="font-size:0.72rem;font-weight:700;color:#6d28d9;margin-bottom:5px;">원외 처방 코드</div>
+          <div style="font-size:0.8rem;line-height:1.9;">
+            <span class="out-label">원외</span><span class="badge b-out">FMXP</span>
+            <button class="btn-copy-inline" onclick="doCopy('FMXP',this)">복사</button>
+            <span style="color:var(--muted);font-size:0.78rem;"> 포사맥스 플러스 정 <span style="color:#a0aec0;">073100290</span></span><br>
+            <span class="out-label">원외</span><span class="badge b-out">BOSERP</span>
+            <button class="btn-copy-inline" onclick="doCopy('BOSERP',this)">복사</button>
+            <span style="color:var(--muted);font-size:0.78rem;"> 본세론 플러스 정 <span style="color:#a0aec0;">648103790</span></span>
+          </div>
+        </div>
+        <button class="btn-copy" onclick="copyCode(this,'BONPL')">📋 코드 복사</button>
+      </div>
+      <div class="code-card">
+        <div class="cc-code" style="display:flex;align-items:center;gap:8px;">RAXD<button class="btn-copy-inline" style="font-size:0.7rem;padding:2px 8px;" onclick="doCopy('RAXD',this)">복사</button></div>
+        <div class="cc-name">라본 디 캡슐</div>
+        <div class="cc-ingr">raloxifene HCl 60㎎<br>+ Vit D3 800IU</div>
+        <div class="cc-meta"><span class="cc-ins">급여</span><span class="cc-form">cap · 경구 매일</span></div>
+        <div class="cc-note">⛔ <b>남성 처방 불가</b> — SERM, 폐경 후 여성 전용 (급여 불가)</div>
+        <button class="btn-copy" onclick="copyCode(this,'RAXD')">📋 코드 복사</button>
+      </div>
+    </div>
+
+    <div class="code-group-title">주사 약제 (Injectable)</div>
+    <div class="code-grid">
+      <div class="code-card">
+        <div class="cc-code" style="display:flex;align-items:center;gap:8px;">7BONV<button class="btn-copy-inline" style="font-size:0.7rem;padding:2px 8px;" onclick="doCopy('7BONV',this)">복사</button></div>
+        <div class="cc-name">본비바 주 3mg/3ml</div>
+        <div class="cc-ingr">ibandronate sodium monohydrate<br>3㎎ as ibandronic acid / 3ml</div>
+        <div class="cc-meta"><span class="cc-ins">급여</span><span class="cc-form">vial · IV 분기 1회</span></div>
+        <div class="cc-note">⛔ <b>남성 처방 불가</b> — 폐경 후 여성만 허가 (급여 불가)</div>
+        <div style="margin-top:8px;padding-top:8px;border-top:1px dashed var(--border);">
+          <div style="font-size:0.72rem;font-weight:700;color:#6d28d9;margin-bottom:5px;">원외 경구제 (월 1회)</div>
+          <div style="font-size:0.8rem;line-height:1.9;">
+            <span class="out-label">원외</span><span class="badge b-out">BONV</span>
+            <button class="btn-copy-inline" onclick="doCopy('BONV',this)">복사</button>
+            <span style="color:var(--muted);font-size:0.78rem;"> 본비바 정 150mg <span style="color:#a0aec0;">645406240</span></span>
+          </div>
+        </div>
+        <button class="btn-copy" onclick="copyCode(this,'7BONV')">📋 코드 복사</button>
+      </div>
+      <div class="code-card">
+        <div class="cc-code" style="display:flex;align-items:center;gap:8px;">7ZOLED<button class="btn-copy-inline" style="font-size:0.7rem;padding:2px 8px;" onclick="doCopy('7ZOLED',this)">복사</button></div>
+        <div class="cc-name">대웅 졸레드론산 주사액 5mg/100mL</div>
+        <div class="cc-ingr">zoledronic acid monohydrate<br>5㎎ as zoledronic acid anhydrous / 100mL</div>
+        <div class="cc-meta"><span class="cc-ins">급여</span><span class="cc-form">bt · IV 연 1회</span></div>
+        <div class="cc-note">⚠️ 필요시 구입 의약품 (2차 약심 삭제)</div>
+        <button class="btn-copy" onclick="copyCode(this,'7ZOLED')">📋 코드 복사</button>
+      </div>
+      <div class="code-card">
+        <div class="cc-code" style="display:flex;align-items:center;gap:8px;">7FORS<button class="btn-copy-inline" style="font-size:0.7rem;padding:2px 8px;" onclick="doCopy('7FORS',this)">복사</button></div>
+        <div class="cc-name">포스테오 주</div>
+        <div class="cc-ingr">teriparatide 250㎍/㎖</div>
+        <div class="cc-meta"><span class="cc-ins">급여</span><span class="cc-form">pen · SC 매일 × 최대 24개월</span></div>
+        <div class="cc-note">📦 <b>처방 단위: 월 1회</b> — 펜 1개 ≈ 28일분. 매일 자가주사이나 처방은 한 달에 한 번</div>
+        <button class="btn-copy" onclick="copyCode(this,'7FORS')">📋 코드 복사</button>
+      </div>
+      <div class="code-card">
+        <div class="cc-code" style="display:flex;align-items:center;gap:8px;">7EVEN<button class="btn-copy-inline" style="font-size:0.7rem;padding:2px 8px;" onclick="doCopy('7EVEN',this)">복사</button></div>
+        <div class="cc-name">이베니티 주 프리필드시린지</div>
+        <div class="cc-ingr">romosozumab 105㎎</div>
+        <div class="cc-meta"><span class="cc-ins">급여</span><span class="cc-form">syringe · SC 월1회 × 12개월</span></div>
+        <button class="btn-copy" onclick="copyCode(this,'7EVEN')">📋 코드 복사</button>
+      </div>
+      <div class="code-card">
+        <div class="cc-code" style="display:flex;align-items:center;gap:8px;">7PROLIA<button class="btn-copy-inline" style="font-size:0.7rem;padding:2px 8px;" onclick="doCopy('7PROLIA',this)">복사</button></div>
+        <div class="cc-name">프롤리아 프리필드시린지</div>
+        <div class="cc-ingr">denosumab 60㎎</div>
+        <div class="cc-meta"><span class="cc-ins">급여</span><span class="cc-form">syringe · SC 6개월 1회</span></div>
+        <button class="btn-copy" onclick="copyCode(this,'7PROLIA')">📋 코드 복사</button>
+      </div>
+    </div>
+
+    <div style="margin: 24px 0 6px;">
+      <div style="background: linear-gradient(135deg, #fffbeb, #fef3c7); border: 2px solid #f59e0b; border-radius: 12px; padding: 18px 20px;">
+        <div style="display:flex; align-items:center; gap:10px; margin-bottom:12px;">
+          <span style="font-size:1.3rem;">📢</span>
+          <div>
+            <span style="font-size:0.75rem; font-weight:700; background:#f59e0b; color:#fff; padding:2px 10px; border-radius:20px; letter-spacing:0.5px;">고시 변경</span>
+            <span style="font-size:0.75rem; color:#92400e; margin-left:8px; font-weight:600;">2026년 2월 1일 시행</span>
+          </div>
+        </div>
+        <div style="font-size:0.92rem; font-weight:700; color:#92400e; margin-bottom:10px;">
+          칼슘제 및 비타민 D 포함 복합경구제 급여 기준 확대
+          <span style="font-size:0.8rem; font-weight:400; color:#b45309; margin-left:6px;">(디카맥스 등)</span>
+        </div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+          <div style="background:rgba(255,255,255,0.6); border-radius:8px; padding:12px 14px; border:1px solid #fcd34d;">
+            <div style="font-size:0.75rem; font-weight:700; color:#b45309; text-transform:uppercase; letter-spacing:0.4px; margin-bottom:6px;">✅ 급여 대상 (신설)</div>
+            <ol style="padding-left:16px; margin:0; font-size:0.83rem; color:#78350f; line-height:1.7;">
+              <li><b>골다공증치료제·비타민제·폐경기증후군</b><br>필수경구약제(만성신부전증 환자)</li>
+              <li><b>갑상선전절제술 등</b>으로 인한 부갑상선기능장애</li>
+            </ol>
+          </div>
+          <div style="background:rgba(255,255,255,0.6); border-radius:8px; padding:12px 14px; border:1px solid #fcd34d;">
+            <div style="font-size:0.75rem; font-weight:700; color:#b45309; text-transform:uppercase; letter-spacing:0.4px; margin-bottom:6px;">📋 BMD 필요 여부</div>
+            <div style="font-size:0.83rem; color:#78350f; line-height:1.8;">
+              <div style="margin-bottom:4px;">
+                <span style="display:inline-block; background:#fee2e2; color:#991b1b; font-size:0.72rem; font-weight:700; padding:1px 7px; border-radius:6px; margin-right:5px;">BMD 필요</span>
+                골다공증치료제 목적<br>
+                <span style="font-size:0.78rem; color:#92400e;">→ 기존과 동일, T-score <b>−1.0 이상</b> 필수</span>
+              </div>
+              <div>
+                <span style="display:inline-block; background:#d1fae5; color:#065f46; font-size:0.72rem; font-weight:700; padding:1px 7px; border-radius:6px; margin-right:5px;">BMD 불필요</span>
+                비타민제·폐경기·만성신부전·부갑상선기능장애<br>
+                <span style="font-size:0.78rem; color:#92400e;">→ 해당 상병만 있으면 급여 인정</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div style="margin-top:10px; font-size:0.78rem; color:#a16207; border-top:1px dashed #fcd34d; padding-top:8px;">
+          ⚠️ 기존에는 골다공증 치료제 일반 원칙에 따라 T-score −1.0 이상 시에만 급여 인정이었으나, 2026년 2월 1일부터 상기 목적에 한해 BMD 기준 없이 상병만으로 급여 가능.
+        </div>
+      </div>
+    </div>
+
+    <div class="code-group-title">비타민 D / 칼슘 (Vitamin D & Calcium)</div>
+    <div class="code-grid">
+      <div class="code-card">
+        <div class="cc-code" style="display:flex;align-items:center;gap:8px;">DMAC1<button class="btn-copy-inline" style="font-size:0.7rem;padding:2px 8px;" onclick="doCopy('DMAC1',this)">복사</button></div>
+        <div class="cc-name">디맥 정 1000IU</div>
+        <div class="cc-ingr">cholecalciferol (Vit D3) 1,000IU<br>concentrated granule 10㎎</div>
+        <div class="cc-meta">
+          <span style="font-size:0.72rem;font-weight:700;padding:2px 8px;border-radius:8px;background:#f3f4f6;color:#374151;">비급여</span>
+          <span class="cc-form">tab · 경구 매일</span>
+        </div>
+        <div class="cc-note">골다공증 치료 중 Vit D 단독 보충</div>
+        <button class="btn-copy" onclick="copyCode(this,'DMAC1')">📋 코드 복사</button>
+      </div>
+      <div class="code-card">
+        <div class="cc-code" style="display:flex;align-items:center;gap:8px;">CALDP<button class="btn-copy-inline" style="font-size:0.7rem;padding:2px 8px;" onclick="doCopy('CALDP',this)">복사</button></div>
+        <div class="cc-name">칼디플러스 정</div>
+        <div class="cc-ingr">calcium citrate hydrate 750㎎ (158.1㎎ as Ca)<br>+ cholecalciferol granule 4㎎ (400IU as Vit D3)</div>
+        <div class="cc-meta">
+          <span class="cc-ins">급여</span>
+          <span class="cc-form">tab · 경구 매일</span>
+        </div>
+        <div class="cc-note">칼슘 + Vit D3 복합제</div>
+        <button class="btn-copy" onclick="copyCode(this,'CALDP')">📋 코드 복사</button>
+      </div>
+      <div class="code-card">
+        <div class="cc-code" style="display:flex;align-items:center;gap:8px;">7VDA<button class="btn-copy-inline" style="font-size:0.7rem;padding:2px 8px;" onclick="doCopy('7VDA',this)">복사</button></div>
+        <div class="cc-name">비타디본 주 1mL</div>
+        <div class="cc-ingr">cholecalciferol 5㎎ (200,000IU)/㎖</div>
+        <div class="cc-meta">
+          <span style="font-size:0.72rem;font-weight:700;padding:2px 8px;border-radius:8px;background:#f3f4f6;color:#374151;">비급여</span>
+          <span class="cc-form">amp · IM 3개월 1회</span>
+        </div>
+        <div class="cc-note">⚡ 200,000IU 고용량 — <b>3개월마다 1회</b> 근주 (경구 복약 순응도 불량 시)</div>
+        <button class="btn-copy" onclick="copyCode(this,'7VDA')">📋 코드 복사</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 요약 테이블 -->
+  <div class="card">
+    <div class="card-title"><span>📊</span> 전체 요약 비교표</div>
+    <div style="overflow-x:auto;">
+      <table class="drug-table">
+        <thead>
+          <tr><th>원내코드</th><th>약품명</th><th>성분명</th><th>투여경로</th><th>용법</th><th>급여</th><th>남성처방</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="code-inline-wrap"><span class="badge b-code">BONPL</span><button class="btn-copy-inline" onclick="doCopy('BONPL',this)">복사</button></span></td>
+            <td>본필 정 70mg</td><td>alendronate 70㎎</td><td>경구</td><td>주 1회</td>
+            <td><span class="badge b-both">급여</span></td>
+          <td style="text-align:center;"><span style="display:inline-block;padding:2px 8px;border-radius:8px;font-size:0.72rem;font-weight:700;background:#d1fae5;color:#065f46;">✓ 가능</span></td></tr>
+          <tr style="background:#f5f0ff;">
+            <td><span class="code-inline-wrap"><span class="out-label">원외</span><span class="badge b-out">FMXP</span><button class="btn-copy-inline" onclick="doCopy('FMXP',this)">복사</button></span></td>
+            <td>포사맥스 플러스 정</td><td>alendronate + VitD</td><td>경구</td><td>주 1회</td>
+            <td><span class="badge b-both">급여</span></td>
+          <td style="text-align:center;"><span style="display:inline-block;padding:2px 8px;border-radius:8px;font-size:0.72rem;font-weight:700;background:#d1fae5;color:#065f46;">✓ 가능</span></td></tr>
+          <tr style="background:#f5f0ff;">
+            <td><span class="code-inline-wrap"><span class="out-label">원외</span><span class="badge b-out">BOSERP</span><button class="btn-copy-inline" onclick="doCopy('BOSERP',this)">복사</button></span></td>
+            <td>본세론 플러스 정</td><td>alendronate + VitD</td><td>경구</td><td>주 1회</td>
+            <td><span class="badge b-both">급여</span></td>
+          <td style="text-align:center;"><span style="display:inline-block;padding:2px 8px;border-radius:8px;font-size:0.72rem;font-weight:700;background:#d1fae5;color:#065f46;">✓ 가능</span></td></tr>
+          <tr>
+            <td><span class="code-inline-wrap"><span class="badge b-code">RAXD</span><button class="btn-copy-inline" onclick="doCopy('RAXD',this)">복사</button></span></td>
+            <td>라본 디 캡슐</td><td>raloxifene 60㎎ + VitD3</td><td>경구</td><td>매일</td>
+            <td><span class="badge b-both">급여</span></td>
+          <td style="text-align:center;"><span style="display:inline-block;padding:2px 8px;border-radius:8px;font-size:0.72rem;font-weight:700;background:#fee2e2;color:#991b1b;">⛔ 불가</span></td></tr>
+          <tr>
+            <td><span class="code-inline-wrap"><span class="badge b-code">7BONV</span><button class="btn-copy-inline" onclick="doCopy('7BONV',this)">복사</button></span></td>
+            <td>본비바 주 3mg</td><td>ibandronate 3㎎</td><td>IV</td><td>분기 1회</td>
+            <td><span class="badge b-both">급여</span></td>
+          <td style="text-align:center;"><span style="display:inline-block;padding:2px 8px;border-radius:8px;font-size:0.72rem;font-weight:700;background:#fee2e2;color:#991b1b;">⛔ 불가</span></td></tr>
+          <tr style="background:#f5f0ff;">
+            <td><span class="code-inline-wrap"><span class="out-label">원외</span><span class="badge b-out">BONV</span><button class="btn-copy-inline" onclick="doCopy('BONV',this)">복사</button></span></td>
+            <td>본비바 정 150mg</td><td>ibandronate 150㎎ (경구)</td><td>경구</td><td>월 1회</td>
+            <td><span class="badge b-both">급여</span></td>
+          <td style="text-align:center;"><span style="display:inline-block;padding:2px 8px;border-radius:8px;font-size:0.72rem;font-weight:700;background:#fee2e2;color:#991b1b;">⛔ 불가</span></td></tr>
+          <tr>
+            <td><span class="code-inline-wrap"><span class="badge b-code">7ZOLED</span><button class="btn-copy-inline" onclick="doCopy('7ZOLED',this)">복사</button></span></td>
+            <td>졸레드론산 5mg/100mL</td><td>zoledronic acid 5㎎</td><td>IV</td><td>연 1회</td>
+            <td><span class="badge b-caution">급여(필요시)</span></td>
+          <td style="text-align:center;"><span style="display:inline-block;padding:2px 8px;border-radius:8px;font-size:0.72rem;font-weight:700;background:#d1fae5;color:#065f46;">✓ 가능</span></td></tr>
+          <tr>
+            <td><span class="code-inline-wrap"><span class="badge b-code">7FORS</span><button class="btn-copy-inline" onclick="doCopy('7FORS',this)">복사</button></span></td>
+            <td>포스테오 주</td><td>teriparatide 250㎍/㎖</td><td>SC</td><td>매일 × 24개월</td>
+            <td><span class="badge b-both">급여</span></td>
+          <td style="text-align:center;"><span style="display:inline-block;padding:2px 8px;border-radius:8px;font-size:0.72rem;font-weight:700;background:#d1fae5;color:#065f46;">✓ 가능</span></td></tr>
+          <tr>
+            <td><span class="code-inline-wrap"><span class="badge b-code">7EVEN</span><button class="btn-copy-inline" onclick="doCopy('7EVEN',this)">복사</button></span></td>
+            <td>이베니티 주</td><td>romosozumab 105㎎</td><td>SC</td><td>월1회 × 12개월</td>
+            <td><span class="badge b-both">급여</span></td>
+          <td style="text-align:center;"><span style="display:inline-block;padding:2px 8px;border-radius:8px;font-size:0.72rem;font-weight:700;background:#d1fae5;color:#065f46;">✓ 가능</span></td></tr>
+          <tr>
+            <td><span class="code-inline-wrap"><span class="badge b-code">7PROLIA</span><button class="btn-copy-inline" onclick="doCopy('7PROLIA',this)">복사</button></span></td>
+            <td>프롤리아 주</td><td>denosumab 60㎎</td><td>SC</td><td>6개월 1회</td>
+            <td><span class="badge b-both">급여</span></td>
+          <td style="text-align:center;"><span style="display:inline-block;padding:2px 8px;border-radius:8px;font-size:0.72rem;font-weight:700;background:#d1fae5;color:#065f46;">✓ 가능</span></td></tr>
+          <tr style="background:#fefce8;">
+            <td><span class="code-inline-wrap"><span class="badge b-code">DMAC1</span><button class="btn-copy-inline" onclick="doCopy('DMAC1',this)">복사</button></span></td>
+            <td>디맥 정 1000IU</td><td>cholecalciferol 1,000IU</td><td>경구</td><td>매일</td>
+            <td><span class="badge b-no">비급여</span></td>
+          <td style="text-align:center;"><span style="display:inline-block;padding:2px 8px;border-radius:8px;font-size:0.72rem;font-weight:700;background:#d1fae5;color:#065f46;">✓ 가능</span></td></tr>
+          <tr style="background:#fefce8;">
+            <td><span class="code-inline-wrap"><span class="badge b-code">CALDP</span><button class="btn-copy-inline" onclick="doCopy('CALDP',this)">복사</button></span></td>
+            <td>칼디플러스 정</td><td>Ca citrate 750㎎ (158.1㎎ as Ca) + VitD3 400IU</td><td>경구</td><td>매일</td>
+            <td><span class="badge b-both">급여</span></td>
+          <td style="text-align:center;"><span style="display:inline-block;padding:2px 8px;border-radius:8px;font-size:0.72rem;font-weight:700;background:#d1fae5;color:#065f46;">✓ 가능</span></td></tr>
+          <tr style="background:#fefce8;">
+            <td><span class="code-inline-wrap"><span class="badge b-code">7VDA</span><button class="btn-copy-inline" onclick="doCopy('7VDA',this)">복사</button></span></td>
+            <td>비타디본 주 1mL</td><td>cholecalciferol 200,000IU/㎖</td><td>IM</td><td><b>3개월 1회</b></td>
+            <td><span class="badge b-no">비급여</span></td>
+          <td style="text-align:center;"><span style="display:inline-block;padding:2px 8px;border-radius:8px;font-size:0.72rem;font-weight:700;background:#d1fae5;color:#065f46;">✓ 가능</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div><!-- /tab-codes -->
+
+<!-- ── 탭 3: 투여주기/용법 ── -->
+<div id="tab-schedule" class="tab-panel">
+  <div class="card">
+    <div class="card-title"><span>📆</span> 투여 간격별 약제 정렬</div>
+    <p style="font-size:0.85rem;color:var(--muted);margin-bottom:10px;">투여 간격 기준으로 정렬되며, 각 컬럼 헤더 클릭 시 오름/내림차순 전환됩니다.</p>
+    <div style="display:flex;gap:14px;flex-wrap:wrap;margin-bottom:16px;font-size:0.8rem;align-items:center;">
+      <span><span class="badge b-code">CODE</span> 원내 처방코드</span>
+      <span><span class="out-label">원외</span><span class="badge b-out">CODE</span> 원외 처방코드 (원내 재고 아님)</span>
+    </div>
+
+    <!-- 필터 버튼 -->
+    <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px;" id="intervalFilters">
+      <button class="sched-filter active" onclick="filterInterval('all',this)">전체</button>
+      <button class="sched-filter" onclick="filterInterval('매일',this)">매일</button>
+      <button class="sched-filter" onclick="filterInterval('주1회',this)">주 1회</button>
+      <button class="sched-filter" onclick="filterInterval('월1회',this)">월 1회</button>
+      <button class="sched-filter" onclick="filterInterval('분기1회',this)">분기 1회</button>
+      <button class="sched-filter" onclick="filterInterval('6개월',this)">6개월 1회</button>
+      <button class="sched-filter" onclick="filterInterval('연1회',this)">연 1회</button>
+      <button class="sched-filter" onclick="filterInterval('3개월',this)">3개월 1회 (VitD)</button>
+    </div>
+
+    <div style="overflow-x:auto;">
+      <table class="drug-table" id="schedTable">
+        <thead>
+          <tr>
+            <th class="sortable" onclick="sortSched('interval_order')" style="cursor:pointer;">투여 간격 ↕</th>
+            <th class="sortable" onclick="sortSched('name')" style="cursor:pointer;">약제명 ↕</th>
+            <th>원내코드</th>
+            <th>투여경로</th>
+            <th>용법 상세</th>
+            <th class="sortable" onclick="sortSched('max_dur')" style="cursor:pointer;">최대 사용기간 ↕</th>
+            <th>남성처방</th>
+            <th>급여</th>
+            <th>주요 특이사항</th>
+          </tr>
+        </thead>
+        <tbody id="schedBody"></tbody>
+      </table>
+    </div>
+  </div>
+</div><!-- /tab-schedule -->
+</div><!-- /main -->
+
+<script>
+/* ── 탭 전환 ── */
+function switchTab(tab, btn) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + tab).classList.add('active');
+  btn.classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+/* ── 복사 공통 함수 ── */
+function doCopy(code, btn) {
+  navigator.clipboard.writeText(code).catch(() => {
+    const ta = document.createElement('textarea');
+    ta.value = code; document.body.appendChild(ta); ta.select();
+    document.execCommand('copy'); document.body.removeChild(ta);
+  });
+  btn.textContent = '✓'; btn.classList.add('copied');
+  setTimeout(() => { btn.textContent = '복사'; btn.classList.remove('copied'); }, 1500);
+}
+
+/* ── 카드용 복사 버튼 (기존) ── */
+function copyCode(btn, code) {
+  navigator.clipboard.writeText(code).catch(() => {
+    const ta = document.createElement('textarea');
+    ta.value = code; document.body.appendChild(ta); ta.select();
+    document.execCommand('copy'); document.body.removeChild(ta);
+  });
+  btn.textContent = '✓ 복사됨!';
+  setTimeout(() => btn.textContent = '📋 코드 복사', 1500);
+}
+
+/* ── 인라인 코드 배지 + 복사 버튼 ── */
+function codeBadge(code, isOut=false) {
+  const cls = isOut ? 'b-out' : 'b-code';
+  const pre = isOut ? '<span class="out-label">원외</span>' : '';
+  return `<span class="code-inline-wrap">${pre}` +
+    `<span class="badge ${cls}">${code}</span>` +
+    `<button class="btn-copy-inline" onclick="doCopy('${code}',this)">복사</button>` +
+    `</span>`;
+}
+
+/* ── 원내코드 데이터 ── */
+const CODES = {
+  '알렌드로네이트': { code:'BONPL', name:'본필 정 70mg',
+    outCodes:[
+      { code:'FMXP',  drugId:'073100290', name:'포사맥스 플러스 정' },
+      { code:'BOSERP',drugId:'648103790', name:'본세론 플러스 정' },
+    ]},
+  '랄록시펜':       { code:'RAXD',  name:'라본 디 캡슐' },
+  '이반드로네이트': { code:'7BONV',  name:'본비바 주 3mg',
+    outCodes:[
+      { code:'BONV',  drugId:'645406240', name:'본비바 정 150mg (경구·월1회)' },
+    ]},
+  '졸레드론산':     { code:'7ZOLED', name:'졸레드론산 주 5mg', note:'필요시 구입' },
+  '테리파라타이드': { code:'7FORS',  name:'포스테오 주' },
+  '로모소주맙':     { code:'7EVEN',  name:'이베니티 주' },
+  '데노수맙':       { code:'7PROLIA',name:'프롤리아 주' },
+  '콜레칼시페롤정': { code:'DMAC1', name:'디맥 정 1000IU' },
+  '칼슘+비타민D':   { code:'CALDP', name:'칼디플러스 정' },
+  '콜레칼시페롤주': { code:'7VDA',  name:'비타디본 주 1mL' },
+};
+
+/* ══════════════════════════════════════
+   탭 3 — 투여주기/용법 데이터 & 렌더링
+══════════════════════════════════════ */
+const SCHED_DATA = [
+  {
+    name:'테리파라타이드', code:'7FORS', brand:'포스테오 주',
+    route:'SC (피하주사)', interval:'매일', interval_key:'매일', interval_order:1,
+    regimen:'20㎍ 매일 자가주사',
+    max_dur:'24개월', max_dur_val:24,
+    male_ok:true, ins:'급여',
+    notes:'최대 24개월 이후 BP/데노수맙으로 반드시 전환. ONJ 위험 없음.',
+    pill_cls:'iv-daily'
+  },
+  {
+    name:'랄록시펜', code:'RAXD', brand:'라본 디 캡슐',
+    route:'경구', interval:'매일', interval_key:'매일', interval_order:1,
+    regimen:'raloxifene 60㎎ + VitD3 800IU 매일 경구',
+    max_dur:'제한 없음', max_dur_val:999,
+    male_ok:false, ins:'급여',
+    notes:'⛔ 남성 불가. 폐경 후 여성 전용 SERM. 혈전증(DVT) 주의.',
+    pill_cls:'iv-daily'
+  },
+  {
+    name:'콜레칼시페롤 정', code:'DMAC1', brand:'디맥 정 1000IU',
+    route:'경구', interval:'매일', interval_key:'매일', interval_order:1,
+    regimen:'VitD3 1,000IU 매일 경구',
+    max_dur:'제한 없음', max_dur_val:999,
+    male_ok:true, ins:'비급여',
+    notes:'단독 VitD 보충. 비급여.',
+    pill_cls:'iv-daily'
+  },
+  {
+    name:'칼슘+비타민D', code:'CALDP', brand:'칼디플러스 정',
+    route:'경구', interval:'매일', interval_key:'매일', interval_order:1,
+    regimen:'Ca citrate 750㎎ + VitD3 400IU 매일 경구',
+    max_dur:'제한 없음', max_dur_val:999,
+    male_ok:true, ins:'급여',
+    notes:'칼슘+VitD 복합제. 2026.02.01 급여기준 확대 적용.',
+    pill_cls:'iv-daily'
+  },
+  {
+    name:'알렌드로네이트', code:'BONPL', brand:'본필 정 70mg',
+    outCodes:[{code:'FMXP',name:'포사맥스 플러스 정'},{code:'BOSERP',name:'본세론 플러스 정'}],
+    route:'경구', interval:'주 1회', interval_key:'주1회', interval_order:2,
+    regimen:'70㎎ 매주 같은 요일 기상 직후 공복 복용, 30분 눕지 않음',
+    max_dur:'3~5년 후 재평가', max_dur_val:60,
+    male_ok:true, ins:'급여',
+    notes:'Drug Holiday 가능. 식도 자극 주의.',
+    pill_cls:'iv-weekly'
+  },
+  {
+    name:'로모소주맙', code:'7EVEN', brand:'이베니티 주',
+    route:'SC (피하주사)', interval:'월 1회', interval_key:'월1회', interval_order:3,
+    regimen:'romosozumab 210㎎ (105㎎ × 2부위) 매월 SC',
+    max_dur:'12개월 고정', max_dur_val:12,
+    male_ok:true, ins:'급여',
+    notes:'12개월 후 반드시 BP/데노수맙 전환. ⚠️ 심혈관 병력 1년 이내 금기.',
+    pill_cls:'iv-monthly'
+  },
+  {
+    name:'테리파라타이드', code:'7FORS', brand:'포스테오 주',
+    route:'SC (피하주사)', interval:'매일', interval_key:'매일', interval_order:1,
+    regimen:'teriparatide 20㎍ SC, 매일 자가주사 (펜 1개 ≈ 28일분, 처방은 월 1회)',
+    max_dur:'24개월', max_dur_val:24,
+    male_ok:true, ins:'급여',
+    notes:'📦 펜 1개 = 약 28일분 → 월 1회 처방. 매일 자가주사이나 처방 단위는 월 1회. 24개월 후 반드시 BP 또는 데노수맙으로 전환.',
+    pill_cls:'iv-daily',
+  },
+  {
+    name:'이반드로네이트(주사)', code:'7BONV', brand:'본비바 주 3mg',
+    route:'IV (정맥주사)', interval:'분기 1회', interval_key:'분기1회', interval_order:4,
+    regimen:'ibandronate 3㎎ IV, 15~30초 정맥주사, 3개월마다',
+    max_dur:'제한 없음(정기평가)', max_dur_val:999,
+    male_ok:false, ins:'급여',
+    notes:'⛔ 남성 불가. 대퇴골 골절 예방 근거 없음.',
+    pill_cls:'iv-quarter'
+  },
+  {
+    name:'이반드로네이트(경구)', code:'BONV', brand:'본비바 정 150mg',
+    isOut:true,
+    route:'경구', interval:'월 1회', interval_key:'월1회', interval_order:3,
+    regimen:'ibandronate 150㎎ 경구, 매월 같은 날 기상 직후 공복, 30분 눕지 않음',
+    max_dur:'제한 없음(정기평가)', max_dur_val:999,
+    male_ok:false, ins:'급여',
+    notes:'⛔ 남성 불가. 원외 처방. 대퇴골 골절 예방 근거 없음.',
+    pill_cls:'iv-monthly'
+  },
+  {
+    name:'콜레칼시페롤 주사', code:'7VDA', brand:'비타디본 주 1mL',
+    route:'IM (근육주사)', interval:'3개월 1회', interval_key:'3개월', interval_order:4,
+    regimen:'cholecalciferol 200,000IU IM, 3개월마다 1회',
+    max_dur:'제한 없음', max_dur_val:999,
+    male_ok:true, ins:'비급여',
+    notes:'경구 복약 순응도 불량 시 대안. 비급여.',
+    pill_cls:'iv-3month'
+  },
+  {
+    name:'데노수맙', code:'7PROLIA', brand:'프롤리아 주',
+    route:'SC (피하주사)', interval:'6개월 1회', interval_key:'6개월', interval_order:5,
+    regimen:'denosumab 60㎎ SC, 6개월마다 1회 (동일 날짜 유지 권장)',
+    max_dur:'제한 없음(휴지기 불가)', max_dur_val:999,
+    male_ok:true, ins:'급여',
+    notes:'중단 시 리바운드 골절 위험 → 반드시 BP로 전환. 신기능 무관 사용.',
+    pill_cls:'iv-half'
+  },
+  {
+    name:'졸레드론산', code:'7ZOLED', brand:'졸레드론산 주 5mg/100mL',
+    route:'IV (정맥주사)', interval:'연 1회', interval_key:'연1회', interval_order:6,
+    regimen:'zoledronic acid 5㎎/100mL IV, 15분 이상 천천히 정주, 매년 1회',
+    max_dur:'3~5년 후 재평가', max_dur_val:60,
+    male_ok:true, ins:'급여',
+    notes:'주사 후 발열·근육통(급성기 반응). 수화 충분히. 필요시 구입 의약품.',
+    pill_cls:'iv-annual'
+  },
+];
+
+let schedSortKey = 'interval_order';
+let schedSortAsc = true;
+let schedFilter  = 'all';
+
+function renderSched() {
+  let data = [...SCHED_DATA];
+
+  // 필터
+  if (schedFilter !== 'all') {
+    data = data.filter(d => d.interval_key === schedFilter);
+  }
+
+  // 정렬
+  data.sort((a, b) => {
+    let va = a[schedSortKey], vb = b[schedSortKey];
+    if (typeof va === 'string') va = va.toLowerCase(), vb = vb.toLowerCase();
+    if (va < vb) return schedSortAsc ? -1 : 1;
+    if (va > vb) return schedSortAsc ? 1 : -1;
+    return a.interval_order - b.interval_order;
+  });
+
+  const tbody = document.getElementById('schedBody');
+  tbody.innerHTML = data.map(d => {
+    const maleCell = d.male_ok
+      ? '<span class="badge b-both">✓ 가능</span>'
+      : '<span class="badge b-no">⛔ 불가</span>';
+    const insCell = d.ins === '급여'
+      ? '<span class="badge b-both">급여</span>'
+      : '<span class="badge b-no">비급여</span>';
+    const ci = d.isOut ? codeBadge(d.code, true) : codeBadge(d.code);
+    let outExtra = '';
+    if (d.outCodes) {
+      d.outCodes.forEach(o => {
+        outExtra += `<br>` + codeBadge(o.code, true) + ` <span style="font-size:0.75rem;color:var(--muted);">${o.name}</span>`;
+      });
+    }
+    return `<tr>
+      <td><span class="interval-pill ${d.pill_cls}">${d.interval}</span></td>
+      <td><div class="drug-name" style="font-size:0.88rem;">${d.name}</div><div class="drug-sub">${d.brand}${d.isOut?'<span class="out-label" style="margin-left:4px;">원외</span>':''}</div></td>
+      <td>${ci}${outExtra}</td>
+      <td style="font-size:0.82rem;">${d.route}</td>
+      <td style="font-size:0.82rem;line-height:1.6;">${d.regimen}</td>
+      <td style="font-size:0.82rem;font-weight:600;color:var(--primary);white-space:nowrap;">${d.max_dur}</td>
+      <td style="text-align:center;">${maleCell}</td>
+      <td style="text-align:center;">${insCell}</td>
+      <td style="font-size:0.8rem;color:var(--muted);line-height:1.5;">${d.rx_note ? `<span style="display:inline-block;margin-bottom:5px;padding:2px 8px;border-radius:8px;background:#dbeafe;color:#1d4ed8;font-size:0.72rem;font-weight:700;">📦 ${d.rx_note}</span><br>` : ''}${d.notes}</td>
+    </tr>`;
+  }).join('');
+}
+
+function sortSched(key) {
+  if (schedSortKey === key) schedSortAsc = !schedSortAsc;
+  else { schedSortKey = key; schedSortAsc = true; }
+  renderSched();
+}
+
+function filterInterval(key, btn) {
+  schedFilter = key;
+  document.querySelectorAll('.sched-filter').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderSched();
+}
+
+// 초기 렌더
+window.addEventListener('DOMContentLoaded', renderSched);
+function calcSpineAvg() {
+  const l1 = parseFloat(document.getElementById('ts_l1').value);
+  const l2 = parseFloat(document.getElementById('ts_l2').value);
+  const el = document.getElementById('spine_avg_display');
+  if (!isNaN(l1) && !isNaN(l2)) {
+    const avg = ((l1+l2)/2).toFixed(2);
+    el.textContent = avg;
+    el.style.color = parseFloat(avg) <= -2.5 ? '#d94f3d' : '#2f6fe0';
+  } else if (!isNaN(l1)) { el.textContent = l1.toFixed(1); el.style.color='#2f6fe0'; }
+  else if (!isNaN(l2))   { el.textContent = l2.toFixed(1); el.style.color='#2f6fe0'; }
+  else                   { el.textContent = '—'; el.style.color='#2f6fe0'; }
+}
+
+/* ── 원내코드 태그 생성 (원외 포함) ── */
+function codeRow(keys) {
+  return keys.filter(k => CODES[k]).map(k => {
+    const d = CODES[k];
+    const note = d.note ? ` <span style="color:var(--orange);font-size:0.75rem;">*${d.note}</span>` : '';
+    let html = codeBadge(d.code) + ` <span style="font-size:0.8rem;">${d.name}${note}</span>`;
+    if (d.outCodes) {
+      d.outCodes.forEach(o => {
+        html += `<br>` + codeBadge(o.code, true) + ` <span style="font-size:0.78rem;color:var(--muted);">${o.name}</span>`;
+      });
+    }
+    return html;
+  }).join('<br>');
+}
+
+/* ── 분석 ── */
+function analyze() {
+  const gender      = document.getElementById('gender').value;
+  const ts_l1       = parseFloat(document.getElementById('ts_l1').value);
+  const ts_l2       = parseFloat(document.getElementById('ts_l2').value);
+  const ts_femur    = parseFloat(document.getElementById('ts_femur').value);
+  const hasStroke   = document.getElementById('stroke').checked;
+  const hasDental   = document.getElementById('dental').checked;
+  const femurFocus  = document.getElementById('femur_focus').checked;
+  const hasFracture = document.getElementById('fracture').checked;
+  const hasRenal    = document.getElementById('renal').checked;
+  const hasBreast   = document.getElementById('breast').checked;
+
+  let spineAvg = NaN;
+  if (!isNaN(ts_l1) && !isNaN(ts_l2)) spineAvg = (ts_l1+ts_l2)/2;
+  else if (!isNaN(ts_l1)) spineAvg = ts_l1;
+  else if (!isNaN(ts_l2)) spineAvg = ts_l2;
+
+  const hasTscore = !isNaN(spineAvg) || !isNaN(ts_femur);
+  const lowestForIns = Math.min(isNaN(spineAvg)?0:spineAvg, isNaN(ts_femur)?0:ts_femur);
+  const meetsIns = hasTscore ? (lowestForIns <= -2.5 || hasFracture) : hasFracture;
+
+  /* 약제 데이터 */
+  const drugs = [
+    { name:'알렌드로네이트', sub:'본필 70mg · 경구 주1회',
+      route:'<span class="badge b-oral">경구</span>',
+      fracture:'<span class="badge b-spine">척추</span><span class="badge b-femur">대퇴골</span>',
+      pros:['1차 선택 약제, 풍부한 근거','경구 복용, 접근성 우수','ONJ 위험 낮음 (경구)','저렴한 약가'],
+      cons:['식도 자극 (복용 지침 엄격)','주 1회 복용 순응도 문제','3~5년 후 Drug Holiday 필요'],
+      renal: hasRenal?'<span class="badge b-no">금기(eGFR&lt;35)</span>':'사용 가능',
+      male_ok: true,
+      highlight:!hasStroke&&!hasRenal, stroke_ok:true, dental_ok:true },
+    { name:'졸레드론산', sub:'졸레드론산 주 5mg · 연1회 IV',
+      route:'<span class="badge b-iv">IV(연1회)</span>',
+      fracture:'<span class="badge b-spine">척추</span><span class="badge b-femur">대퇴골</span>',
+      pros:['연 1회 투여, 최고의 순응도','척추·대퇴골 모두 강력','뇌졸중 후 골절 예방 RCT 근거','<b>남성 골다공증 허가 · 급여 가능</b>'],
+      cons:['주사 후 발열·근육통 (급성기 반응)','신기능 저하 시 금기','원내 필요시 구입 의약품'],
+      renal: hasRenal?'<span class="badge b-no">금기(eGFR&lt;35)</span>':'사용 가능',
+      male_ok: true,
+      highlight:!hasStroke&&!hasRenal&&(femurFocus||hasFracture), stroke_ok:true, dental_ok:true },
+    { name:'이반드로네이트', sub:'본비바 주 3mg · 분기1회 IV',
+      route:'<span class="badge b-iv">IV(분기1회)</span>',
+      fracture:'<span class="badge b-spine">척추</span><span class="badge b-no">대퇴골 근거 제한</span>',
+      pros:['척추 골절 예방 효과','분기 1회 IV — 순응도 우수'],
+      cons:['대퇴골 골절 예방 RCT 근거 없음','대퇴골 중점 환자에 비권장','<b>⛔ 남성: 허가 외 사용 (급여 불가)</b> — 폐경 후 여성만 적응증'],
+      renal: hasRenal?'<span class="badge b-no">금기(eGFR&lt;35)</span>':'사용 가능',
+      male_ok: false,
+      highlight: gender==='female'&&!femurFocus&&!hasRenal, stroke_ok:true, dental_ok:true },
+    { name:'데노수맙', sub:'프롤리아 60mg · SC 6개월1회',
+      route:'<span class="badge b-sub">SC(6개월1회)</span>',
+      fracture:'<span class="badge b-spine">척추</span><span class="badge b-femur">대퇴골</span>',
+      pros:['신기능 제한 없이 사용 가능','척추·대퇴골 강력한 예방 효과','eGFR 무관 사용 가능','<b>남성 골다공증 허가 · 급여 가능</b>','<b>⭐ BP 실패 조건 없이 1차 급여 가능</b>'],
+      cons:['중단 시 리바운드 골절 위험 (반드시 BP 전환)','ONJ 위험 (저빈도)','치과 시술 전 주의'],
+      renal:'<span class="badge b-both">신기능 무관 사용 가능</span>',
+      tier:'<span class="badge b-tier2">1차 가능</span>',
+      male_ok: true,
+      highlight:true, stroke_ok:true, dental_ok:false },
+    { name:'로모소주맙', sub:'이베니티 주 · SC 월1회 × 12개월',
+      route:'<span class="badge b-sub">SC(월1회)</span>',
+      fracture:'<span class="badge b-spine">척추</span><span class="badge b-femur">대퇴골</span>',
+      pros:['골형성+골흡수 이중 작용','12개월 내 BMD 최대 증가','고위험 골절 초고위험군 최우선'],
+      cons:['<b>⛔ 2차 약제 — BP 1종 이상 실패/금기 필수</b>','<b>급여: 65세↑ 폐경여성 · T-score ≤−2.5 · 골절 2개↑</b>','1년 이내 심혈관 사건 금기 ⚠️','12개월 후 반드시 BP/데노수맙 전환'],
+      renal: hasRenal?'<span class="badge b-caution">중등도 신기능저하 모니터링</span>':'사용 가능',
+      tier:'<span class="badge b-tier3">2차 (BP 실패 후)</span>',
+      male_ok: true,
+      highlight:!hasStroke&&hasFracture, stroke_ok:false, dental_ok:true },
+    { name:'테리파라타이드', sub:'포스테오 주 · SC 매일 (처방 월 1회)',
+      route:'<span class="badge b-sub">SC(매일)</span>',
+      fracture:'<span class="badge b-spine">척추</span>',
+      pros:['골형성 촉진제 (유일한 PTH 유사체)','ONJ 위험 없음 (치과 선호)','중증 골다공증·다발골절 강력 근거','<b>남성 골다공증 허가 · 급여 가능</b>','펜 1개(28일분) → 처방은 월 1회로 편리'],
+      cons:['<b>⛔ 2차 약제 — BP 1종 이상으로 1년↑ 치료 후 골절 발생 또는 사용불가 시 급여</b>','<b>급여: 65세↑ · T-score ≤−2.5 · 골절 2개↑</b>','매일 자가주사 부담 (단, 처방은 월 1회)','최대 24개월 사용 제한','고가, 급여 기준 엄격'],
+      renal: hasRenal?'<span class="badge b-caution">중증 신기능저하 시 주의</span>':'사용 가능',
+      tier:'<span class="badge b-tier3">2차 (BP 1년 이상 실패 후)</span>',
+      male_ok: true,
+      highlight:hasDental||(hasFracture&&!hasStroke), stroke_ok:true, dental_ok:true },
+    { name:'랄록시펜', sub:'라본 디 캡슐 · 경구 매일',
+      route:'<span class="badge b-oral">경구(매일)</span>',
+      fracture:'<span class="badge b-spine">척추</span><span class="badge b-no">대퇴골 근거 없음</span>',
+      pros:['유방암 위험 감소 부가 효과','비비스포스포네이트, ONJ 없음'],
+      cons:['대퇴골 골절 예방 근거 없음','혈전증(DVT) 위험 증가','<b>⛔ 남성: 적응증 없음 (급여 불가)</b> — 폐경 후 여성 전용 SERM'],
+      renal:'사용 가능',
+      male_ok: false,
+      highlight:hasBreast&&gender==='female'&&!femurFocus, stroke_ok:true, dental_ok:true },
+  ];
+
+  /* 알림 */
+  let alertHtml = '';
+  if (gender === 'male') alertHtml += `<div class="alert alert-warn" style="border:2px solid var(--warn);"><span class="alert-icon">🚹</span><div><b>남성 환자 처방 제한 안내:</b><br>
+    ① <b>이반드로네이트(본비바 주 · 7BONV):</b> 폐경 후 여성만 적응증. 남성에게 허가사항 외 사용 → 급여 불가.<br>
+    ② <b>랄록시펜(라본 디 · RAXD):</b> SERM 계열로 남성 적응증 없음 → 급여 불가.<br>
+    <span style="font-size:0.85rem;color:#718096;">남성 주사제가 필요한 경우: <b>졸레드론산(7ZOLED)</b> 또는 <b>데노수맙(7PROLIA)</b> 선택</span>
+  </div></div>`;
+  if (hasStroke)   alertHtml += `<div class="alert alert-warn"><span class="alert-icon">🚫</span><div><b>이베니티(로모소주맙) 금기:</b> 1년 이내 뇌경색·심근경색 병력 → 심혈관 이상반응 위험.</div></div>`;
+  if (hasDental)   alertHtml += `<div class="alert alert-orange"><span class="alert-icon">🦷</span><div><b>ONJ 주의:</b> BP·데노수맙 사용 전 치과 검진 권장. <b>테리파라타이드·랄록시펜</b>은 ONJ 위험 없음.</div></div>`;
+  if (hasRenal)    alertHtml += `<div class="alert alert-warn"><span class="alert-icon">🧪</span><div><b>신기능 저하(eGFR &lt;35):</b> 비스포스포네이트 계열 전체 금기. <b>데노수맙(7PROLIA)</b>이 우선 선택.</div></div>`;
+  if (femurFocus)  alertHtml += `<div class="alert alert-info"><span class="alert-icon">🦴</span><div><b>대퇴골 중점 전략:</b> 이반드로네이트·랄록시펜은 대퇴골 골절 예방 RCT 근거 없어 권장하지 않습니다.</div></div>`;
+  if (!hasTscore)  alertHtml += `<div class="alert alert-info"><span class="alert-icon">📌</span><div><b>T-score 미입력:</b> 임상 조건만으로 분석합니다. 급여 판정 정확도를 위해 T-score 입력을 권장합니다.</div></div>`;
+  if (!alertHtml)  alertHtml  = `<div class="alert alert-ok"><span class="alert-icon">✅</span><div>특이 금기 사항 없음. 아래 비교표를 참고하여 적합 약제를 선택하세요.</div></div>`;
+
+  /* 조건별 권장 */
+  const conds = [];
+  if (gender === 'male') conds.push({ label:'🚹 남성 처방 가능 약제',
+    drugs:'알렌드로네이트 · 졸레드론산 · 데노수맙 · 로모소주맙 · 테리파라타이드',
+    keys:['알렌드로네이트','졸레드론산','데노수맙','로모소주맙','테리파라타이드'],
+    reason:'이반드로네이트(본비바)와 랄록시펜은 폐경 후 여성만 허가된 약제로 남성에게 급여 적용 불가. 위 약제 중 임상 조건에 맞게 선택.',
+    cls:'highlight' });
+  conds.push({ label:'🟢 1차 — BP (비스포스포네이트)',
+    drugs: hasRenal?'데노수맙 (프롤리아) ← 신기능 저하 시 1차':'알렌드로네이트 70mg (주1회) 또는 졸레드론산 (연1회)',
+    keys:  hasRenal?['데노수맙']:['알렌드로네이트','졸레드론산'],
+    reason: hasRenal?'신기능 저하(eGFR<35) 시 비스포스포네이트 금기 → 데노수맙 1차 선택.':'가장 강력한 근거, 척추+대퇴골 모두 예방. 순응도 불량 시 졸레드론산(연1회) 우선.',
+    cls:'highlight' });
+  conds.push({ label:'🔵 1차 대안 — 데노수맙 (BP 실패 불필요)',
+    drugs:'프롤리아 (데노수맙) 6개월 1회 SC',
+    keys:['데노수맙'],
+    reason:'BP 실패 조건 없이 T-score ≤ −2.5만으로 급여 가능. 신기능 무관. BP 다음 강화 또는 대안으로 선택 가능. 중단 시 반드시 BP 전환.',
+    cls:'highlight' });
+  if (femurFocus) conds.push({ label:'🦴 대퇴골 골밀도 중점',
+    drugs: hasRenal?'데노수맙':'알렌드로네이트 또는 졸레드론산',
+    keys:  hasRenal?['데노수맙']:['알렌드로네이트','졸레드론산'],
+    reason:'이반드로네이트·랄록시펜은 대퇴골 골절 예방 RCT 근거 없음.', cls:'highlight' });
+  if (hasFracture) conds.push({ label:'⚠️ 골절 과거력 / 고위험군 — 순차치료',
+    drugs: hasStroke
+      ? '① 데노수맙 (프롤리아) 우선 → ② 포스테오(BP 1년↑ 실패 확인 후)'
+      : '① 데노수맙 (프롤리아) 우선 → ② 이베니티(BP 실패 + 골절 2개↑ 확인 후)',
+    keys: hasStroke ? ['데노수맙','테리파라타이드'] : ['데노수맙','로모소주맙'],
+    reason: hasStroke
+      ? '심혈관 병력으로 이베니티 금기. 데노수맙 먼저 시작 → BP 1년 이상 실패 확인 후 포스테오 고려.'
+      : '데노수맙은 BP 실패 없이 바로 급여 가능. 골절 2개↑ + BP 실패 확인 시 이베니티로 상향 가능. ⚠️ 프롤리아→포스테오 순서는 대퇴골 골밀도 감소 우려로 비권장.',
+    cls: hasStroke?'caution':'highlight' });
+  if (hasStroke) conds.push({ label:'🚫 심혈관 병력 (1년 이내)',
+    drugs:'이베니티 금기 → BP 계열 또는 테리파라타이드',
+    keys:['알렌드로네이트','졸레드론산','테리파라타이드'],
+    reason:'로모소주맙은 뇌경색·심근경색 1년 이내 절대 금기.', cls:'caution' });
+  if (hasDental) conds.push({ label:'🦷 치과 질환 / ONJ 우려',
+    drugs: gender==='male'?'테리파라타이드(포스테오)':'테리파라타이드(포스테오) 우선, 또는 랄록시펜(여성)',
+    keys: gender==='male'?['테리파라타이드']:['테리파라타이드','랄록시펜'],
+    reason:'BP·데노수맙은 ONJ 위험. 테리파라타이드는 ONJ 위험 없음.', cls:'highlight' });
+  if (hasRenal) conds.push({ label:'🧪 신기능 저하 (eGFR <35)',
+    drugs:'데노수맙 (프롤리아) — 신기능 무관',
+    keys:['데노수맙'],
+    reason:'비스포스포네이트 계열 전체 금기. 데노수맙은 신기능에 영향 없음.', cls:'highlight' });
+  if (hasBreast&&gender==='female') conds.push({ label:'🎗️ 유방암 / 에스트로겐 금기',
+    drugs:'랄록시펜(SERM) 우선, 또는 BP 계열',
+    keys:['랄록시펜'],
+    reason:'랄록시펜은 유방암 위험 감소 부가 효과. 대퇴골 저하 시 BP 병용.', cls:'highlight' });
+  conds.push({ label:'📅 복약 순응도 중시',
+    drugs:'졸레드론산 (연 1회 주사)',
+    keys:['졸레드론산'],
+    reason:'경구 BP의 복용 제약이 어려운 환자에게 연 1회 IV가 가장 편리.', cls:'' });
+
+  let condHtml = '<div class="cond-grid">';
+  conds.forEach(c => {
+    condHtml += `<div class="cond-item ${c.cls}">
+      <div class="cond-label">${c.label}</div>
+      <div class="cond-drugs">${c.drugs}</div>
+      <div class="cond-reason">${c.reason}</div>
+      <div class="cond-codes">🏷️ 원내코드:<br>${codeRow(c.keys)}</div>
+    </div>`;
+  });
+  condHtml += '</div>';
+
+  /* 약제 테이블 */
+  let tbl = `<thead><tr>
+    <th>원내코드</th><th>약제</th><th>투여경로</th><th>골절 예방 근거</th>
+    <th>장점</th><th>단점 / 주의</th><th>신기능</th><th>남성 처방</th>
+  </tr></thead><tbody>`;
+  drugs.forEach(d => {
+    const ci = CODES[d.name];
+    const isMaleContra = gender === 'male' && !d.male_ok;
+    const isContra = (!d.stroke_ok&&hasStroke) || isMaleContra;
+    const rs = isContra
+      ? 'background:#fff0f0; opacity:0.55;'
+      : d.highlight ? 'background:#f0fff4;outline:2px solid #86efac;' : '';
+    const hl = d.highlight&&!isContra?'<span class="badge b-both" style="margin-bottom:4px;">✓ 권장</span><br>':'';
+    const ct = isContra?`<span class="badge b-no">${isMaleContra?'남성 금기':'금기'}</span>`:'';
+    let cc = ci ? codeBadge(ci.code) : '—';
+    if (ci && ci.outCodes) {
+      ci.outCodes.forEach(o => { cc += `<br>` + codeBadge(o.code, true) + `<br><span style="font-size:0.72rem;color:var(--muted);">${o.name}</span>`; });
+    }
+    const maleCell = d.male_ok
+      ? '<span class="badge b-both">✓ 가능</span>'
+      : '<span class="badge b-no">⛔ 불가</span><br><span style="font-size:0.72rem;color:#991b1b;">허가 외 · 급여불가</span>';
+    tbl += `<tr style="${rs}">
+      <td>${cc}</td>
+      <td><div class="drug-name">${hl}${ct}${d.name}</div><div class="drug-sub">${d.sub}</div>${d.tier?`<div style="margin-top:4px;">${d.tier}</div>`:''}</td>
+      <td>${d.route}</td><td>${d.fracture}</td>
+      <td class="pros"><ul class="pc">${d.pros.map(p=>`<li>${p}</li>`).join('')}</ul></td>
+      <td class="cons"><ul class="pc">${d.cons.map(c=>`<li>${c}</li>`).join('')}</ul></td>
+      <td style="font-size:0.82rem;">${d.renal}</td>
+      <td style="text-align:center;">${maleCell}</td>
+    </tr>`;
+  });
+  tbl += '</tbody>';
+
+  /* 급여 판정 */
+  const sp = isNaN(spineAvg)?'미입력':spineAvg.toFixed(2);
+  const fm = isNaN(ts_femur)?'미입력':ts_femur.toFixed(1);
+  let insHtml = `<div class="ins-box">
+    <div class="ins-title">📌 T-score 요약</div>
+    <div class="ins-row"><span class="ins-key">척추 평균 T-score</span><span>${sp}</span></div>
+    <div class="ins-row"><span class="ins-key">대퇴골 최저 T-score</span><span>${fm}</span></div>
+    <div class="ins-row"><span class="ins-key">골절 과거력</span><span>${hasFracture?'있음':'없음'}</span></div>
+  </div>`;
+  if (!hasTscore&&!hasFracture) {
+    insHtml += `<div class="alert alert-orange" style="margin-top:12px;"><span class="alert-icon">ℹ️</span><div>T-score 미입력 — 급여 판정을 위해 척추 또는 대퇴골 T-score를 입력해 주세요.</div></div>`;
+  } else if (meetsIns) {
+    insHtml += `<div class="alert alert-ok" style="margin-top:12px;"><span class="alert-icon">✅</span><div><b>일반 급여 인정 대상 (BP / 데노수맙).</b> 1년 투여 후 T-score ≤ −2.5 유지 시 급여 연장.<br><small>* 척추: 평균 T-score ≤ −2.5 / 대퇴골: 최저치(Ward's triangle 제외) ≤ −2.5</small></div></div>`;
+    insHtml += `<div class="alert alert-info" style="margin-top:8px;"><span class="alert-icon">📋</span><div>
+      <b>포스테오 · 이베니티 2차 급여 조건 (추가 확인 필요)</b><br>
+      <table style="font-size:0.82rem;width:100%;margin-top:6px;border-collapse:collapse;">
+        <tr style="background:#e0f0ff;"><th style="padding:5px 8px;text-align:left;">조건</th><th style="padding:5px 8px;text-align:left;">포스테오</th><th style="padding:5px 8px;text-align:left;">이베니티</th></tr>
+        <tr style="border-bottom:1px solid #ddd;"><td style="padding:5px 8px;">기저 조건</td><td style="padding:5px 8px;">BP <b>1종↑ · 1년↑ 치료 후 골절</b> 또는 사용불가</td><td style="padding:5px 8px;">BP <b>1종↑ 효과 없거나</b> 사용불가</td></tr>
+        <tr style="border-bottom:1px solid #ddd;"><td style="padding:5px 8px;">연령</td><td style="padding:5px 8px;">65세 이상</td><td style="padding:5px 8px;">65세 이상 폐경 후 여성</td></tr>
+        <tr style="border-bottom:1px solid #ddd;"><td style="padding:5px 8px;">T-score</td><td style="padding:5px 8px;">≤ −2.5</td><td style="padding:5px 8px;">≤ −2.5</td></tr>
+        <tr><td style="padding:5px 8px;">골절</td><td style="padding:5px 8px;color:#991b1b;font-weight:700;">골다공증성 골절 2개↑</td><td style="padding:5px 8px;color:#991b1b;font-weight:700;">골다공증성 골절 2개↑</td></tr>
+      </table>
+    </div></div>`;
+  } else {
+    insHtml += `<div class="alert alert-orange" style="margin-top:12px;"><span class="alert-icon">⚠️</span><div><b>현재 기준 비급여 가능성.</b> Osteopenia 단계의 경우 골절 동반 시 급여 인정 검토 가능합니다.</div></div>`;
+  }
+
+  /* 치료 가이드라인 — 순차치료 순서 반영 */
+  const guides = [
+    { drug:'① 1차 — 비스포스포네이트 (BP)', desc:'알렌드로네이트·졸레드론산·이반드로네이트. 3~5년 후 골절위험 재평가, 저위험 시 Drug Holiday 가능. <b>포스테오·이베니티 급여의 전제 조건.</b>' },
+    { drug:'② 1차 대안 — 프롤리아 (7PROLIA)', desc:'BP 실패 없이 T-score ≤ −2.5만으로 급여 가능. 휴지기 없음. <b>중단 시 리바운드 골소실 → 반드시 BP 전환 필수.</b> ⚠️ 프롤리아 후 포스테오 전환은 비권장(대퇴골 골밀도 감소).' },
+    { drug:'③ 2차 — 포스테오 (7FORS)', desc:'BP 1종 이상으로 <b>1년 이상 치료 후 새 골절 발생</b> 또는 사용불가 시 급여. 조건: 65세↑ · T-score ≤−2.5 · 골절 2개↑. 최대 24개월, 종료 후 반드시 프롤리아 또는 BP 전환. <b>포스테오→프롤리아 순서 권장.</b>' },
+    { drug:'③ 2차 — 이베니티 (7EVEN)', desc:'BP 1종 이상 효과 없거나 사용불가 시 급여. 조건: 65세↑ 폐경여성 · T-score ≤−2.5 · 골절 2개↑. <b>심혈관 사건 1년 이내 절대 금기.</b> 12개월 후 반드시 BP/프롤리아 전환.' },
+  ];
+  const guideHtml = guides.map((g,i)=>`<div class="g-item" style="border-left:3px solid var(--accent);"><div class="g-drug">💊 ${g.drug}</div><div class="g-desc">${g.desc}</div></div>`).join('');
+
+  document.getElementById('alertContent').innerHTML = alertHtml;
+  document.getElementById('conditionContent').innerHTML = condHtml;
+  document.getElementById('drugTable').innerHTML = tbl;
+  document.getElementById('insuranceContent').innerHTML = insHtml;
+  document.getElementById('guidelineContent').innerHTML = guideHtml;
+  document.getElementById('result').style.display = 'block';
+  setTimeout(() => document.getElementById('result').scrollIntoView({ behavior:'smooth', block:'start' }), 100);
+}
+</script>
+</body>
+</html>

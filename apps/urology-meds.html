@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>비뇨기과 약물 정리</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --primary: #1a5276;
+    --primary-dark: #154360;
+    --primary-fg: #ffffff;
+    --accent: #2e86c1;
+    --accent-light: #d6eaf8;
+    --bg: #f4f6f9;
+    --surface: #ffffff;
+    --border: #d5d8dc;
+    --text: #1c2833;
+    --text-muted: #717d7e;
+    --blue-row: #eaf4fb;
+    --danger: #c0392b;
+    --success: #1a8a5a;
+    --radius: 10px;
+    --shadow: 0 2px 12px rgba(0,0,0,0.08);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Noto Sans KR', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    font-size: 14px;
+  }
+
+  /* ── Header ── */
+  header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--primary);
+    color: var(--primary-fg);
+    box-shadow: 0 2px 12px rgba(0,0,0,0.18);
+  }
+  .header-inner {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    border-radius: 7px;
+    font-size: 13px;
+    font-weight: 500;
+    border: none;
+    cursor: pointer;
+    transition: background 0.15s, transform 0.1s;
+    font-family: inherit;
+  }
+  .btn:active { transform: scale(0.97); }
+  .btn-secondary {
+    background: rgba(255,255,255,0.18);
+    color: #fff;
+    border: 1px solid rgba(255,255,255,0.3);
+  }
+  .btn-secondary:hover { background: rgba(255,255,255,0.28); }
+  .btn-blue {
+    background: var(--accent);
+    color: #fff;
+  }
+  .btn-blue:hover { background: #2471a3; }
+
+  .header-title {
+    font-size: 18px;
+    font-weight: 700;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  /* ── Main layout ── */
+  main {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 24px 16px 48px;
+  }
+
+  /* ── Card ── */
+  .card {
+    background: var(--surface);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+    overflow: hidden;
+    margin-bottom: 20px;
+  }
+  .card-header {
+    padding: 16px 20px 12px;
+    border-bottom: 1px solid var(--border);
+  }
+  .card-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--primary);
+  }
+  .card-body { padding: 0; }
+
+  /* ── Table ── */
+  .table-wrap { overflow-x: auto; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+  }
+  thead tr {
+    background: #eaf0f6;
+    border-bottom: 2px solid var(--border);
+  }
+  th {
+    padding: 10px 12px;
+    text-align: left;
+    font-weight: 600;
+    color: var(--primary-dark);
+    white-space: nowrap;
+    font-size: 12px;
+  }
+  td {
+    padding: 10px 12px;
+    border-bottom: 1px solid #eaecee;
+    vertical-align: top;
+    line-height: 1.55;
+  }
+  tr:last-child td { border-bottom: none; }
+  tr.has-drug { background: var(--blue-row); }
+  tr.has-drug:hover { background: #d4e9f7; }
+  tr:not(.has-drug):hover { background: #f8fafb; }
+
+  .drug-name-cell { min-width: 150px; }
+  .drug-name { font-weight: 600; font-size: 13px; margin-bottom: 4px; }
+  th:nth-child(1) { min-width: 150px; }
+  th:nth-child(2) { min-width: 130px; }
+  th:nth-child(3) { min-width: 200px; }
+  th:nth-child(4) { min-width: 90px; }
+  th:nth-child(5) { min-width: 180px; }
+  th:nth-child(6) { min-width: 180px; }
+  th:nth-child(7) { min-width: 180px; }
+
+  /* ── Code badge ── */
+  .drug-badges { display: flex; flex-direction: column; gap: 4px; margin-top: 5px; }
+  .badge-row { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+  .code-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: var(--primary);
+    color: #fff;
+    border-radius: 5px;
+    padding: 2px 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    cursor: pointer;
+    border: none;
+    transition: background 0.15s, transform 0.1s;
+    white-space: nowrap;
+  }
+  .code-badge:hover { background: var(--accent); }
+  .code-badge:active { transform: scale(0.95); }
+  .code-badge.copied { background: var(--success); }
+  .badge-label { font-size: 11px; color: var(--accent); font-weight: 500; }
+
+  /* ── Guide cards ── */
+  .guide-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-top: 20px;
+  }
+  @media (max-width: 700px) { .guide-grid { grid-template-columns: 1fr; } }
+  .guide-card .card-body { padding: 14px 18px; }
+  .guide-card p { margin-bottom: 7px; font-size: 13px; line-height: 1.6; }
+  .guide-card p:last-child { margin-bottom: 0; }
+
+  /* ── Modal overlay ── */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.45);
+    z-index: 200;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+  }
+  .modal-overlay.open { display: flex; }
+  .modal {
+    background: var(--surface);
+    border-radius: var(--radius);
+    box-shadow: 0 8px 40px rgba(0,0,0,0.22);
+    max-width: 860px;
+    width: 100%;
+    max-height: 88vh;
+    display: flex;
+    flex-direction: column;
+    animation: popIn 0.18s ease;
+  }
+  @keyframes popIn {
+    from { opacity: 0; transform: scale(0.95) translateY(-10px); }
+    to   { opacity: 1; transform: scale(1) translateY(0); }
+  }
+  .modal-header {
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--border);
+  }
+  .modal-title { font-size: 16px; font-weight: 700; color: var(--primary); }
+  .modal-close {
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    color: var(--text-muted);
+    line-height: 1;
+    padding: 4px 8px;
+    border-radius: 5px;
+  }
+  .modal-close:hover { background: var(--bg); color: var(--text); }
+  .modal-body { padding: 0; overflow-y: auto; }
+
+  /* Modal table styles */
+  .modal-body table { font-size: 11.5px; }
+  .modal-body thead tr { background: #eaf0f6; }
+  .modal-body th { font-size: 12px; }
+  .modal-body td:first-child {
+    background: #f0f3f7;
+    font-weight: 600;
+    white-space: nowrap;
+    color: var(--primary-dark);
+  }
+
+  /* ── Toast ── */
+  .toast {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%) translateY(60px);
+    background: #1a5276;
+    color: #fff;
+    padding: 10px 22px;
+    border-radius: 30px;
+    font-size: 13px;
+    font-weight: 500;
+    opacity: 0;
+    transition: opacity 0.25s, transform 0.25s;
+    z-index: 999;
+    pointer-events: none;
+    white-space: nowrap;
+  }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <button class="btn btn-secondary" onclick="history.back()">← 뒤로</button>
+    <button class="btn btn-secondary" onclick="location.href='/'">🏠 홈으로</button>
+    <div class="header-title"><span>💧</span> 비뇨기과 약물 정리</div>
+    <button class="btn btn-blue" onclick="openModal()">⇄ α-Blocker 비교</button>
+  </div>
+</header>
+
+<main>
+  <div class="card">
+    <div class="card-header">
+      <div class="card-title">자주 사용하는 비뇨기과 약물</div>
+    </div>
+    <div class="card-body">
+      <div class="table-wrap">
+        <table id="med-table">
+          <thead>
+            <tr>
+              <th>약물명</th>
+              <th>분류</th>
+              <th>작용기전</th>
+              <th>적응증</th>
+              <th>부작용</th>
+              <th>상호작용</th>
+              <th>참고사항</th>
+            </tr>
+          </thead>
+          <tbody id="med-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="guide-grid">
+    <div class="card guide-card">
+      <div class="card-header"><div class="card-title">📌 BPH 약물 선택 가이드</div></div>
+      <div class="card-body">
+        <p><strong>증상 위주:</strong> Alpha-blocker (Tamsulosin 등) — 빠른 효과 (수일~수주)</p>
+        <p><strong>전립선 큰 경우:</strong> 5-ARI (Finasteride/Dutasteride) — 크기 감소, 6개월 소요</p>
+        <p><strong>병용요법:</strong> Alpha-blocker + 5-ARI (큰 전립선 + 증상 심한 경우)</p>
+        <p><strong>저장증상 동반:</strong> + Antimuscarinic 또는 Mirabegron 추가 고려</p>
+      </div>
+    </div>
+    <div class="card guide-card">
+      <div class="card-header"><div class="card-title">📌 OAB 약물 선택 가이드</div></div>
+      <div class="card-body">
+        <p><strong>1차:</strong> Antimuscarinic (Solifenacin 등) 또는 Beta-3 agonist (Mirabegron)</p>
+        <p><strong>노인/인지장애:</strong> Mirabegron 선호 (항콜린 부작용 회피)</p>
+        <p><strong>고혈압 환자:</strong> Antimuscarinic 선호 (Mirabegron은 BP 상승)</p>
+        <p><strong>BPH + OAB:</strong> Alpha-blocker + Mirabegron 또는 Antimuscarinic</p>
+      </div>
+    </div>
+  </div>
+</main>
+
+<!-- α-Blocker 비교 Modal -->
+<div class="modal-overlay" id="modal-overlay" onclick="closeModalOutside(event)">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">Alpha-Blocker 비교표</div>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>항목</th>
+              <th>Tamsulosin (하루날)</th>
+              <th>Terazosin (하이트린)</th>
+              <th>Silodosin (유리프)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>수용체 선택성</td><td>α1A 선택적</td><td>α1 비선택적</td><td>α1A 고선택적</td></tr>
+            <tr><td>적응증</td><td>BPH</td><td>BPH, 고혈압</td><td>BPH</td></tr>
+            <tr><td>효과 발현</td><td>수일~수주</td><td>수일~수주</td><td>수일~수주</td></tr>
+            <tr><td>혈압 영향</td><td>적음 (선택적)</td><td>큼 (고혈압에도 사용)</td><td>매우 적음 (고선택적)</td></tr>
+            <tr><td>기립성 저혈압</td><td>경도</td><td>중등도~심함 (용량 적정 필요)</td><td>경미</td></tr>
+            <tr><td>사정 장애</td><td>경도</td><td>드뭄</td><td>매우 흔함 (역행성 사정)</td></tr>
+            <tr><td>Floppy Iris</td><td>있음</td><td>드뭄</td><td>있음</td></tr>
+            <tr><td>용량 적정</td><td>불필요 (0.2mg 고정)</td><td>필요 (1→2→5→10mg)</td><td>불필요 (4mg 고정)</td></tr>
+            <tr><td>복용법</td><td>식후 1일 1회</td><td>취침 전 1일 1회</td><td>식후 1일 2회</td></tr>
+            <tr><td>대사</td><td>CYP3A4/2D6</td><td>CYP 관련 적음</td><td>CYP3A4, P-gp</td></tr>
+            <tr><td>원내약</td><td>[HARD] 하루날 디 정 0.2mg</td><td>[HYTR2] 일양 하이트린 정 2mg</td><td>[TRUP] 트루패스 정 4mg</td></tr>
+            <tr><td>장점</td><td>가장 널리 사용, 용량 적정 불필요, 혈압 영향 적음</td><td>고혈압 동반 시 유리, 가격 저렴, 사정장애 적음</td><td>전립선 특이성 최고, 혈압 영향 최소</td></tr>
+            <tr><td>단점</td><td>Floppy iris (백내장 수술 시 문제)</td><td>기립성 저혈압 심함, 용량 적정 번거로움</td><td>역행성 사정 매우 흔함 (젊은 환자 주의), 1일 2회 복용</td></tr>
+            <tr><td>추천 상황</td><td>일반적인 BPH 1차 선택</td><td>BPH + 고혈압 동반, 사정기능 보존 중요 시</td><td>혈압 낮은 환자, 빠른 증상 완화 필요 시</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const medications = [
+  {
+    name: 'Tamsulosin (하루날)', cls: 'Alpha-1A blocker',
+    mechanism: '전립선 및 방광경부의 α1A 수용체 선택적 차단 → 평활근 이완 → 요도 저항 감소',
+    indications: 'BPH (전립선비대증)',
+    sideEffects: '기립성 저혈압, 어지러움, 사정 장애, Floppy iris syndrome',
+    interactions: 'CYP3A4/2D6 억제제 (혈중농도↑), 다른 α-blocker (저혈압↑), PDE5 억제제 (저혈압 주의)',
+    notes: '식후 복용, 백내장 수술 전 중단 권고',
+    drugs: [{ code: 'HARD', label: '하루날 디 정 0.2mg' }]
+  },
+  {
+    name: 'Alfuzosin (자트랄)', cls: 'Alpha-1 blocker',
+    mechanism: 'α1 수용체 비선택적 차단 → 전립선/방광경부 평활근 이완',
+    indications: 'BPH',
+    sideEffects: '어지러움, 두통, 피로, QT 연장',
+    interactions: 'QT 연장 약물, CYP3A4 억제제, 항고혈압제',
+    notes: 'QT 연장 위험 - 심전도 모니터링',
+    drugs: []
+  },
+  {
+    name: 'Terazosin (하이트린)', cls: 'Alpha-1 blocker',
+    mechanism: 'α1 수용체 비선택적 차단 → 전립선/방광경부 평활근 이완 + 혈관 이완',
+    indications: 'BPH, 고혈압',
+    sideEffects: '기립성 저혈압, 어지러움, 졸음, 무력감, 비충혈',
+    interactions: 'PDE5 억제제 (저혈압↑), 항고혈압제 (저혈압↑), CYP 관련 상호작용 적음',
+    notes: '취침 전 복용 권장 (기립성 저혈압 예방), 용량 적정 필요 (1→2→5→10mg)',
+    drugs: [{ code: 'HYTR2', label: '일양 하이트린 정 2mg' }]
+  },
+  {
+    name: 'Silodosin (유리프)', cls: 'Alpha-1A blocker',
+    mechanism: '고선택적 α1A 차단 → 전립선 특이적 작용',
+    indications: 'BPH',
+    sideEffects: '역행성 사정 (매우 흔함), 어지러움',
+    interactions: 'CYP3A4 억제제, P-glycoprotein 억제제',
+    notes: '젊은 환자에서 사정장애 고려',
+    drugs: [{ code: 'TRUP', label: '트루패스 정 4mg' }]
+  },
+  {
+    name: 'Finasteride (프로스카)', cls: '5-alpha reductase inhibitor (Type II)',
+    mechanism: 'Testosterone → DHT 전환 억제 → 전립선 크기 감소',
+    indications: 'BPH, 남성형 탈모 (저용량)',
+    sideEffects: '성욕감퇴, 발기부전, 사정량 감소, 여성형 유방',
+    interactions: '특별한 상호작용 적음',
+    notes: 'PSA 50% 감소 (수치 해석 시 x2), 효과 6개월 소요, 임산부 접촉 금지',
+    drugs: [{ code: 'PNSC', label: '파나스카 정 5mg' }]
+  },
+  {
+    name: 'Dutasteride (아보다트)', cls: '5-alpha reductase inhibitor (Type I & II)',
+    mechanism: '5α-reductase Type I/II 모두 억제 → DHT 더 강력히 감소',
+    indications: 'BPH',
+    sideEffects: 'Finasteride와 유사, 반감기 길어 부작용 지속 가능',
+    interactions: 'CYP3A4 억제제',
+    notes: 'Finasteride보다 DHT 억제 강력, PSA 해석 주의',
+    drugs: []
+  },
+  {
+    name: 'Mirabegron (베타미가)', cls: 'Beta-3 agonist',
+    mechanism: '방광 배뇨근의 β3 수용체 자극 → 방광 이완 → 저장능 증가',
+    indications: '과민성 방광 (OAB), 절박성 요실금',
+    sideEffects: '고혈압, UTI, 두통, 빈맥',
+    interactions: 'Digoxin (농도↑), CYP2D6 기질 (농도↑), 항콜린제 병용 시 요폐 주의',
+    notes: '항콜린제 부작용 피하고 싶을 때 대안, 조절되지 않는 고혈압 금기',
+    drugs: [{ code: 'SEBT5', label: '셀레베타 서방정 50mg' }]
+  },
+  {
+    name: 'Solifenacin (베시케어)', cls: 'Antimuscarinic (M3 selective)',
+    mechanism: 'M3 수용체 차단 → 배뇨근 수축 억제',
+    indications: 'OAB, 절박성 요실금',
+    sideEffects: '구갈, 변비, 시야흐림, 인지장애 (노인), 요폐',
+    interactions: 'CYP3A4 억제제, 항콜린 효과 약물, QT 연장 약물',
+    notes: '노인/치매환자 인지기능 저하 주의, 폐쇄각 녹내장 금기',
+    drugs: [{ code: 'VES5', label: '베시케어 정 5mg' }, { code: 'VES10', label: '베시케어 정 10mg' }]
+  },
+  {
+    name: 'Propiverine (베아베린)', cls: 'Antimuscarinic',
+    mechanism: '무스카린 수용체 차단 + 칼슘 길항 → 이중 작용으로 배뇨근 이완',
+    indications: 'OAB, 신경인성 방광',
+    sideEffects: '구갈, 변비, 시야흐림, 어지러움',
+    interactions: '다른 항콜린제, CYP3A4 억제제',
+    notes: '이중 작용 기전으로 방광 선택성 우수',
+    drugs: [{ code: 'BEAVR', label: '베아베린 정 20mg' }]
+  },
+  {
+    name: 'Tolterodine (디트루시톨)', cls: 'Antimuscarinic',
+    mechanism: '무스카린 수용체 비선택적 차단 → 방광 수축 억제',
+    indications: 'OAB',
+    sideEffects: '구갈, 변비, 두통, 어지러움',
+    interactions: 'CYP2D6/3A4 억제제',
+    notes: 'Extended-release 제형이 부작용 적음',
+    drugs: []
+  },
+  {
+    name: 'Oxybutynin (디트로판)', cls: 'Antimuscarinic',
+    mechanism: '무스카린 수용체 차단 + 직접 평활근 이완',
+    indications: 'OAB, 신경인성 방광',
+    sideEffects: '구갈, 변비, 인지장애, 졸음 (CNS 투과성 높음)',
+    interactions: '다른 항콜린제, CNS 억제제',
+    notes: '노인에서 인지기능 저하 가장 주의, 패치제형이 부작용 적음',
+    drugs: []
+  },
+  {
+    name: 'Desmopressin (미니린)', cls: 'ADH analogue',
+    mechanism: 'V2 수용체 작용 → 수분 재흡수 증가 → 소변량 감소',
+    indications: '야뇨증, 야간다뇨, 중추성 요붕증',
+    sideEffects: '저나트륨혈증, 두통, 오심',
+    interactions: 'NSAIDs (저Na 위험↑), 이뇨제, 삼환계 항우울제',
+    notes: '65세 이상 Na 모니터링 필수, 심부전/신부전 주의',
+    drugs: []
+  },
+  {
+    name: 'Sildenafil (비아그라)', cls: 'PDE5 inhibitor',
+    mechanism: 'cGMP 분해 억제 → NO 매개 혈관 이완 → 음경 해면체 충혈',
+    indications: '발기부전 (ED), 폐동맥고혈압',
+    sideEffects: '두통, 안면홍조, 소화불량, 시각장애 (청색증)',
+    interactions: '질산염 (절대 금기 - 심한 저혈압), α-blocker (저혈압)',
+    notes: '식사 영향 있음, 효과 4-6시간',
+    drugs: []
+  },
+  {
+    name: 'Tadalafil (시알리스)', cls: 'PDE5 inhibitor',
+    mechanism: 'PDE5 억제 → cGMP↑ → 혈관 이완',
+    indications: 'ED, BPH (저용량 매일 복용)',
+    sideEffects: '두통, 요통/근육통, 소화불량',
+    interactions: '질산염 (금기), α-blocker',
+    notes: '반감기 17.5h로 긴 작용시간 (36h), 음식 영향 적음, BPH에 5mg 매일 사용',
+    drugs: []
+  },
+  {
+    name: 'Bethanechol (베사콜)', cls: 'Cholinergic agonist (Muscarinic)',
+    mechanism: '무스카린(M3) 수용체 직접 자극 → 방광 배뇨근 수축 촉진 → 배뇨 유도',
+    indications: '비폐색성 요폐, 수술 후 요폐, 신경인성 방광 (저활동성)',
+    sideEffects: '복통, 오심, 설사, 발한, 서맥, 기관지수축',
+    interactions: '항콜린제 (효과 상쇄), 콜린에스터라제 억제제 (콜린성 과다), β-blocker (서맥↑)',
+    notes: '방광출구 폐색 확인 후 사용 (폐색 시 금기), 천식·서맥·소화성 궤양 환자 주의, 공복 복용 권장',
+    drugs: [{ code: 'HINE', label: '하이네콜 정 25mg' }]
+  },
+];
+
+function buildTable() {
+  const tbody = document.getElementById('med-tbody');
+  tbody.innerHTML = medications.map(med => {
+    const hasDrug = med.drugs.length > 0;
+    const badgesHtml = hasDrug ? `<div class="drug-badges">${med.drugs.map(d => `
+      <div class="badge-row">
+        <button class="code-badge" onclick="copyCode('${d.code}', this)">📋 ${d.code}</button>
+        <span class="badge-label">${d.label}</span>
+      </div>`).join('')}</div>` : '';
+    return `<tr class="${hasDrug ? 'has-drug' : ''}">
+      <td class="drug-name-cell"><div class="drug-name">${med.name}</div>${badgesHtml}</td>
+      <td style="color:var(--text-muted)">${med.cls}</td>
+      <td>${med.mechanism}</td>
+      <td>${med.indications}</td>
+      <td>${med.sideEffects}</td>
+      <td>${med.interactions}</td>
+      <td>${med.notes}</td>
+    </tr>`;
+  }).join('');
+}
+
+function copyCode(code, btn) {
+  navigator.clipboard.writeText(code).then(() => {
+    const orig = btn.innerHTML;
+    btn.innerHTML = '✓ 복사됨';
+    btn.classList.add('copied');
+    showToast(`"${code}" 복사되었습니다`);
+    setTimeout(() => { btn.innerHTML = orig; btn.classList.remove('copied'); }, 1800);
+  });
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2000);
+}
+
+function openModal() {
+  document.getElementById('modal-overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeModal() {
+  document.getElementById('modal-overlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+function closeModalOutside(e) {
+  if (e.target === document.getElementById('modal-overlay')) closeModal();
+}
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+buildTable();
+</script>
+</body>
+</html>
