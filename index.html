@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Medical App Portal</title>
+
+<style>
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  background: #f5f7fb;
+}
+
+h1 {
+  text-align: center;
+  padding: 20px;
+}
+
+.container {
+  max-width: 1000px;
+  margin: auto;
+  padding: 20px;
+}
+
+/* 앱 카드 */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+}
+
+.card {
+  background: white;
+  padding: 25px;
+  border-radius: 12px;
+  text-align: center;
+  text-decoration: none;
+  color: black;
+  font-size: 18px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+  transition: 0.2s;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
+
+/* 오른쪽 바로가기 */
+.shortcut-bar {
+  position: fixed;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+}
+
+.sc-btn {
+  padding: 10px;
+  margin: 3px;
+  background: #ddd;
+  text-decoration: none;
+  font-size: 13px;
+}
+
+.sc-green { background: #c8f7c5; }
+.sc-purple { background: #dcd0ff; }
+
+/* 모바일 */
+@media (max-width: 600px) {
+  .shortcut-bar {
+    position: static;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<h1>📱 Medical Apps Portal</h1>
+
+<div class="container">
+  <div class="grid">
+
+    <a href="topical.html" class="card">
+      🧴 외용제 관리
+    </a>
+
+    <a href="urology-meds.html" class="card">
+      💊 비뇨기 약물
+    </a>
+
+    <a href="enteral.html" class="card">
+      🥤 경관유동식
+    </a>
+
+    <a href="osteo-navigator-v2.html" class="card">
+      🦴 Osteo Navigator
+    </a>
+
+    <a href="brachial plexus.html" class="card">
+      🧠 Brachial Plexus
+    </a>
+
+  </div>
+</div>
+
+<!-- 오른쪽 바로가기 -->
+<div class="shortcut-bar">
+    <a href="https://www.meditong.com/index_mworks.asp" target="_blank" class="sc-btn">💊 메디통</a>
+    <a href="https://www.bobathh.com" target="_blank" class="sc-btn">🏥 하남보바스</a>
+    <a href="https://aloha-neurology-v2.lovable.app/" target="_blank" class="sc-btn">🧠 Aloha Neurology</a>
+    <a href="https://script.google.com/macros/s/AKfycbzB3gW5cU9Anv7Gp03VHTdyN6GYnW1s5hB-nKq0rjWNQkKyp4VU6si0HVy0DqB7x_r9/exec" target="_blank" class="sc-btn sc-green">📄 입원환자 PDF</a>
+    <a href="https://docs.google.com/spreadsheets/d/1EEDlpTW8P7vEn9gaJQoSrLeal7hIMPSZ/edit?gid=2013533718" target="_blank" class="sc-btn sc-green">📋 약품목록</a>
+    <a href="https://docs.google.com/spreadsheets/d/1m3N2rcHCTn3M5qWCRb5yq6wcBplhB5wKpp4xfKRYHfY/edit?gid=0" target="_blank" class="sc-btn sc-green">👥 환자명단</a>
+    <a href="http://192.168.14.85:7006/#/auth/login" target="_blank" class="sc-btn sc-purple">🔬 뉴로핏</a>
+    <a href="https://h.super-brain.co.kr/" target="_blank" class="sc-btn sc-purple">🧩 superBrain</a>
+</div>
+
+</body>
+</html>
