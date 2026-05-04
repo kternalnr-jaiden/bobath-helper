@@ -3,427 +3,246 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>항우울제 임상 참조 — Clinical Antidepressant Guide</title>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+<title>항우울제 임상 참조 — 하남보바스병원</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600;700&family=Outfit:wght@700;800;900&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --bg: #f0f4f8;
-    --surface: #ffffff;
-    --surface2: #f5f8fb;
-    --surface3: #eaf0f6;
-    --border: #d1dce8;
-    --accent: #009e80;
-    --accent-dim: rgba(0,158,128,0.10);
-    --accent2: #2563eb;
-    --accent2-dim: rgba(37,99,235,0.10);
-    --accent3: #7c3aed;
-    --accent3-dim: rgba(124,58,237,0.10);
-    --accent4: #ea580c;
-    --accent4-dim: rgba(234,88,12,0.10);
-    --text: #1e293b;
-    --text-muted: #64748b;
-    --text-soft: #475569;
-    --danger: #dc2626;
-    --danger-dim: rgba(220,38,38,0.09);
-    --warn: #d97706;
-    --warn-dim: rgba(217,119,6,0.10);
-    --ok: #16a34a;
-    --ok-dim: rgba(22,163,74,0.10);
-    --ssri: #009e80;
-    --snri: #2563eb;
-    --tca: #e11d48;
-    --other: #7c3aed;
-  }
-  * { margin:0; padding:0; box-sizing:border-box; }
-  html { scroll-behavior: smooth; }
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'Noto Sans KR', sans-serif;
-    font-size: 14px;
-    line-height: 1.6;
-    min-height: 100vh;
-  }
+:root {
+  --bg:#f1f5f9; --surface:#fff; --surface2:#f8fafc; --surface3:#eef2f7;
+  --border:#e2e8f0; --border-strong:#cbd5e1;
+  --accent:#0284c7; --accent-dim:rgba(2,132,199,0.08); --accent-light:rgba(2,132,199,0.13);
+  --text:#0f172a; --text-muted:#64748b; --text-soft:#475569;
+  --danger:#dc2626; --danger-dim:rgba(220,38,38,0.08);
+  --warn:#d97706; --warn-dim:rgba(217,119,6,0.09);
+  --ok:#16a34a; --ok-dim:rgba(22,163,74,0.09);
+  --ssri:#0284c7; --snri:#7c3aed; --tca:#e11d48; --other:#ea580c; --guide:#0f766e;
+  --r:12px; --sh:0 1px 3px rgba(0,0,0,0.06),0 1px 2px rgba(0,0,0,0.04);
+  --sh2:0 4px 12px rgba(0,0,0,0.07),0 2px 4px rgba(0,0,0,0.04);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:'Noto Sans KR',sans-serif;font-size:14px;line-height:1.65;min-height:100vh;}
 
-  /* ─── HEADER ─── */
-  header {
-    background: var(--surface);
-    border-bottom: 1px solid var(--border);
-    padding: 20px 24px 16px;
-    position: sticky; top: 0; z-index: 100;
-    box-shadow: 0 1px 8px rgba(0,0,0,0.06);
-  }
-  .header-top {
-    display: flex; align-items: center; justify-content: space-between;
-    margin-bottom: 14px;
-  }
-  .header-title {
-    font-family: 'Syne', sans-serif;
-    font-size: 20px; font-weight: 800;
-    letter-spacing: -0.5px;
-    color: var(--text);
-  }
-  .header-title span { color: var(--accent); }
-  .header-sub { font-size: 11px; color: var(--text-muted); margin-top: 1px; letter-spacing: 0.5px; text-transform: uppercase; }
-  .drug-count-badge {
-    background: var(--accent-dim); border: 1px solid var(--accent);
-    color: var(--accent); font-family: 'JetBrains Mono', monospace;
-    font-size: 11px; padding: 3px 10px; border-radius: 20px;
-  }
+/* HEADER */
+header{background:var(--surface);border-bottom:1px solid var(--border);padding:14px 18px 12px;position:sticky;top:0;z-index:100;box-shadow:var(--sh);}
+.header-top{display:flex;align-items:center;gap:10px;margin-bottom:11px;}
+.home-btn{display:inline-flex;align-items:center;gap:4px;background:var(--surface3);border:1px solid var(--border);color:var(--text-muted);font-size:11.5px;font-weight:600;padding:5px 10px;border-radius:8px;text-decoration:none;transition:all .18s;flex-shrink:0;font-family:'Noto Sans KR',sans-serif;}
+.home-btn:hover{background:var(--accent-dim);border-color:var(--accent);color:var(--accent);}
+.header-brand{flex:1;min-width:0;}
+.header-title{font-family:'Outfit',sans-serif;font-size:18px;font-weight:900;letter-spacing:-.5px;color:var(--text);line-height:1.2;}
+.header-title span{color:var(--accent);}
+.header-sub{font-size:10px;color:var(--text-muted);letter-spacing:.4px;text-transform:uppercase;margin-top:2px;}
+.drug-count-badge{background:var(--accent-dim);border:1px solid var(--accent);color:var(--accent);font-family:'JetBrains Mono',monospace;font-size:11px;padding:3px 10px;border-radius:20px;font-weight:700;flex-shrink:0;}
+.search-wrap{position:relative;margin-bottom:9px;}
+.search-icon{position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--text-muted);pointer-events:none;font-size:13px;}
+#searchInput{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:9px;color:var(--text);font-family:'Noto Sans KR',sans-serif;font-size:13px;padding:8px 11px 8px 32px;outline:none;transition:border-color .18s,box-shadow .18s;}
+#searchInput:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(2,132,199,.1);}
+#searchInput::placeholder{color:var(--text-muted);}
+.class-tabs{display:flex;gap:5px;overflow-x:auto;scrollbar-width:none;}
+.class-tabs::-webkit-scrollbar{display:none;}
+.tab-btn{flex-shrink:0;background:var(--surface2);border:1px solid var(--border);color:var(--text-muted);font-family:'Noto Sans KR',sans-serif;font-size:11.5px;font-weight:600;padding:5px 12px;border-radius:7px;cursor:pointer;transition:all .18s;white-space:nowrap;}
+.tab-btn:hover{border-color:var(--accent);color:var(--accent);}
+.tab-btn.active[data-class="ALL"]{background:var(--accent-light);border-color:var(--accent);color:var(--accent);}
+.tab-btn.active[data-class="SSRI"]{background:rgba(2,132,199,.12);border-color:var(--ssri);color:var(--ssri);}
+.tab-btn.active[data-class="SNRI"]{background:rgba(124,58,237,.1);border-color:var(--snri);color:var(--snri);}
+.tab-btn.active[data-class="TCA"]{background:rgba(225,29,72,.09);border-color:var(--tca);color:var(--tca);}
+.tab-btn.active[data-class="기타"]{background:rgba(234,88,12,.09);border-color:var(--other);color:var(--other);}
+.tab-btn.active[data-class="가이드"]{background:rgba(15,118,110,.1);border-color:var(--guide);color:var(--guide);}
+.tab-btn[data-class="가이드"]{border-color:rgba(15,118,110,.35);color:var(--guide);}
 
-  /* ─── SEARCH ─── */
-  .search-wrap {
-    position: relative; margin-bottom: 12px;
-  }
-  .search-icon {
-    position: absolute; left: 12px; top: 50%; transform: translateY(-50%);
-    color: var(--text-muted); pointer-events: none; font-size: 15px;
-  }
-  #searchInput {
-    width: 100%; background: var(--surface);
-    border: 1px solid var(--border); border-radius: 10px;
-    color: var(--text); font-family: 'Noto Sans KR', sans-serif;
-    font-size: 14px; padding: 10px 12px 10px 38px;
-    outline: none; transition: border-color 0.2s;
-  }
-  #searchInput:focus { border-color: var(--accent); }
-  #searchInput::placeholder { color: var(--text-muted); }
+/* MAIN */
+main{padding:13px 15px 28px;max-width:920px;margin:0 auto;}
 
-  /* ─── CLASS TABS ─── */
-  .class-tabs {
-    display: flex; gap: 6px; overflow-x: auto;
-    scrollbar-width: none;
-  }
-  .class-tabs::-webkit-scrollbar { display:none; }
-  .tab-btn {
-    flex-shrink: 0;
-    background: var(--surface); border: 1px solid var(--border);
-    color: var(--text-soft); font-family: 'Noto Sans KR', sans-serif;
-    font-size: 12px; font-weight: 500;
-    padding: 6px 14px; border-radius: 8px;
-    cursor: pointer; transition: all 0.2s; white-space: nowrap;
-  }
-  .tab-btn:hover { border-color: var(--accent); color: var(--accent); }
-  .tab-btn.active { background: var(--accent-dim); border-color: var(--accent); color: var(--accent); font-weight: 600; }
-  .tab-btn[data-class="SNRI"].active { background: var(--accent2-dim); border-color: var(--accent2); color: var(--accent2); }
-  .tab-btn[data-class="TCA"].active { background: rgba(244,63,94,0.12); border-color: #f43f5e; color: #f43f5e; }
-  .tab-btn[data-class="기타"].active { background: var(--accent3-dim); border-color: var(--accent3); color: var(--accent3); }
+/* DRUG CARD */
+.drug-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);margin-bottom:8px;overflow:hidden;box-shadow:var(--sh);transition:box-shadow .2s,border-color .2s;}
+.drug-card:hover,.drug-card.open{box-shadow:var(--sh2);border-color:var(--border-strong);}
+.drug-card[data-class="SSRI"] .bar{background:var(--ssri);}
+.drug-card[data-class="SNRI"] .bar{background:var(--snri);}
+.drug-card[data-class="TCA"]  .bar{background:var(--tca);}
+.drug-card[data-class="기타"] .bar{background:var(--other);}
+.bar{height:3px;}
+.card-header{display:flex;align-items:center;padding:12px 14px;cursor:pointer;gap:10px;user-select:none;}
+.cls-badge{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;padding:2px 7px;border-radius:5px;flex-shrink:0;}
+.badge-SSRI{background:rgba(2,132,199,.12);color:var(--ssri);}
+.badge-SNRI{background:rgba(124,58,237,.12);color:var(--snri);}
+.badge-TCA {background:rgba(225,29,72,.12);color:var(--tca);}
+.badge-기타{background:rgba(234,88,12,.12);color:var(--other);}
+.card-names{flex:1;min-width:0;}
+.kor{font-size:14px;font-weight:700;color:var(--text);}
+.eng{font-size:10.5px;color:var(--text-muted);font-family:'JetBrains Mono',monospace;margin-top:1px;}
+.meta-row{display:flex;align-items:center;gap:5px;flex-wrap:wrap;margin-top:4px;}
+.brand{font-size:10.5px;color:var(--text-muted);}
 
-  /* ─── MAIN ─── */
-  main { padding: 16px; max-width: 900px; margin: 0 auto; }
+/* header code pills */
+.hcp{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;padding:2px 7px;border-radius:5px;background:rgba(2,132,199,.1);color:var(--accent);border:1px solid rgba(2,132,199,.27);cursor:pointer;transition:all .15s;user-select:none;display:inline-flex;align-items:center;gap:2px;}
+.hcp::after{content:'⎘';font-size:9px;opacity:.45;}
+.hcp:hover{background:var(--accent);color:#fff;border-color:var(--accent);transform:translateY(-1px);box-shadow:0 2px 5px rgba(2,132,199,.3);}
+.hcp:hover::after{opacity:1;}
+.hcp.hcp-new{background:rgba(22,163,74,.1);color:var(--ok);border-color:rgba(22,163,74,.28);}
+.hcp.hcp-new:hover{background:var(--ok);color:#fff;border-color:var(--ok);}
+.hcp.hcp-oos{opacity:.55;text-decoration:line-through;background:var(--danger-dim);color:var(--danger);border-color:rgba(220,38,38,.22);}
+.hcp.flash{background:var(--ok)!important;color:#fff!important;border-color:var(--ok)!important;}
+.hcp.flash::after{content:'✓'!important;opacity:1;}
 
-  /* ─── DRUG CARD ─── */
-  .drug-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 14px; margin-bottom: 10px;
-    overflow: hidden; transition: border-color 0.2s;
-  }
-  .drug-card:hover { border-color: var(--surface3); }
-  .drug-card.open { border-color: var(--border); }
+.card-right{display:flex;align-items:center;gap:6px;flex-shrink:0;}
+.ekgb{font-size:10px;font-weight:700;padding:3px 8px;border-radius:6px;font-family:'JetBrains Mono',monospace;white-space:nowrap;}
+.ekg-low{background:var(--ok-dim);color:var(--ok);border:1px solid rgba(22,163,74,.25);}
+.ekg-mod{background:var(--warn-dim);color:var(--warn);border:1px solid rgba(217,119,6,.25);}
+.ekg-high{background:var(--danger-dim);color:var(--danger);border:1px solid rgba(220,38,38,.25);}
+.chev{color:var(--text-muted);font-size:11px;transition:transform .22s;flex-shrink:0;}
+.drug-card.open .chev{transform:rotate(90deg);}
 
-  .drug-card[data-class="SSRI"] .card-accent-bar { background: var(--ssri); }
-  .drug-card[data-class="SNRI"] .card-accent-bar { background: var(--snri); }
-  .drug-card[data-class="TCA"] .card-accent-bar { background: var(--tca); }
-  .drug-card[data-class="기타"] .card-accent-bar { background: var(--other); }
+/* card body */
+.card-body{display:none;border-top:1px solid var(--border);}
+.drug-card.open .card-body{display:block;}
 
-  .card-accent-bar { height: 3px; }
+/* inner tabs */
+.itabs{display:flex;border-bottom:1px solid var(--border);overflow-x:auto;scrollbar-width:none;background:var(--surface2);}
+.itabs::-webkit-scrollbar{display:none;}
+.itab{flex-shrink:0;padding:8px 13px;font-size:11.5px;color:var(--text-muted);cursor:pointer;border-bottom:2px solid transparent;transition:all .18s;white-space:nowrap;font-weight:500;}
+.itab:hover{color:var(--text-soft);}
+.itab.active{color:var(--accent);border-bottom-color:var(--accent);font-weight:700;background:var(--surface);}
+.ipanel{display:none;padding:14px;}
+.ipanel.active{display:block;}
 
-  .card-header {
-    display: flex; align-items: center;
-    padding: 14px 16px; cursor: pointer;
-    gap: 12px; user-select: none;
-  }
-  .card-class-badge {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 10px; font-weight: 600;
-    padding: 3px 8px; border-radius: 6px;
-    flex-shrink: 0; letter-spacing: 0.5px;
-  }
-  .badge-SSRI { background: rgba(0,212,170,0.15); color: var(--ssri); }
-  .badge-SNRI { background: rgba(59,130,246,0.15); color: var(--snri); }
-  .badge-TCA  { background: rgba(244,63,94,0.15);  color: var(--tca); }
-  .badge-기타  { background: rgba(167,139,250,0.15); color: var(--other); }
+/* pros/cons */
+.pc{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:11px;}
+@media(max-width:500px){.pc{grid-template-columns:1fr;}}
+.pros,.cons{background:var(--surface2);border-radius:9px;padding:11px;}
+.pros{border-left:3px solid var(--ok);}
+.cons{border-left:3px solid var(--danger);}
+.btitle{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;}
+.pros .btitle{color:var(--ok);}
+.cons .btitle{color:var(--danger);}
+.blist{list-style:none;}
+.blist li{font-size:12px;color:var(--text-soft);padding:2px 0 2px 13px;position:relative;}
+.blist li::before{content:'▸';position:absolute;left:0;font-size:9.5px;}
+.pros .blist li::before{color:var(--ok);}
+.cons .blist li::before{color:var(--danger);}
 
-  .card-names { flex: 1; }
-  .card-name-kor { font-size: 15px; font-weight: 600; color: var(--text); }
-  .card-name-eng { font-size: 11px; color: var(--text-muted); margin-top: 1px; font-family: 'JetBrains Mono', monospace; }
-  .card-name-brand { font-size: 11px; color: var(--text-soft); }
+/* formulary */
+.fsec{margin-top:11px;}
+.ftitle{font-size:10px;text-transform:uppercase;letter-spacing:.8px;color:var(--accent);font-weight:700;margin-bottom:6px;}
+.fgrid{display:flex;flex-wrap:wrap;gap:5px;}
+.fpill{display:flex;align-items:center;gap:6px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:6px 10px;cursor:pointer;transition:all .15s;}
+.fpill:hover{border-color:var(--accent);background:var(--accent-dim);}
+.fpill.flash-pill{border-color:var(--ok)!important;background:var(--ok-dim)!important;}
+.fcode{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;color:var(--accent);}
+.fname{font-size:11.5px;color:var(--text-soft);}
+.fnote{font-size:9.5px;padding:1px 5px;border-radius:4px;background:var(--danger-dim);color:var(--danger);font-weight:700;}
+.fnew{font-size:9.5px;padding:1px 5px;border-radius:4px;background:var(--ok-dim);color:var(--ok);font-weight:700;}
+.no-f{font-size:11.5px;color:var(--text-muted);background:var(--surface2);border-radius:8px;padding:7px 11px;border-left:3px solid var(--border);}
 
-  .card-right {
-    display: flex; align-items: center; gap: 8px; flex-shrink: 0;
-  }
-  .ekg-badge {
-    font-size: 10px; font-weight: 600; padding: 3px 8px;
-    border-radius: 6px; font-family: 'JetBrains Mono', monospace;
-  }
-  .ekg-low  { background: var(--ok-dim); color: var(--ok); border: 1px solid rgba(34,197,94,0.3); }
-  .ekg-mod  { background: var(--warn-dim); color: var(--warn); border: 1px solid rgba(245,158,11,0.3); }
-  .ekg-high { background: var(--danger-dim); color: var(--danger); border: 1px solid rgba(239,68,68,0.3); }
-  .chevron {
-    color: var(--text-muted); font-size: 13px;
-    transition: transform 0.25s; flex-shrink: 0;
-  }
-  .drug-card.open .chevron { transform: rotate(90deg); }
+/* info */
+.igrid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;}
+@media(max-width:500px){.igrid{grid-template-columns:1fr;}}
+.ibox{background:var(--surface2);border-radius:9px;padding:11px;}
+.ilabel{font-size:9.5px;text-transform:uppercase;letter-spacing:.8px;color:var(--text-muted);font-weight:700;margin-bottom:3px;}
+.ival{font-size:12.5px;color:var(--text);}
+.doseval{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--accent);font-weight:700;}
+.titflow{background:var(--surface2);border-radius:9px;padding:12px;margin-bottom:10px;}
+.tittitle{font-size:9.5px;text-transform:uppercase;letter-spacing:.8px;color:var(--text-muted);font-weight:700;margin-bottom:8px;}
+.titsteps{display:flex;flex-wrap:wrap;gap:5px;align-items:center;}
+.ts{background:var(--surface);border:1px solid var(--border);border-radius:7px;padding:5px 10px;text-align:center;}
+.ts .d{font-family:'JetBrains Mono',monospace;font-size:12.5px;color:var(--accent);font-weight:700;}
+.ts .n{font-size:9.5px;color:var(--text-muted);margin-top:1px;}
+.tarr{color:var(--text-muted);font-size:12px;}
 
-  /* ─── CARD BODY ─── */
-  .card-body { display: none; border-top: 1px solid var(--border); }
-  .drug-card.open .card-body { display: block; }
+/* ekg */
+.ekgsec{margin-bottom:11px;}
+.ekgbar{background:var(--surface2);border-radius:9px;padding:12px;margin-bottom:8px;}
+.ekghdr{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
+.ekgrl{font-size:11.5px;font-weight:600;color:var(--text-soft);}
+.ekgitems{display:flex;flex-direction:column;gap:6px;}
+.ekgi{display:flex;gap:8px;align-items:flex-start;}
+.etag{font-family:'JetBrains Mono',monospace;font-size:9.5px;font-weight:700;padding:2px 7px;border-radius:4px;flex-shrink:0;min-width:54px;text-align:center;margin-top:1px;}
+.qtc-tag{background:var(--warn-dim);color:var(--warn);border:1px solid rgba(217,119,6,.27);}
+.pr-tag{background:rgba(124,58,237,.09);color:var(--snri);border:1px solid rgba(124,58,237,.27);}
+.qrs-tag{background:var(--danger-dim);color:var(--danger);border:1px solid rgba(220,38,38,.27);}
+.edesc{font-size:12px;color:var(--text-soft);}
 
-  /* ─── INNER TABS ─── */
-  .inner-tabs {
-    display: flex; gap: 0; border-bottom: 1px solid var(--border);
-    overflow-x: auto; scrollbar-width: none;
-  }
-  .inner-tabs::-webkit-scrollbar { display:none; }
-  .inner-tab {
-    flex-shrink: 0; padding: 10px 14px;
-    font-size: 12px; color: var(--text-muted);
-    cursor: pointer; border-bottom: 2px solid transparent;
-    transition: all 0.2s; white-space: nowrap;
-  }
-  .inner-tab:hover { color: var(--text-soft); }
-  .inner-tab.active { color: var(--accent); border-bottom-color: var(--accent); font-weight: 600; }
+/* interactions */
+.ilist{display:flex;flex-direction:column;gap:6px;}
+.iitem{background:var(--surface2);border-radius:9px;padding:10px;display:flex;gap:8px;align-items:flex-start;}
+.isev{font-family:'JetBrains Mono',monospace;font-size:9.5px;font-weight:700;padding:2px 6px;border-radius:4px;flex-shrink:0;min-width:48px;text-align:center;margin-top:1px;}
+.sev-ci{background:var(--danger-dim);color:var(--danger);border:1px solid rgba(220,38,38,.28);}
+.sev-high{background:var(--warn-dim);color:var(--warn);border:1px solid rgba(217,119,6,.28);}
+.sev-mod{background:rgba(124,58,237,.09);color:var(--snri);border:1px solid rgba(124,58,237,.22);}
+.ibody{flex:1;}
+.idrug{font-size:12px;font-weight:700;color:var(--text);margin-bottom:1px;}
+.imech{font-size:11px;color:var(--text-muted);}
 
-  .inner-panel { display: none; padding: 16px; }
-  .inner-panel.active { display: block; }
+/* CI */
+.cilist{display:flex;flex-direction:column;gap:5px;}
+.ciitem{background:var(--surface2);border-radius:7px;padding:8px 12px;display:flex;gap:8px;align-items:center;}
+.ciicon{color:var(--danger);font-size:12px;flex-shrink:0;}
+.citext{font-size:12px;color:var(--text-soft);}
+.monlist{display:flex;flex-wrap:wrap;gap:5px;}
+.monpill{background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:4px 9px;font-size:11px;color:var(--text-soft);}
 
-  /* ─── CONTENT ELEMENTS ─── */
-  .pros-cons {
-    display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
-    margin-bottom: 14px;
-  }
-  @media (max-width: 480px) { .pros-cons { grid-template-columns: 1fr; } }
+.notebox{background:rgba(2,132,199,.05);border:1px solid rgba(2,132,199,.17);border-radius:9px;padding:11px;margin-top:11px;}
+.notebox .nl{font-size:9.5px;text-transform:uppercase;letter-spacing:.8px;color:var(--accent);font-weight:700;margin-bottom:3px;}
+.notebox p{font-size:12px;color:var(--text-soft);}
+.stitle{font-size:10px;text-transform:uppercase;letter-spacing:.8px;color:var(--text-muted);font-weight:700;margin:13px 0 6px;}
+.stitle:first-child{margin-top:0;}
 
-  .pros-box, .cons-box {
-    background: var(--surface2); border-radius: 10px; padding: 12px;
-  }
-  .pros-box { border-left: 3px solid var(--ok); }
-  .cons-box { border-left: 3px solid var(--danger); }
-  .box-title {
-    font-size: 11px; font-weight: 700; text-transform: uppercase;
-    letter-spacing: 0.8px; margin-bottom: 8px;
-  }
-  .pros-box .box-title { color: var(--ok); }
-  .cons-box .box-title { color: var(--danger); }
-  .box-list { list-style: none; }
-  .box-list li {
-    font-size: 12.5px; color: var(--text-soft); padding: 3px 0;
-    padding-left: 14px; position: relative;
-  }
-  .box-list li::before { content: '▸'; position: absolute; left: 0; font-size: 10px; }
-  .pros-box .box-list li::before { color: var(--ok); }
-  .cons-box .box-list li::before { color: var(--danger); }
+/* GUIDE */
+#guideView{display:none;padding:13px 15px 32px;max-width:920px;margin:0 auto;}
+#guideView.visible{display:block;}
+.guide-header{background:linear-gradient(135deg,#0f766e 0%,#0369a1 100%);border-radius:var(--r);padding:18px 20px;margin-bottom:13px;color:#fff;}
+.guide-header h2{font-family:'Outfit',sans-serif;font-size:18px;font-weight:900;margin-bottom:2px;}
+.guide-header p{font-size:12px;opacity:.8;}
+.ggrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:9px;}
+.gcard{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:13px;box-shadow:var(--sh);transition:box-shadow .2s,border-color .2s;}
+.gcard:hover{box-shadow:var(--sh2);border-color:var(--border-strong);}
+.gchdr{display:flex;align-items:center;gap:7px;margin-bottom:9px;}
+.gicon{font-size:17px;}
+.gctitle{font-size:12.5px;font-weight:700;color:var(--text);}
+.gcsub{font-size:10.5px;color:var(--text-muted);margin-top:1px;}
+.ranking{display:flex;flex-direction:column;gap:5px;}
+.ritem{display:flex;align-items:center;gap:7px;background:var(--surface2);border-radius:7px;padding:5px 9px;}
+.rnum{font-family:'JetBrains Mono',monospace;width:17px;height:17px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;background:var(--border);color:var(--text-muted);font-size:9.5px;font-weight:700;}
+.rnum.r1{background:rgba(234,179,8,.2);color:#854d0e;}
+.rnum.r2{background:rgba(148,163,184,.25);color:#475569;}
+.rnum.r3{background:rgba(180,120,60,.15);color:#7c5a3a;}
+.rdrug{font-size:12px;font-weight:600;color:var(--text);}
+.rdrug.pref{color:var(--guide);font-weight:700;}
+.rnote{font-size:10.5px;color:var(--text-muted);margin-left:auto;}
+.gwarn{background:var(--danger-dim);border:1px solid rgba(220,38,38,.18);border-radius:8px;padding:9px 11px;display:flex;gap:8px;align-items:flex-start;}
+.gwarn .wi{font-size:14px;flex-shrink:0;}
+.gwarn .wt{font-size:12px;color:var(--danger);font-weight:700;}
+.gwarn .wd{font-size:11px;color:var(--text-soft);margin-top:2px;}
+.gsingle{display:flex;align-items:center;gap:9px;background:var(--surface2);border-radius:8px;padding:8px 11px;}
+.gsl{font-size:11px;color:var(--text-muted);flex:1;}
+.gsd{font-size:12.5px;font-weight:700;color:var(--guide);font-family:'JetBrains Mono',monospace;}
+.greason{margin-top:6px;font-size:11px;color:var(--text-muted);padding:0 2px;}
 
-  .info-grid {
-    display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
-    margin-bottom: 14px;
-  }
-  @media (max-width: 480px) { .info-grid { grid-template-columns: 1fr; } }
-  .info-box {
-    background: var(--surface2); border-radius: 10px; padding: 12px;
-  }
-  .info-label {
-    font-size: 10px; text-transform: uppercase; letter-spacing: 0.8px;
-    color: var(--text-muted); font-weight: 600; margin-bottom: 5px;
-  }
-  .info-val {
-    font-size: 13px; color: var(--text);
-  }
-  .dose-val {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 13px; color: var(--accent); font-weight: 600;
-  }
+/* legend */
+.legend{display:flex;gap:9px;flex-wrap:wrap;padding:8px 15px;border-top:1px solid var(--border);background:var(--surface);position:sticky;bottom:0;box-shadow:0 -1px 4px rgba(0,0,0,.04);}
+.li{display:flex;align-items:center;gap:4px;font-size:10.5px;color:var(--text-muted);}
+.ld{width:7px;height:7px;border-radius:50%;}
 
-  .titration-flow {
-    background: var(--surface2); border-radius: 10px; padding: 14px;
-    margin-bottom: 12px;
-  }
-  .titration-title {
-    font-size: 11px; text-transform: uppercase; letter-spacing: 0.8px;
-    color: var(--text-muted); font-weight: 600; margin-bottom: 10px;
-  }
-  .titration-steps {
-    display: flex; flex-wrap: wrap; gap: 6px; align-items: center;
-  }
-  .tit-step {
-    background: var(--surface3); border: 1px solid var(--border);
-    border-radius: 8px; padding: 6px 12px; text-align: center;
-  }
-  .tit-step .dose { font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--accent); font-weight: 600; }
-  .tit-step .note { font-size: 10px; color: var(--text-muted); margin-top: 2px; }
-  .tit-arrow { color: var(--text-muted); font-size: 14px; }
+/* toast */
+#toast{position:fixed;bottom:54px;left:50%;transform:translateX(-50%) translateY(10px);background:#1e293b;color:#fff;font-size:12px;font-weight:600;padding:7px 15px;border-radius:20px;opacity:0;transition:opacity .2s,transform .2s;pointer-events:none;z-index:999;white-space:nowrap;}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 
-  /* EKG Section */
-  .ekg-section { margin-bottom: 12px; }
-  .ekg-risk-bar {
-    background: var(--surface2); border-radius: 10px; padding: 14px;
-    margin-bottom: 10px;
-  }
-  .ekg-header { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
-  .ekg-risk-label { font-size: 12px; font-weight: 600; color: var(--text-soft); }
-  .ekg-items { display: flex; flex-direction: column; gap: 8px; }
-  .ekg-item { display: flex; gap: 10px; align-items: flex-start; }
-  .ekg-tag {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 10px; font-weight: 700; padding: 3px 8px;
-    border-radius: 5px; flex-shrink: 0; min-width: 60px; text-align: center;
-    margin-top: 1px;
-  }
-  .qtc-tag { background: var(--warn-dim); color: var(--warn); border: 1px solid rgba(245,158,11,0.3); }
-  .pr-tag  { background: rgba(59,130,246,0.12); color: var(--accent2); border: 1px solid rgba(59,130,246,0.3); }
-  .qrs-tag { background: var(--danger-dim); color: var(--danger); border: 1px solid rgba(239,68,68,0.3); }
-  .ekg-desc { font-size: 12.5px; color: var(--text-soft); }
-
-  /* Interactions */
-  .interaction-list { display: flex; flex-direction: column; gap: 8px; }
-  .interaction-item {
-    background: var(--surface2); border-radius: 10px; padding: 12px;
-    display: flex; gap: 10px; align-items: flex-start;
-  }
-  .int-sev {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 10px; font-weight: 700; padding: 3px 8px;
-    border-radius: 5px; flex-shrink: 0; min-width: 58px; text-align: center;
-    margin-top: 1px;
-  }
-  .sev-ci   { background: var(--danger-dim); color: var(--danger); border: 1px solid rgba(239,68,68,0.35); }
-  .sev-high { background: var(--warn-dim); color: var(--warn); border: 1px solid rgba(245,158,11,0.35); }
-  .sev-mod  { background: rgba(59,130,246,0.12); color: var(--accent2); border: 1px solid rgba(59,130,246,0.3); }
-  .int-body { flex: 1; }
-  .int-drugs { font-size: 12.5px; font-weight: 600; color: var(--text); margin-bottom: 2px; }
-  .int-mech  { font-size: 11.5px; color: var(--text-muted); }
-
-  /* Contraindications */
-  .ci-list { display: flex; flex-direction: column; gap: 6px; }
-  .ci-item {
-    background: var(--surface2); border-radius: 8px;
-    padding: 10px 14px; display: flex; gap: 10px; align-items: center;
-  }
-  .ci-icon { color: var(--danger); font-size: 14px; flex-shrink: 0; }
-  .ci-text { font-size: 12.5px; color: var(--text-soft); }
-
-  /* Monitoring */
-  .monitor-list { display: flex; flex-wrap: wrap; gap: 6px; }
-  .monitor-pill {
-    background: var(--surface3); border: 1px solid var(--border);
-    border-radius: 6px; padding: 5px 10px;
-    font-size: 11.5px; color: var(--text-soft);
-  }
-
-  .note-box {
-    background: rgba(0,212,170,0.06); border: 1px solid rgba(0,212,170,0.2);
-    border-radius: 10px; padding: 12px; margin-top: 12px;
-  }
-  .note-box .note-label {
-    font-size: 10px; text-transform: uppercase; letter-spacing: 0.8px;
-    color: var(--accent); font-weight: 700; margin-bottom: 5px;
-  }
-  .note-box p { font-size: 12.5px; color: var(--text-soft); }
-
-  /* Section title inside panel */
-  .section-title {
-    font-size: 11px; text-transform: uppercase; letter-spacing: 0.8px;
-    color: var(--text-muted); font-weight: 600; margin: 16px 0 8px;
-  }
-  .section-title:first-child { margin-top: 0; }
-
-  /* Empty state */
-  .empty-state {
-    text-align: center; padding: 60px 20px; color: var(--text-muted);
-  }
-  .empty-state .big { font-size: 40px; margin-bottom: 12px; }
-  .empty-state p { font-size: 14px; }
-
-  /* Legend */
-  .legend-row {
-    display: flex; gap: 10px; flex-wrap: wrap; padding: 10px 16px;
-    border-top: 1px solid var(--border); background: var(--surface);
-    position: sticky; bottom: 0;
-  }
-  .legend-item { display: flex; align-items: center; gap: 5px; font-size: 11px; color: var(--text-muted); }
-  .legend-dot { width: 8px; height: 8px; border-radius: 50%; }
-
-  /* class count */
-  .class-count { font-size: 11px; color: var(--text-muted); padding: 4px 0 10px 2px; }
-
-  hr.divider { border: none; border-top: 1px solid var(--border); margin: 12px 0; }
-
-  /* ─── FORMULARY ─── */
-  .formulary-section { margin-top: 14px; }
-  .formulary-title {
-    font-size: 10px; text-transform: uppercase; letter-spacing: 0.8px;
-    color: var(--accent); font-weight: 700; margin-bottom: 8px;
-    display: flex; align-items: center; gap: 6px;
-  }
-  .formulary-grid { display: flex; flex-wrap: wrap; gap: 6px; }
-  .formulary-pill {
-    display: flex; align-items: center; gap: 6px;
-    background: var(--surface3); border: 1px solid rgba(0,212,170,0.25);
-    border-radius: 8px; padding: 6px 10px;
-  }
-  .f-code {
-    font-family: 'JetBrains Mono', monospace; font-size: 11px;
-    font-weight: 700; color: var(--accent);
-  }
-  .f-name { font-size: 11.5px; color: var(--text-soft); }
-  .f-note {
-    font-size: 10px; padding: 1px 5px; border-radius: 4px;
-    background: var(--danger-dim); color: var(--danger); font-weight: 600;
-  }
-  .f-new {
-    font-size: 10px; padding: 1px 5px; border-radius: 4px;
-    background: var(--ok-dim); color: var(--ok); font-weight: 600;
-  }
-  .no-formulary {
-    font-size: 12px; color: var(--text-muted);
-    background: var(--surface2); border-radius: 8px; padding: 8px 12px;
-    border-left: 3px solid var(--border);
-  }
-  .in-badge {
-    font-size: 9px; font-weight: 700; padding: 2px 6px;
-    border-radius: 4px; letter-spacing: 0.5px;
-    background: rgba(0,212,170,0.15); color: var(--accent);
-    border: 1px solid rgba(0,212,170,0.3); flex-shrink: 0;
-  }
-
-  /* ─── NEW CLICKABLE PILLS IN HEADER ─── */
-  .hc-pill {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 10px; font-weight: 700;
-    padding: 2px 8px; border-radius: 5px;
-    background: rgba(0,158,128,0.12);
-    color: var(--accent);
-    border: 1px solid rgba(0,158,128,0.3);
-    cursor: pointer;
-    transition: all 0.2s;
-    user-select: none;
-    position: relative;
-  }
-  .hc-pill:hover {
-    background: var(--accent); color: white; transform: translateY(-1px);
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  }
-  .hc-pill:active { transform: translateY(0); }
-  .hc-pill.hc-new { background: rgba(22,163,74,0.12); color: var(--ok); border-color: rgba(22,163,74,0.35); }
-  .hc-pill.hc-oos { background: rgba(220,38,38,0.08); color: var(--danger); border-color: rgba(220,38,38,0.25); text-decoration: line-through; opacity: 0.7; }
-  .hc-pill.copied { background: var(--ok) !important; color: white !important; border-color: var(--ok) !important; }
+.empty{text-align:center;padding:50px 20px;color:var(--text-muted);}
+.empty .big{font-size:38px;margin-bottom:10px;}
 </style>
 </head>
 <body>
-<a href="index.html" style="position:fixed; top:10px; left:10px; background:#333; color:white; padding:8px 12px; border-radius:8px; text-decoration:none; z-index:999;">🏠 홈</a>
-  
+<div id="toast"></div>
 <header>
   <div class="header-top">
-    <div>
+    <a href="index.html" class="home-btn">🏠 홈</a>
+    <div class="header-brand">
       <div class="header-title">항우울제 <span>임상참조</span></div>
-      <div class="header-sub">Antidepressant Clinical Reference · Pharmacy Edition</div>
+      <div class="header-sub">Antidepressant Clinical Reference · 하남보바스병원 약제팀</div>
     </div>
-    <div class="drug-count-badge" id="countBadge">16 drugs</div>
+    <div class="drug-count-badge" id="cntBadge">18 drugs</div>
   </div>
   <div class="search-wrap">
     <span class="search-icon">🔍</span>
-    <input type="text" id="searchInput" placeholder="약품명 검색… (예: escitalopram, 미르타자핀)">
+    <input type="text" id="searchInput" placeholder="약품명·성분명·원내코드 검색… (예: escitalopram, LEXA, 미르타자핀)">
   </div>
   <div class="class-tabs">
     <button class="tab-btn active" data-class="ALL">전체</button>
@@ -431,942 +250,496 @@
     <button class="tab-btn" data-class="SNRI">SNRI</button>
     <button class="tab-btn" data-class="TCA">TCA</button>
     <button class="tab-btn" data-class="기타">기타</button>
+    <button class="tab-btn" data-class="가이드">📋 임상 선택 가이드</button>
   </div>
 </header>
 
 <main id="drugList"></main>
 
-<div class="legend-row">
-  <div class="legend-item"><div class="legend-dot" style="background:var(--ok)"></div>EKG 저위험</div>
-  <div class="legend-item"><div class="legend-dot" style="background:var(--warn)"></div>EKG 중등도</div>
-  <div class="legend-item"><div class="legend-dot" style="background:var(--danger)"></div>EKG 고위험</div>
-  <div class="legend-item" style="margin-left:auto; font-size:10px; color:var(--text-muted)">CI = 금기 / 참고용 자료 · 처방 시 확인 요망</div>
+<div id="guideView">
+  <div class="guide-header">
+    <h2>📋 임상 선택 가이드</h2>
+    <p>증상·동반질환·부작용 프로필에 따른 항우울제 선택 참고표 — 하남보바스병원 약제팀</p>
+  </div>
+  <div class="ggrid" id="ggrid"></div>
+</div>
+
+<div class="legend">
+  <div class="li"><div class="ld" style="background:var(--ok)"></div>EKG 저위험</div>
+  <div class="li"><div class="ld" style="background:var(--warn)"></div>EKG 주의</div>
+  <div class="li"><div class="ld" style="background:var(--danger)"></div>EKG 고위험</div>
+  <div class="li"><div class="ld" style="background:var(--accent)"></div>원내코드 클릭=복사</div>
+  <div class="li" style="margin-left:auto;font-size:10px">참고용 · 처방 시 확인 요망</div>
 </div>
 
 <script>
-// 데이터 배열 (유지)
-const drugs = [
-  {
-    id: 'escitalopram',
-    nameKor: '에스시탈로프람',
-    nameEng: 'Escitalopram',
-    brand: 'Lexapro / 렉사프로',
-    drugClass: 'SSRI',
-    ekgRisk: 'mod',
-    formulary: [
-      { code: 'LEXA5',  name: '렉사프로 정 5mg',  isNew: false },
-      { code: 'LEXA',   name: '렉사프로 정 10mg', isNew: false },
-      { code: 'LEXA20', name: '렉사프로 정 20mg', isNew: true  },
-    ],
-    pros: ['가장 약물 상호작용 적은 SSRI', 'Tolerability 우수, 부작용 적음', '1일 1회 단순 복용', '빠른 항불안 효과', '노인에서도 비교적 안전'],
-    cons: ['QTc 연장 (용량 의존성)', '성기능 장애', '중단 증후군 가능', '고령자 최대 10mg 제한', '초기 불안 악화 가능'],
-    duration: '첫 삽화: 최소 6~12개월 유지. 재발 2회 이상: 2년 이상 또는 무기한 유지 고려.',
-    titration: [
-      { dose: '10mg', note: '시작' },
-      { dose: '1~2주 경과', note: '' },
-      { dose: '20mg', note: '목표/최대' }
-    ],
-    maintenance: '10~20mg/일',
-    tapering: '수주~수개월에 걸쳐 서서히 감량. 예: 20mg→10mg (2주) → 10mg 격일 (2주) → 중단. 중단 증후군: 현기증, 전기충격감(brain zap), 구역.',
-    ekg: {
-      risk: 'mod',
-      items: [
-        { tag: 'QTc', cls: 'qtc-tag', desc: '용량 의존성 QTc 연장. 20mg 초과 금기. 노인·저칼륨·QT 기저 연장 시 주의.' },
-        { tag: 'QRS', cls: 'qrs-tag', desc: 'QRS 변화 거의 없음.' }
-      ]
-    },
-    interactions: [
-      { sev: 'ci', cls: 'sev-ci', drugs: 'MAOIs (selegiline, phenelzine 등)', mech: '세로토닌 증후군 위험. MAOI 중단 후 14일, fluoxetine은 5주 세척기간 필요.' },
-      { sev: 'ci', cls: 'sev-ci', drugs: 'Pimozide, thioridazine', mech: 'QTc 연장 상승 → 심실 부정맥 위험.' },
-      { sev: 'high', cls: 'sev-high', drugs: 'QT 연장 약물 (아미오다론, 시프로플록사신, 항진균제 등)', mech: 'QTc 상가 연장.' },
-      { sev: 'high', cls: 'sev-high', drugs: 'Triptans, tramadol, linezolid', mech: '세로토닌 증후군 위험.' },
-      { sev: 'mod', cls: 'sev-mod', drugs: 'NSAIDs, 아스피린, 와파린', mech: '출혈 위험 증가 (혈소판 세로토닌 억제).' },
-      { sev: 'mod', cls: 'sev-mod', drugs: 'CYP2C19 억제제 (오메프라졸, 플루코나졸)', mech: 'Escitalopram 혈중농도 상승.' }
-    ],
-    contraindications: ['MAOI 병용 또는 14일 이내', 'QTc > 500ms', '선천성 QT 증후군', 'Pimozide 병용', '저칼륨혈증·저마그네슘혈증 (교정 전)'],
-    monitoring: ['EKG (기저치, 고용량 시)', 'K+, Mg²⁺', '자살 충동 (초기 2~4주)', '성기능·체중'],
-    note: '노인 최대 용량 10mg/일. 간기능 저하 시 10mg/일로 제한. CYP2C19 poor metabolizer에서 혈중농도 상승.'
-  },
-  {
-    id: 'sertraline',
-    nameKor: '설트랄린',
-    nameEng: 'Sertraline',
-    brand: 'Zoloft / 졸로프트',
-    drugClass: 'SSRI',
-    ekgRisk: 'low',
-    formulary: [
-      { code: 'SETRA', name: '셀트라 정 50mg', isNew: false },
-    ],
-    pros: ['가장 광범위하게 사용되는 SSRI', '심장 안전성 우수 (심혈관 환자 선호)', '임부 안전성 상대적으로 양호', '다양한 적응증 (MDD, OCD, PTSD, PD)', 'QTc 영향 최소'],
-    cons: ['설사 등 GI 부작용 빈번', '성기능 장애', '와파린 INR 증가', 'CYP2D6 약한 억제', '중단 증후군'],
-    duration: '첫 삽화: 6~12개월. 재발성: 2년 이상.',
-    titration: [
-      { dose: '25~50mg', note: '시작' },
-      { dose: '1~2주마다', note: '증량' },
-      { dose: '50~200mg', note: '목표' }
-    ],
-    maintenance: '50~200mg/일',
-    tapering: '점진적 감량: 50mg씩 2~4주 간격으로 감량. 급격한 중단 시 현기증, 자극과민, 불면 가능.',
-    ekg: {
-      risk: 'low',
-      items: [
-        { tag: 'QTc', cls: 'qtc-tag', desc: '임상적으로 유의한 QTc 연장 드묾. SSRI 중 심장 안전성 가장 우수.' },
-        { tag: 'QRS', cls: 'qrs-tag', desc: '거의 영향 없음.' }
-      ]
-    },
-    interactions: [
-      { sev: 'ci', cls: 'sev-ci', drugs: 'MAOIs', mech: '세로토닌 증후군. 상호 중단 후 14일 간격 필요.' },
-      { sev: 'high', cls: 'sev-high', drugs: '와파린', mech: 'INR 증가 (기전 불명확). PT/INR 모니터링 필요.' },
-      { sev: 'high', cls: 'sev-high', drugs: 'NSAIDs / 아스피린', mech: 'GI 출혈 위험 증가.' },
-      { sev: 'mod', cls: 'sev-mod', drugs: 'Tramadol, triptans', mech: '세로토닌 증후군 위험.' },
-      { sev: 'mod', cls: 'sev-mod', drugs: 'Pimozide', mech: '혈중농도 상승 → QT 연장. 병용 금기.' }
-    ],
-    contraindications: ['MAOI 병용/14일 이내', 'Pimozide 병용', '알코올 병용 (CNS 억제)'],
-    monitoring: ['INR (와파린 병용 시)', '자살 충동 (초기)', 'GI 증상', '전해질'],
-    note: '임신 중 비교적 안전한 SSRI 중 하나 (1st line). 심근경색 후 우울증에도 선호.'
-  },
-  {
-    id: 'fluoxetine',
-    nameKor: '플루옥세틴',
-    nameEng: 'Fluoxetine',
-    brand: 'Prozac / 프로작',
-    drugClass: 'SSRI',
-    ekgRisk: 'low',
-    formulary: [
-      { code: 'FOXE',  name: '폭세틴 캡슐 10mg', isNew: false },
-      { code: 'FOXET', name: '폭세틴 캡슐 20mg', isNew: false },
-    ],
-    pros: ['반감기 매우 길어 중단 증후군 거의 없음', '식욕억제·체중 감소 효과', '폭식증(BN) 치료 적응증', '빠른 용량 탄력성', '주 1회 제형 가능'],
-    cons: ['강력한 CYP2D6 억제로 상호작용 많음', '반감기 길어 용량 조정 어려움', 'MAOI 전환 시 5주 세척기간 필요', '초기 불안·불면 가능', '성기능 장애'],
-    duration: '6~12개월 (첫 삽화). MAOI로 전환 전 5주 세척기간 필수.',
-    titration: [
-      { dose: '10~20mg', note: '시작' },
-      { dose: '4주 후', note: '재평가' },
-      { dose: '20~60mg', note: '통상 목표' },
-      { dose: '최대 80mg', note: 'OCD' }
-    ],
-    maintenance: '20~60mg/일 (MDD); 최대 80mg/일 (OCD)',
-    tapering: '반감기가 2~6일 (활성대사체 최대 16일)이므로 중단 증후군 거의 없음. 다른 SSRI 중단 후 fluoxetine으로 전환도 용이.',
-    ekg: {
-      risk: 'low',
-      items: [
-        { tag: 'QTc', cls: 'qtc-tag', desc: 'SSRI 중 QTc 영향 최소. 고용량에서 미미한 QTc 연장 보고.' }
-      ]
-    },
-    interactions: [
-      { sev: 'ci', cls: 'sev-ci', drugs: 'MAOIs', mech: '세로토닌 증후군. Fluoxetine→MAOI: 5주 세척기간. MAOI→fluoxetine: 14일.' },
-      { sev: 'ci', cls: 'sev-ci', drugs: 'Thioridazine, pimozide', mech: 'CYP2D6 억제로 혈중농도 급상승 → 심각한 QT 연장/부정맥.' },
-      { sev: 'high', cls: 'sev-high', drugs: 'TCAs (amitriptyline, nortriptyline 등)', mech: 'CYP2D6 억제로 TCA 혈중농도 2~4배 상승 → 독성.' },
-      { sev: 'high', cls: 'sev-high', drugs: '타목시펜(tamoxifen)', mech: 'CYP2D6 억제로 활성대사체 감소 → 항암 효과 저하.' },
-      { sev: 'high', cls: 'sev-high', drugs: 'Codeine, tramadol', mech: 'CYP2D6 억제로 morphine/활성대사체 변환 저하.' },
-      { sev: 'mod', cls: 'sev-mod', drugs: 'Carbamazepine, phenytoin', mech: '혈중농도 변화 가능. 모니터링 필요.' }
-    ],
-    contraindications: ['MAOI 병용 (5주 세척기간)', 'Thioridazine/pimozide 병용', 'CYP2D6 기질 좁은 치료역 약물 병용 주의'],
-    monitoring: ['CYP2D6 substrate 약물 병용 여부', '자살 충동', '체중', '혈당 (당뇨 환자)'],
-    note: '반감기가 길어 중단 증후군 최소. 다른 SSRI 중단 후 fluoxetine을 가교(bridging)로 사용 가능. 임신 1삼분기 심실중격결손 가능성 보고 있으나 근거 약함.'
-  },
-  {
-    id: 'paroxetine',
-    nameKor: '파록세틴',
-    nameEng: 'Paroxetine',
-    brand: 'Paxil / 팍실',
-    drugClass: 'SSRI',
-    ekgRisk: 'low',
-    formulary: [],
-    pros: ['강한 항불안 효과 (공황, 사회공포증, PTSD)', '진정 효과 있어 불안·불면 동반 시 유용', '다양한 적응증', '단기간 강한 효과'],
-    cons: ['중단 증후군 가장 심한 SSRI', '강한 CYP2D6 억제', '항콜린 부작용 (구강건조, 변비, 인지 장애)', '체중 증가', '임신 심장기형 위험 (범주 D)'],
-    duration: '6~12개월 (첫 삽화). 중단 시 매우 서서히 감량 필요.',
-    titration: [
-      { dose: '10mg', note: '시작' },
-      { dose: '1주마다 10mg', note: '증량' },
-      { dose: '20~50mg', note: '목표' },
-      { dose: '최대 60mg', note: 'OCD' }
-    ],
-    maintenance: '20~50mg/일',
-    tapering: '⚠️ SSRI 중 중단 증후군 가장 심함. 매우 서서히 감량 필수. 10mg씩 2~4주 간격. 10mg→5mg(분할)→2.5mg(액상). 중단 증후군: FINISH (Flu-like, Insomnia, Nausea, Imbalance, Sensory disturbances, Hyperarousal).',
-    ekg: {
-      risk: 'low',
-      items: [
-        { tag: 'QTc', cls: 'qtc-tag', desc: '임상적 QTc 연장 드묾. 고용량에서 미미한 영향.' }
-      ]
-    },
-    interactions: [
-      { sev: 'ci', cls: 'sev-ci', drugs: 'MAOIs', mech: '세로토닌 증후군. 14일 세척기간.' },
-      { sev: 'ci', cls: 'sev-ci', drugs: 'Thioridazine', mech: 'CYP2D6 억제로 혈중농도 급상승.' },
-      { sev: 'high', cls: 'sev-high', drugs: '타목시펜(tamoxifen)', mech: 'CYP2D6 억제로 항암 효과 감소.' },
-      { sev: 'high', cls: 'sev-high', drugs: 'TCAs, risperidone, aripiprazole', mech: 'CYP2D6 억제로 혈중농도 상승.' },
-      { sev: 'mod', cls: 'sev-mod', drugs: '항콜린 약물', mech: '항콜린 효과 상가.' }
-    ],
-    contraindications: ['MAOIs 병용/14일 이내', 'Thioridazine 병용', '임신 (특히 1삼분기, 심장기형 위험)', '타목시펜 치료 중'],
-    monitoring: ['중단 증후군 징후', '체중', '항콜린 부작용 (노인)', '자살 충동'],
-    note: '임산부 사용 주의 (Category D). 모유수유 시 다른 SSRI 선호. 반감기 짧아(21시간) 복용 누락 시 중단 증후군 쉽게 발생 — 정시 복용 중요.'
-  },
-  {
-    id: 'fluvoxamine',
-    nameKor: '플루복사민',
-    nameEng: 'Fluvoxamine',
-    brand: 'Luvox / 루복스',
-    drugClass: 'SSRI',
-    ekgRisk: 'low',
-    formulary: [],
-    pros: ['OCD 1차 치료제', '항불안 효과 우수', '진정 효과 있어 불면 동반 시 유리', 'COVID-19 중증화 예방 연구 주목'],
-    cons: ['CYP1A2/CYP2C19 강력 억제 → 광범위 상호작용', '진정·졸음 부작용', '2회 분할 복용 필요 (일부)', '구역·구토 빈번', '체중 증가'],
-    duration: 'OCD 최소 1~2년. MDD 6~12개월.',
-    titration: [
-      { dose: '50mg', note: '취침 전 시작' },
-      { dose: '4~7일 간격', note: '50mg 증량' },
-      { dose: '100~300mg', note: '목표' }
-    ],
-    maintenance: '100~300mg/일 (1~2회 분복)',
-    tapering: '4주 이상에 걸쳐 서서히 감량. 50mg씩 단계적 감소.',
-    ekg: {
-      risk: 'low',
-      items: [
-        { tag: 'QTc', cls: 'qtc-tag', desc: '임상적 QTc 연장 드묾.' }
-      ]
-    },
-    interactions: [
-      { sev: 'ci', cls: 'sev-ci', drugs: 'MAOIs', mech: '세로토닌 증후군. 14일 세척기간.' },
-      { sev: 'ci', cls: 'sev-ci', drugs: 'Tizanidine, thioridazine, alosetron', mech: 'CYP1A2 억제로 혈중농도 급상승, 심각한 독성.' },
-      { sev: 'ci', cls: 'sev-ci', drugs: 'Pimozide, cisapride', mech: 'CYP3A4 억제로 QT 연장 위험.' },
-      { sev: 'high', cls: 'sev-high', drugs: '클로자핀(clozapine)', mech: 'CYP1A2 억제로 혈중농도 5~10배 상승 → 경련, 과진정.' },
-      { sev: 'high', cls: 'sev-high', drugs: '테오필린(theophylline)', mech: 'CYP1A2 억제로 테오필린 독성 위험.' },
-      { sev: 'high', cls: 'sev-high', drugs: '와파린', mech: 'CYP1A2/2C9 억제로 INR 상승.' },
-      { sev: 'mod', cls: 'sev-mod', drugs: '카페인, 올란자핀', mech: 'CYP1A2 억제로 혈중농도 상승.' }
-    ],
-    contraindications: ['MAOIs 병용', 'Tizanidine, pimozide, cisapride, alosetron 병용', 'CYP1A2 기질 좁은 치료역 약물 병용'],
-    monitoring: ['CYP1A2 기질 약물 혈중농도', 'INR (와파린 병용)', '클로자핀 혈중농도', '간기능'],
-    note: '클로자핀 병용 환자에서 특히 주의. 흡연자는 CYP1A2 유도로 용량 증량 필요할 수 있음.'
-  },
-  {
-    id: 'venlafaxine',
-    nameKor: '벤라팍신',
-    nameEng: 'Venlafaxine',
-    brand: 'Effexor XR / 이팩사',
-    drugClass: 'SNRI',
-    ekgRisk: 'mod',
-    formulary: [],
-    pros: ['우울증·불안장애·신경병증성 통증에 효과', 'SSRI 무반응 시 유용', 'NE 효과로 만성통증에 유리', '집중력·피로 개선', '피브로마이알지아 보조'],
-    cons: ['혈압 상승 (고용량, 노르에피네프린 효과)', '중단 증후군 심함', '구역·구토 빈번 (초기)', '발한 증가', '심박수 증가', '고용량 QTc 연장'],
-    duration: '6~12개월 (MDD). 통증: 유지기간 개별화.',
-    titration: [
-      { dose: '37.5mg XR', note: '시작' },
-      { dose: '4~7일', note: '75mg' },
-      { dose: '75~225mg', note: '목표' }
-    ],
-    maintenance: '75~225mg/일 (XR 제형, 1회)',
-    tapering: '⚠️ 중단 증후군 심함. 75mg씩 2~4주 간격 서서히 감량. 필요 시 fluoxetine으로 전환 후 tapering. 마지막 37.5mg 단계에서 격일 복용 전략.',
-    ekg: {
-      risk: 'mod',
-      items: [
-        { tag: 'QTc', cls: 'qtc-tag', desc: '고용량(225mg 이상)에서 QTc 연장 가능. 용량 의존성.' },
-        { tag: 'PR', cls: 'pr-tag', desc: 'PR 간격 경미한 연장 가능.' }
-      ]
-    },
-    interactions: [
-      { sev: 'ci', cls: 'sev-ci', drugs: 'MAOIs', mech: '세로토닌 증후군. 14일 세척기간.' },
-      { sev: 'high', cls: 'sev-high', drugs: 'QT 연장 약물, 항부정맥제', mech: 'QTc 상가 연장 (고용량 시).' },
-      { sev: 'high', cls: 'sev-high', drugs: 'Linezolid, methylene blue', mech: '세로토닌 증후군.' },
-      { sev: 'mod', cls: 'sev-mod', drugs: '항고혈압제', mech: '혈압 상승 효과가 항고혈압 효과에 길항.' },
-      { sev: 'mod', cls: 'sev-mod', drugs: 'NSAIDs, 아스피린, 와파린', mech: '출혈 위험 증가.' }
-    ],
-    contraindications: ['MAOIs 병용/14일 이내', '조절되지 않는 고혈압', 'QTc > 500ms'],
-    monitoring: ['혈압 (매 방문)', '심박수', 'EKG (고용량)', '체중', '자살 충동'],
-    note: '고용량(≥225mg)에서 노르에피네프린 효과로 혈압/맥박 상승. 고혈압 환자는 저용량 유지 또는 타 약제 선택. CYP2D6 대사.'
-  },
-  {
-    id: 'duloxetine',
-    nameKor: '둘록세틴',
-    nameEng: 'Duloxetine',
-    brand: 'Cymbalta / 심발타',
-    drugClass: 'SNRI',
-    ekgRisk: 'low',
-    formulary: [
-      { code: 'DULOC3', name: '드록틴 캡슐 30mg', isNew: false },
-      { code: 'DULOC6', name: '드록틴 캡슐 60mg', isNew: false },
-    ],
-    pros: ['당뇨병성 신경병증·섬유근통 FDA 승인', '만성요통·골관절염 통증 적응증', '요실금(SUI) 개선', 'SSRI 무반응 우울증에 효과', '불안장애 효과'],
-    cons: ['간독성 위험 (음주자·간질환 금기)', '구역·구토 (초기 2~4주)', '요저류 가능', '중단 증후군', '혈압 경미 상승'],
-    duration: '6~12개월. 만성통증: 장기간 유지.',
-    titration: [
-      { dose: '30mg', note: '1~2주 시작' },
-      { dose: '60mg', note: '목표·유지' },
-      { dose: '최대 120mg', note: '분복 가능' }
-    ],
-    maintenance: '60mg/일 (1~2회)',
-    tapering: '30mg씩 2~4주 간격 감량. 구역·어지럼·전기충격감 주의.',
-    ekg: {
-      risk: 'low',
-      items: [
-        { tag: 'QTc', cls: 'qtc-tag', desc: '임상적으로 유의한 QTc 연장 거의 없음.' }
-      ]
-    },
-    interactions: [
-      { sev: 'ci', cls: 'sev-ci', drugs: 'MAOIs', mech: '세로토닌 증후군. 14일 세척기간.' },
-      { sev: 'ci', cls: 'sev-ci', drugs: 'Thioridazine', mech: 'CYP2D6 억제로 혈중농도 급상승.' },
-      { sev: 'high', cls: 'sev-high', drugs: '알코올, 간독성 약물', mech: '간독성 위험 증가. 음주자 금기.' },
-      { sev: 'high', cls: 'sev-high', drugs: 'CYP1A2 억제제 (fluvoxamine, 시프로플록사신)', mech: '둘록세틴 혈중농도 5배 이상 상승.' },
-      { sev: 'mod', cls: 'sev-mod', drugs: 'NSAIDs, 항응고제', mech: '출혈 위험 증가.' }
-    ],
-    contraindications: ['MAOIs 병용', '간질환/심한 간기능 저하', '과음자', '조절되지 않는 좁은각 녹내장'],
-    monitoring: ['간기능 (ALT/AST, 기저치·3개월·정기)', '혈압', '요저류 증상', '자살 충동'],
-    note: '당뇨병성 신경병증성 통증 1차 선택약 중 하나. 음주 습관 반드시 확인.'
-  },
-  {
-    id: 'milnacipran',
-    nameKor: '밀나시프란',
-    nameEng: 'Milnacipran',
-    brand: 'Ixel / 익셀',
-    drugClass: 'SNRI',
-    ekgRisk: 'low',
-    formulary: [],
-    pros: ['섬유근통 적응증 (levomilnacipran)', 'NE 효과 비교적 강함', '인지 개선 효과 가능', 'CYP 효소 영향 적어 상호작용 적음', '신기능에 따른 용량 조정 필요'],
-    cons: ['발한·열감·조홍 빈번', '혈압·심박수 상승', '배뇨곤란', '국내 처방 빈도 낮음', '섬유근통 적응증은 levomilnacipran(미국 Savella)'],
-    duration: '6~12개월 (MDD).',
-    titration: [
-      { dose: '25mg ×2', note: '시작' },
-      { dose: '1주 후', note: '증량' },
-      { dose: '50mg ×2', note: '목표' },
-      { dose: '최대 100mg', note: '분복' }
-    ],
-    maintenance: '100mg/일 (분복)',
-    tapering: '2~4주에 걸쳐 서서히 감량.',
-    ekg: {
-      risk: 'low',
-      items: [
-        { tag: 'QTc', cls: 'qtc-tag', desc: '임상적으로 유의한 QTc 연장 없음. 심박수 경미 상승.' }
-      ]
-    },
-    interactions: [
-      { sev: 'ci', cls: 'sev-ci', drugs: 'MAOIs', mech: '세로토닌 증후군.' },
-      { sev: 'high', cls: 'sev-high', drugs: '교감신경흥분제 (에피네프린, 노르에피네프린)', mech: 'NE 재흡수 억제로 심혈관 효과 과도 증강.' },
-      { sev: 'mod', cls: 'sev-mod', drugs: '항고혈압제', mech: '혈압 상승으로 항고혈압 효과 감소.' }
-    ],
-    contraindications: ['MAOIs', '조절되지 않는 고혈압', '중증 신기능 저하 (eGFR<30: 용량 감량)'],
-    monitoring: ['혈압·심박수', '배뇨 증상', '자살 충동'],
-    note: '신기능 저하 시 용량 감량 필요. 간기능 저하는 상대적으로 덜 영향.'
-  },
-  {
-    id: 'amitriptyline',
-    nameKor: '아미트립틸린',
-    nameEng: 'Amitriptyline',
-    brand: 'Tryptanol / 에트라빌',
-    drugClass: 'TCA',
-    ekgRisk: 'high',
-    formulary: [
-      { code: 'AMIT', name: '명인 아미트리프틸린 정 10mg', isNew: false },
-    ],
-    pros: ['만성 신경병증 통증 1차 선택 (저용량)', '섬유근통·편두통 예방', '진정·수면 효과 (야간 복용)', '우울증·공황 효과 입증', '저렴한 비용'],
-    cons: ['강한 항콜린 효과 (구강건조, 변비, 요저류, 인지 저하)', 'QT 연장·QRS 확장·PR 연장 — 심각한 심장독성', '과량 복용 시 치명적', '체중 증가', '기립성 저혈압', '노인 사용 주의 (Beers criteria)'],
-    duration: '우울증: 6~12개월. 통증/예방: 장기간 유지 가능.',
-    titration: [
-      { dose: '10~25mg', note: '취침 전 시작' },
-      { dose: '1~2주마다 25mg', note: '증량' },
-      { dose: '75~150mg', note: '항우울 목표' },
-      { dose: '10~75mg', note: '통증/예방' }
-    ],
-    maintenance: '75~150mg/일 (항우울); 10~75mg/일 (통증·예방)',
-    tapering: '2~4주에 걸쳐 서서히 감량. 급격한 중단 시 콜린성 반동 (구역, 발한, 설사, 불면).',
-    ekg: {
-      risk: 'high',
-      items: [
-        { tag: 'QTc', cls: 'qtc-tag', desc: 'QTc 연장 (용량 의존성). 심실빈맥(Torsades de Pointes) 위험.' },
-        { tag: 'QRS', cls: 'qrs-tag', desc: 'QRS 확장 (>100ms → 독성 징후). 과량 복용 시 광범위 QRS 확장.' },
-        { tag: 'PR', cls: 'pr-tag', desc: 'PR 간격 연장, T파 편평화/역전.' }
-      ]
-    },
-    interactions: [
-      { sev: 'ci', cls: 'sev-ci', drugs: 'MAOIs', mech: '세로토닌 증후군/고혈압 위기. 14일 세척기간.' },
-      { sev: 'ci', cls: 'sev-ci', drugs: '최근 급성 심근경색, Class IA/IC 항부정맥제', mech: '심각한 부정맥 위험.' },
-      { sev: 'high', cls: 'sev-high', drugs: 'QT 연장 약물 (항진균제, 퀴놀론계, 항정신병약)', mech: 'QT/QRS 상가 독성.' },
-      { sev: 'high', cls: 'sev-high', drugs: 'Fluoxetine, paroxetine (CYP2D6 억제제)', mech: 'TCA 혈중농도 2~4배 상승 → 독성.' },
-      { sev: 'high', cls: 'sev-high', drugs: '항콜린 약물 (항히스타민제, 방광이완제)', mech: '항콜린 효과 상가 (섬망, 요저류, 장폐색).' },
-      { sev: 'mod', cls: 'sev-mod', drugs: 'CNS 억제제 (벤조디아제핀, 알코올)', mech: '중추신경 억제 증강.' }
-    ],
-    contraindications: ['MAOIs 병용/14일 이내', '최근(14일 내) 급성 심근경색', 'QTc > 500ms', '2도 이상 방실차단', '조절되지 않는 좁은각 녹내장', '요저류', '심각한 간기능 저하'],
-    monitoring: ['⚠️ 기저 EKG 필수', 'QTc·QRS 정기 모니터링 (고용량)', '혈중농도 (50~150 ng/mL)', 'TDM (치료약물농도 모니터링)', '혈압 (기립성)', '항콜린 증상'],
-    note: '과량 복용(overdose) 시 QRS >100ms, QTc >500ms → 심실빈맥/사망 위험. 고위험 환자에게 다량 처방 주의. 노인: Beers criteria 부적절 약물 목록 포함.'
-  },
-  {
-    id: 'nortriptyline',
-    nameKor: '노르트립틸린',
-    nameEng: 'Nortriptyline',
-    brand: 'Sensoval / 노리트렌',
-    drugClass: 'TCA',
-    ekgRisk: 'high',
-    formulary: [
-      { code: 'SENS10', name: '센시발 정 10mg', isNew: false, note: '품절' },
-    ],
-    pros: ['아미트립틸린 대비 항콜린 효과 적음', 'TCA 중 기립성 저혈압 비교적 적음', '치료 혈중농도 범위 명확 (50~150 ng/mL)', '신경병증 통증·편두통 예방', '노인 TCA 중 상대적 선호'],
-    cons: ['여전히 심각한 심장독성 가능', '항콜린 부작용', 'QTc/QRS 연장', '과량 복용 치명적', '체중 증가', '진정'],
-    duration: '우울증: 6~12개월. 통증: 장기 유지 가능.',
-    titration: [
-      { dose: '10~25mg', note: '취침 전 시작' },
-      { dose: '1~2주마다', note: '25mg 증량' },
-      { dose: '50~150mg', note: '항우울 목표' }
-    ],
-    maintenance: '50~150mg/일',
-    tapering: '2~4주 서서히 감량.',
-    ekg: {
-      risk: 'high',
-      items: [
-        { tag: 'QTc', cls: 'qtc-tag', desc: 'QTc 연장 (아미트립틸린보다 약간 적음).' },
-        { tag: 'QRS', cls: 'qrs-tag', desc: 'QRS 확장 가능 (용량 의존성).' },
-        { tag: 'PR', cls: 'pr-tag', desc: 'PR 간격 연장 가능.' }
-      ]
-    },
-    interactions: [
-      { sev: 'ci', cls: 'sev-ci', drugs: 'MAOIs', mech: '세로토닌 증후군/고혈압 위기.' },
-      { sev: 'ci', cls: 'sev-ci', drugs: '최근 급성 심근경색', mech: '심각한 부정맥 위험.' },
-      { sev: 'high', cls: 'sev-high', drugs: 'CYP2D6 억제제 (fluoxetine, paroxetine)', mech: 'TCA 혈중농도 급상승.' },
-      { sev: 'high', cls: 'sev-high', drugs: 'QT 연장 약물', mech: 'QTc 상가 연장.' }
-    ],
-    contraindications: ['MAOIs 병용', '최근 급성 심근경색', 'QTc > 500ms', '심각한 전도 장애'],
-    monitoring: ['기저 EKG 필수', 'QTc/QRS', '혈중농도 TDM (50~150 ng/mL)', '혈압', '항콜린 증상'],
-    note: 'TCA 중 노인에게 상대적으로 더 사용될 수 있으나, 여전히 심장 독성 주의. 치료 창(therapeutic window) 명확하여 TDM 유용.'
-  },
-  {
-    id: 'imipramine',
-    nameKor: '이미프라민',
-    nameEng: 'Imipramine',
-    brand: 'Tofranil / 토프라닐',
-    drugClass: 'TCA',
-    ekgRisk: 'high',
-    formulary: [],
-    pros: ['야뇨증 소아 치료 적응증', '공황장애 효과 입증', '우울증 효과 우수', '저렴한 비용', '광범위 임상 근거'],
-    cons: ['심각한 심장독성 (QTc/QRS 연장)', '강한 항콜린 부작용', '진정·기립성 저혈압', '과량 복용 치명적', '소아 사용 시 각별한 모니터링'],
-    duration: '우울증: 6~12개월. 야뇨증: 3~6개월 후 재평가.',
-    titration: [
-      { dose: '25~75mg', note: '야간 시작' },
-      { dose: '1~2주마다', note: '25~50mg 증량' },
-      { dose: '100~300mg', note: '항우울 목표' },
-      { dose: '25~75mg', note: '야뇨증' }
-    ],
-    maintenance: '100~200mg/일 (MDD)',
-    tapering: '2~4주 서서히 감량.',
-    ekg: {
-      risk: 'high',
-      items: [
-        { tag: 'QTc', cls: 'qtc-tag', desc: 'QTc 연장 (TCA 중 가장 현저).' },
-        { tag: 'QRS', cls: 'qrs-tag', desc: '고용량·과량 복용 시 QRS 현저 확장 → 심실빈맥.' },
-        { tag: 'PR', cls: 'pr-tag', desc: 'PR 연장, T파 변화.' }
-      ]
-    },
-    interactions: [
-      { sev: 'ci', cls: 'sev-ci', drugs: 'MAOIs', mech: '고혈압 위기·세로토닌 증후군.' },
-      { sev: 'ci', cls: 'sev-ci', drugs: '최근 심근경색, Class I 항부정맥제', mech: '심각한 심독성.' },
-      { sev: 'high', cls: 'sev-high', drugs: 'CYP2D6 억제제', mech: '이미프라민/데시프라민 혈중농도 상승.' },
-      { sev: 'high', cls: 'sev-high', drugs: '항콜린 약물', mech: '상가 항콜린 독성.' }
-    ],
-    contraindications: ['MAOIs', '최근 급성 심근경색', '심각한 부정맥', '좁은각 녹내장', '요저류'],
-    monitoring: ['기저 EKG 필수', 'QTc/QRS 주기적 확인', 'TDM', '혈압', '소아: 심전도 필수'],
-    note: '소아 야뇨증 사용 시 치료 전·중 EKG 필수. 탈삼환계 항우울제 중 심독성 가장 심한 편.'
-  },
-  {
-    id: 'mirtazapine',
-    nameKor: '미르타자핀',
-    nameEng: 'Mirtazapine',
-    brand: 'Remeron / 레메론',
-    drugClass: '기타',
-    ekgRisk: 'low',
-    formulary: [
-      { code: 'MUL7',  name: '멀타핀 정 7.5mg', isNew: false },
-      { code: 'MUL15', name: '멀타핀 정 15mg',  isNew: false },
-    ],
-    pros: ['성기능 장애 없음', '진정·수면 효과 우수 (불면 동반 우울증)', '식욕 증가·체중 증가 (체중 감소 환자)', '구역 억제 (항구역 효과)', 'SSRI 상호작용 적음', 'EKG 영향 거의 없음'],
-    cons: ['체중 증가 (장기 문제)', '진정·졸음 (낮에도)', '저용량이 고용량보다 더 진정', '구갈', '성욕 증가(일부)', '과립구 감소증(드묾)'],
-    duration: '6~12개월. 불면·식욕 개선 목적 장기 유지 가능.',
-    titration: [
-      { dose: '15mg', note: '취침 전 시작' },
-      { dose: '1~2주 후', note: '효과 재평가' },
-      { dose: '30~45mg', note: '목표' }
-    ],
-    maintenance: '15~45mg/일 (취침 전)',
-    tapering: '15mg씩 2~4주 간격 감량. 중단 증후군 경미.',
-    ekg: {
-      risk: 'low',
-      items: [
-        { tag: 'QTc', cls: 'qtc-tag', desc: '임상적으로 유의한 QTc 연장 없음. EKG 안전.' }
-      ]
-    },
-    interactions: [
-      { sev: 'ci', cls: 'sev-ci', drugs: 'MAOIs', mech: '세로토닌 증후군. 14일 세척기간.' },
-      { sev: 'high', cls: 'sev-high', drugs: 'CNS 억제제 (벤조디아제핀, 알코올, 오피오이드)', mech: '과도한 CNS 억제, 호흡 억제 가능.' },
-      { sev: 'mod', cls: 'sev-mod', drugs: 'CYP3A4 억제제', mech: '혈중농도 상승 가능.' }
-    ],
-    contraindications: ['MAOIs 병용/14일 이내', '심각한 간기능 저하', '과립구 감소증 과거력'],
-    monitoring: ['체중 (정기적)', '혈구 수 (발열/인후통 시)', '혈압', '간기능'],
-    note: '저용량(15mg)이 고용량(30-45mg)보다 히스타민 억제로 더 진정 효과. 식욕 없는 노인·암 환자 우울증에 유용.'
-  },
-  {
-    id: 'bupropion',
-    nameKor: '부프로피온',
-    nameEng: 'Bupropion',
-    brand: 'Wellbutrin XL / 웰부트린',
-    drugClass: '기타',
-    ekgRisk: 'low',
-    formulary: [],
-    pros: ['성기능 장애 없음 (유일한 항우울제)', '체중 감소 또는 중립', '금연 보조 (Zyban)', 'ADHD 보조 치료', '피로·집중력 개선', 'SSRI 유발 성기능 장애 보조'],
-    cons: ['경련 역치 저하 (식욕부진·대식증 금기)', '불안·자극과민·불면 가능', '혈압 상승 가능', '중등도 CYP2D6 억제', '세로토닌 효과 없어 불안 주된 경우 비선호'],
-    duration: '6~12개월 (MDD). 금연: 7~12주.',
-    titration: [
-      { dose: '150mg XL', note: '1주 시작' },
-      { dose: '1주 후', note: '효과 평가' },
-      { dose: '300mg XL', note: '목표 (1회)' },
-      { dose: '최대 450mg', note: '분복' }
-    ],
-    maintenance: '150~300mg/일 (XL 제형)',
-    tapering: '경련 위험으로 급격한 중단보다 서서히. 중단 증후군은 상대적으로 경미.',
-    ekg: {
-      risk: 'low',
-      items: [
-        { tag: 'QTc', cls: 'qtc-tag', desc: '임상적으로 유의한 QTc 연장 없음. EKG 안전.' }
-      ]
-    },
-    interactions: [
-      { sev: 'ci', cls: 'sev-ci', drugs: 'MAOIs', mech: '고혈압 위기. 14일 세척기간.' },
-      { sev: 'ci', cls: 'sev-ci', drugs: '경련 역치 저하 약물 (tramadol, 항정신병약, 테오필린)', mech: '경련 위험 상가.' },
-      { sev: 'high', cls: 'sev-high', drugs: 'CYP2D6 기질 (TCAs, 항정신병약, 일부 베타차단제)', mech: 'CYP2D6 억제로 혈중농도 상승.' },
-      { sev: 'mod', cls: 'sev-mod', drugs: '알코올 급중단, 벤조디아제핀 급중단', mech: '경련 역치 저하 상가.' }
-    ],
-    contraindications: ['경련 장애', '식욕부진증·대식증(신경성)', 'MAOIs 병용/14일 이내', '알코올·벤조디아제핀 급성 금단', '다른 부프로피온 제제 동시 사용'],
-    monitoring: ['혈압', '경련 징후', '수면/불안', '체중'],
-    note: '하루 최대 용량(150mg 또는 300mg IR)을 초과하거나 1회 투여량이 높을 경우 경련 위험 증가. IR 제형은 분복 필수.'
-  },
-  {
-    id: 'agomelatine',
-    nameKor: '아고멜라틴',
-    nameEng: 'Agomelatine',
-    brand: 'Valdoxan / 발독산',
-    drugClass: '기타',
-    ekgRisk: 'low',
-    formulary: [],
-    pros: ['수면 주기 정상화 (멜라토닌 수용체 작용)', '성기능 장애 없음', '중단 증후군 거의 없음', '인지 기능 보전', '불면·주간 피로 개선'],
-    cons: ['간독성 — LFT 정기 모니터링 필수', 'CYP1A2 억제제와 병용 금기 (fluvoxamine, 시프로플록사신)', '알코올 병용 금기', '항우울 효과 근거 일부 논란', '국내 사용 제한적'],
-    duration: '6개월 이상. 수면 개선 목적 장기 유지.',
-    titration: [
-      { dose: '25mg', note: '취침 전 시작' },
-      { dose: '2주 후', note: '효과 평가' },
-      { dose: '50mg', note: '필요 시 증량' }
-    ],
-    maintenance: '25~50mg/일 (취침 전)',
-    tapering: '중단 증후군 거의 없음. 점진적 감량 권장.',
-    ekg: {
-      risk: 'low',
-      items: [
-        { tag: 'QTc', cls: 'qtc-tag', desc: 'QTc 연장 없음. EKG에 영향 없음.' }
-      ]
-    },
-    interactions: [
-      { sev: 'ci', cls: 'sev-ci', drugs: 'CYP1A2 강력 억제제 (fluvoxamine, 시프로플록사신, 에녹사신)', mech: '아고멜라틴 AUC 60배 이상 증가 → 독성.' },
-      { sev: 'ci', cls: 'sev-ci', drugs: '알코올', mech: '간독성 위험 상가.' },
-      { sev: 'mod', cls: 'sev-mod', drugs: 'CYP1A2 기질 약물', mech: '상호 영향 가능.' }
-    ],
-    contraindications: ['간기능 저하 (AST/ALT > ULN × 3)', '알코올 의존/과음', 'CYP1A2 강력 억제제 병용', '치매 (안전성 자료 부족)'],
-    monitoring: ['⚠️ LFT: 처방 전, 6주, 12주, 24주, 48주 및 용량 증량 후', '증상 악화', '자살 충동'],
-    note: '간기능 이상 확인 즉시 투약 중단. LFT 모니터링 프로토콜 철저 준수 필수.'
-  },
-  {
-    id: 'vortioxetine',
-    nameKor: '보르티옥세틴',
-    nameEng: 'Vortioxetine',
-    brand: 'Trintellix / 트린텔릭스',
-    drugClass: '기타',
-    ekgRisk: 'low',
-    formulary: [
-      { code: 'BRIN10', name: '브린텔릭스 정 10mg', isNew: false },
-    ],
-    pros: ['인지기능(기억, 집중) 개선 효과', 'SERT 억제 + 다중 수용체 조절 (multimodal)', '성기능 장애 상대적으로 적음', '구역 외 부작용 경미', '고령 인지저하 동반 우울증 유리'],
-    cons: ['구역·구토 초기 빈번 (저용량 시작 중요)', '비교적 고가', '약물 상호작용 주의 (CYP2D6 기질)', 'MAOIs 병용 금기', '국내 처방 증가 추세'],
-    duration: '6~12개월 (MDD). 인지 개선 효과 장기 유지.',
-    titration: [
-      { dose: '5~10mg', note: '시작' },
-      { dose: '2~4주 후', note: '효과 평가' },
-      { dose: '10~20mg', note: '목표' }
-    ],
-    maintenance: '10~20mg/일',
-    tapering: '중단 증후군 드물지만 서서히 감량 권장.',
-    ekg: {
-      risk: 'low',
-      items: [
-        { tag: 'QTc', cls: 'qtc-tag', desc: 'QTc 연장 없음. EKG에 영향 없음.' }
-      ]
-    },
-    interactions: [
-      { sev: 'ci', cls: 'sev-ci', drugs: 'MAOIs', mech: '세로토닌 증후군. 14일 세척기간.' },
-      { sev: 'ci', cls: 'sev-ci', drugs: 'Linezolid, methylene blue', mech: '세로토닌 증후군.' },
-      { sev: 'high', cls: 'sev-high', drugs: 'CYP2D6 강력 억제제 (bupropion, fluoxetine, paroxetine)', mech: '보르티옥세틴 혈중농도 상승 → 최대 10mg으로 제한.' },
-      { sev: 'mod', cls: 'sev-mod', drugs: 'NSAIDs, 항응고제', mech: '출혈 위험 증가.' }
-    ],
-    contraindications: ['MAOIs 병용', 'Linezolid/methylene blue 병용'],
-    monitoring: ['자살 충동', '구역 증상', '출혈 징후'],
-    note: 'CYP2D6 강력 억제제 병용 시 최대 용량 10mg. CYP2D6 유도제(rifampicin) 병용 시 용량 증량 고려.'
-  },
-  {
-    id: 'desvenlafaxine',
-    nameKor: '데스벤라팍신',
-    nameEng: 'Desvenlafaxine',
-    brand: 'Pristiq / 프리스틱',
-    drugClass: 'SNRI',
-    ekgRisk: 'mod',
-    formulary: [
-      { code: 'DFAX5', name: '데팍신 서방정 50mg', isNew: false },
-    ],
-    pros: ['고정 용량 50mg — titration 불필요 (편의성 우수)', 'Venlafaxine 활성 대사체 → 간 CYP2D6 변환 불필요', 'CYP450 대사 영향 적어 약물 상호작용 적음 (주로 glucuronidation)', 'Venlafaxine보다 구역 적다는 보고', '혈중 농도 예측 가능성 높음', 'SNRI 중 비교적 단순한 복약'],
-    cons: ['중단 증후군 (venlafaxine 수준)', '혈압 상승 가능', '발한 증가', '성기능 장애', '고용량(100mg)의 추가 효과 근거 제한적', '국내 처방 빈도 아직 낮음'],
-    duration: '첫 삽화: 6~12개월. 재발성: 2년 이상.',
-    titration: [
-      { dose: '50mg', note: '시작 = 유지' },
-      { dose: '→ 100mg', note: '필요 시 (근거 제한)' }
-    ],
-    maintenance: '50mg/일 (고정 용량)',
-    tapering: '서서히 감량 권장. 50mg → 25mg(분할) → 격일 → 중단. 중단 증후군: 현기증, brain zap, 구역, 자극 과민. Venlafaxine과 동일 수준의 주의 필요.',
-    ekg: {
-      risk: 'mod',
-      items: [
-        { tag: 'QTc', cls: 'qtc-tag', desc: '고용량(100mg)에서 경미한 QTc 연장 가능. 50mg에서는 임상적 의의 낮음.' },
-        { tag: 'PR', cls: 'pr-tag', desc: 'PR 간격 경미한 변화 가능.' }
-      ]
-    },
-    interactions: [
-      { sev: 'ci', cls: 'sev-ci', drugs: 'MAOIs (selegiline, phenelzine 등)', mech: '세로토닌 증후군. 14일 세척기간 필수.' },
-      { sev: 'ci', cls: 'sev-ci', drugs: 'Linezolid, methylene blue', mech: '세로토닌 증후군.' },
-      { sev: 'high', cls: 'sev-high', drugs: 'QT 연장 약물', mech: '고용량 시 QTc 상가 연장 위험.' },
-      { sev: 'mod', cls: 'sev-mod', drugs: 'NSAIDs, 아스피린, 와파린', mech: '출혈 위험 증가 (혈소판 세로토닌 억제).' },
-      { sev: 'mod', cls: 'sev-mod', drugs: '항고혈압제', mech: '혈압 상승 효과가 항고혈압 효과에 길항 가능.' }
-    ],
-    contraindications: ['MAOIs 병용 또는 14일 이내', 'Linezolid / methylene blue 병용', '조절되지 않는 고혈압', 'QTc > 500ms'],
-    monitoring: ['혈압 (매 방문)', '심박수', '중단 증후군 징후', '자살 충동 (초기 2~4주)', '체중·발한'],
-    note: 'Venlafaxine의 활성 대사체로, CYP2D6 poor metabolizer에서도 안정적인 혈중 농도 유지. Venlafaxine 대비 약물 상호작용 profile이 단순하여 다제 복용 환자에서 유리할 수 있음. 신기능 저하 시 용량 감량 필요 (eGFR <30: 25mg/일).'
-  },
-  {
-    id: 'tianeptine',
-    nameKor: '티아넵틴',
-    nameEng: 'Tianeptine',
-    brand: 'Stablon / 스타블론, Coaxil',
-    drugClass: '기타',
-    ekgRisk: 'low',
-    formulary: [],
-    pros: ['빠른 항우울 효과 발현 (1~2주)', '불안·신체화 증상에 효과적', '인지기능 보전 (집중력·기억력 저하 없음)', '성기능 장애 없음', '체중 변화 없음', '위장관 부작용 경미', 'SSRI와 기전 달라 SSRI 무반응 시 대안 가능'],
-    cons: ['⚠️ μ-오피오이드 수용체 작용 → 의존성·남용 잠재성', '하루 3회 복용 (짧은 반감기 ~2.5시간)', '미국 FDA 미승인 (한국·유럽 허가)', '급격한 중단 시 오피오이드 유사 금단 증상', '조증 유발 가능 (양극성 장애 주의)', '소아·청소년 사용 제한'],
-    duration: '6~12개월 (MDD). 장기 사용 시 의존성 위험 증가 → 정기적 재평가 필수.',
-    titration: [
-      { dose: '12.5mg × 3', note: '시작 = 유지' },
-      { dose: '식전 20분', note: '복용 시점 중요' },
-      { dose: '최대 37.5mg', note: '/일 (3회 분복)' }
-    ],
-    maintenance: '12.5mg × 3회/일 (37.5mg/일)',
-    tapering: '⚠️ 급격한 중단 금지. 오피오이드 유사 금단 가능 (불안, 불면, 발한, 근육통, 구역). 4~8주에 걸쳐 서서히 감량: 37.5mg → 25mg (2주) → 12.5mg (2주) → 중단. 장기 고용량 사용자는 더 느리게 감량.',
-    ekg: {
-      risk: 'low',
-      items: [
-        { tag: 'QTc', cls: 'qtc-tag', desc: 'QTc 연장 없음. EKG에 유의한 영향 없음.' }
-      ]
-    },
-    interactions: [
-      { sev: 'ci', cls: 'sev-ci', drugs: 'MAOIs (비가역적, 비선택적)', mech: '세로토닌 증후군·고혈압 위기. 사용 전후 14일 세척기간.' },
-      { sev: 'ci', cls: 'sev-ci', drugs: '오피오이드 (고용량)', mech: 'μ-오피오이드 수용체 작용 상가 → 과진정·호흡 억제 위험.' },
-      { sev: 'high', cls: 'sev-high', drugs: '알코올, 벤조디아제핀', mech: 'CNS 억제 상가. 의존성·남용 위험 증가.' },
-      { sev: 'high', cls: 'sev-high', drugs: '기분 안정제 없이 양극성 장애 환자', mech: '조증 삽화 유발 가능.' },
-      { sev: 'mod', cls: 'sev-mod', drugs: 'Tramadol, triptans', mech: '세로토닌 활성 상가.' }
-    ],
-    contraindications: ['MAOIs 병용 또는 14일 이내', '15세 미만 소아·청소년', '오피오이드 의존/남용 과거력', '양극성 장애 (기분 안정제 없이 단독 사용)', '수유 중 (모유 이행)'],
-    monitoring: ['⚠️ 의존성·남용 징후 정기 평가 (처방량 초과 복용, 조기 처방 요청)', '조증 증상 (불면 감소, 과잉행동, 과대사고)', '금단 증상 (갑작스러운 중단 시)', '간기능 (장기 사용 시)', '자살 충동'],
-    note: '기전: μ·δ-오피오이드 수용체 작용 + AMPA 수용체 조절 + 약한 세로토닌 재흡수 촉진 (SSRI와 반대 방향). 한국·프랑스 등에서 허가, 미국 미승인. 의존성 우려로 일부 국가에서 규제 강화 중. 처방 시 남용 위험 환자 선별 중요.'
-  },
-  {
-    id: 'trazodone',
-    nameKor: '트라조돈',
-    nameEng: 'Trazodone',
-    brand: 'Desyrel / 데시렐',
-    drugClass: '기타',
-    ekgRisk: 'mod',
-    formulary: [
-      { code: 'TRIT', name: '트리티코 정 25mg', isNew: false },
-    ],
-    pros: ['저용량(25~100mg) 불면증 치료에 유용', '의존성 없는 수면제 대안', '불안·초조 개선', '세로토닌 증후군 위험 낮음 (낮은 SERT 선택성)', '항우울 효과'],
-    cons: ['기립성 저혈압', 'QTc 경미 연장', '음경 지속발기증(priapism) 드물지만 위험', '고용량에서 과도한 진정', '항우울 용량(150~400mg)이 불면 용량보다 훨씬 높음'],
-    duration: '불면 보조: 단기~장기. 항우울: 6~12개월.',
-    titration: [
-      { dose: '25~50mg', note: '취침 전 (불면)' },
-      { dose: '75mg', note: '시작 (항우울)' },
-      { dose: '150~400mg', note: '항우울 목표' }
-    ],
-    maintenance: '불면: 50~100mg/일. 항우울: 150~400mg/일',
-    tapering: '점진적 감량 권장. 중단 증후군 경미.',
-    ekg: {
-      risk: 'mod',
-      items: [
-        { tag: 'QTc', cls: 'qtc-tag', desc: '경미한 QTc 연장 가능. 고용량·QT 기저 연장 시 주의.' },
-        { tag: 'PR', cls: 'pr-tag', desc: 'PR 간격 경미 변화 가능.' }
-      ]
-    },
-    interactions: [
-      { sev: 'ci', cls: 'sev-ci', drugs: 'MAOIs', mech: '세로토닌 증후군. 14일 세척기간.' },
-      { sev: 'high', cls: 'sev-high', drugs: 'QT 연장 약물', mech: 'QTc 상가 연장 (특히 기저 이상 환자).' },
-      { sev: 'high', cls: 'sev-high', drugs: 'CYP3A4 억제제 (케토코나졸, 클라리스로마이신)', mech: '트라조돈 혈중농도 상승.' },
-      { sev: 'mod', cls: 'sev-mod', drugs: 'CNS 억제제, 알코올', mech: '과도한 진정.' },
-      { sev: 'mod', cls: 'sev-mod', drugs: '항고혈압제', mech: '기립성 저혈압 상가.' }
-    ],
-    contraindications: ['MAOIs 병용', 'QTc > 500ms', '심한 부정맥'],
-    monitoring: ['혈압 (기립성)', 'EKG (QT 기저 이상 시)', '음경 지속발기증 증상 교육', '과도한 진정'],
-    note: '음경 지속발기증(priapism): 드물지만 수술적 처치 필요할 수 있음. 남성 환자에게 사전 교육 필수.'
-  }
+// ─── GUIDE DATA ───
+const guideData = [
+  { icon:'🍃', title:'성기능 장애가 적은 약', sub:'Sexual dysfunction — prefer', type:'ranking',
+    items:[{drug:'Bupropion',note:'최소'},{drug:'Mirtazapine',note:'적음'},{drug:'Vortioxetine',note:'비교적 적음'}] },
+  { icon:'😴', title:'진정·졸음이 적은 약', sub:'Less sedation', type:'ranking',
+    items:[{drug:'Bupropion',note:'최소'},{drug:'Escitalopram',note:'적음'},{drug:'Fluoxetine',note:'적음'}] },
+  { icon:'⚖️', title:'체중 증가가 적은 약', sub:'Weight neutral / loss', type:'ranking',
+    items:[{drug:'Bupropion',note:'감소/중립'},{drug:'Fluoxetine',note:'감소'},{drug:'Escitalopram',note:'중립'}] },
+  { icon:'🌙', title:'불면·수면장애 동반 시', sub:'Insomnia comorbidity', type:'ranking',
+    items:[{drug:'Mirtazapine',note:'진정 우수'},{drug:'Trazodone',note:'수면 유도'},{drug:'Paroxetine',note:'진정 효과'}] },
+  { icon:'🤢', title:'소화기 증상 (오심·구토)', sub:'GI symptoms — prefer', type:'single',
+    preferred:'Mirtazapine', reason:'5-HT3 차단으로 오심 억제, 식욕 증가 효과' },
+  { icon:'🫀', title:'항콜린 부작용 적은 약', sub:'Low anticholinergic burden', type:'ranking',
+    items:[{drug:'Escitalopram',note:'최소'},{drug:'Bupropion',note:'적음'},{drug:'Sertraline',note:'적음'}] },
+  { icon:'💊', title:'고혈압·저혈압·부정맥·뇌전증', sub:'Cardiovascular / epilepsy', type:'single',
+    preferred:'Escitalopram', reason:'심혈관 안전성 우수. QTc 주의 (≤20mg)' },
+  { icon:'🩺', title:'당뇨·갑상선·간·신장질환', sub:'Metabolic / organ disease', type:'ranking',
+    items:[{drug:'Escitalopram',note:'1순위'},{drug:'Sertraline',note:'2순위'}] },
+  { icon:'⚡', title:'세로토닌 증후군 우려 시', sub:'Serotonin syndrome risk', type:'single',
+    preferred:'Bupropion', reason:'NDRI 기전 — 세로토닌계 관여 없음' },
+  { icon:'🛡️', title:'자살사고 증가 우려 시', sub:'Suicide ideation concern', type:'single',
+    preferred:'Mirtazapine', reason:'진정·수면 개선, 초기 에너지 과활성화 낮음' },
+  { icon:'⚠️', title:'Bupropion 주의사항', sub:'Special warning', type:'warning',
+    items:[
+      {label:'경련 역치 저하', detail:'식욕부진·대식증·경련 장애 금기'},
+      {label:'고용량 경련 위험', detail:'1회 투여 용량 상한 준수 필수 (IR 분복)'}
+    ] },
+  { icon:'🏥', title:'원내 1차 선택 (하남보바스)', sub:'Hospital formulary 1st line', type:'formulary',
+    items:[
+      {drug:'Escitalopram', code:'LEXA / LEXA5 / LEXA20', note:'SSRI 1st'},
+      {drug:'Sertraline',   code:'SETRA',                  note:'SSRI 2nd'},
+      {drug:'Duloxetine',   code:'DULOC3 / DULOC6',        note:'SNRI / 통증'},
+      {drug:'Mirtazapine',  code:'MUL7 / MUL15',           note:'불면·식욕저하'},
+    ] },
 ];
 
-// ─── RENDER ───
-let currentFilter = 'ALL';
-let searchTerm = '';
+// ─── DRUG DATA ───
+const drugs = [
+  { id:'escitalopram', nameKor:'에스시탈로프람', nameEng:'Escitalopram', brand:'Lexapro / 렉사프로', drugClass:'SSRI', ekgRisk:'mod',
+    formulary:[{code:'LEXA5',name:'렉사프로 정 5mg',isNew:false},{code:'LEXA',name:'렉사프로 정 10mg',isNew:false},{code:'LEXA20',name:'렉사프로 정 20mg',isNew:true}],
+    pros:['가장 약물 상호작용 적은 SSRI','Tolerability 우수, 부작용 적음','1일 1회 단순 복용','빠른 항불안 효과','노인에서도 비교적 안전'],
+    cons:['QTc 연장 (용량 의존성)','성기능 장애','중단 증후군 가능','고령자 최대 10mg 제한','초기 불안 악화 가능'],
+    duration:'첫 삽화: 최소 6~12개월 유지. 재발 2회 이상: 2년 이상 또는 무기한 유지 고려.',
+    titration:[{dose:'10mg',note:'시작'},{dose:'1~2주',note:''},{dose:'20mg',note:'목표/최대'}],
+    maintenance:'10~20mg/일',
+    tapering:'수주~수개월 서서히 감량. 예: 20mg→10mg(2주)→10mg 격일(2주)→중단. Brain zap, 구역 주의.',
+    ekg:{risk:'mod',items:[{tag:'QTc',cls:'qtc-tag',desc:'용량 의존성 QTc 연장. 20mg 초과 금기. 노인·저칼륨·QT 기저 연장 시 주의.'},{tag:'QRS',cls:'qrs-tag',desc:'QRS 변화 거의 없음.'}]},
+    interactions:[{sev:'ci',cls:'sev-ci',drugs:'MAOIs',mech:'세로토닌 증후군. 14일 세척기간.'},{sev:'ci',cls:'sev-ci',drugs:'Pimozide, thioridazine',mech:'QTc 연장 상승 → 심실 부정맥.'},{sev:'high',cls:'sev-high',drugs:'QT 연장 약물 (아미오다론, 퀴놀론, 항진균제)',mech:'QTc 상가 연장.'},{sev:'high',cls:'sev-high',drugs:'Triptans, tramadol, linezolid',mech:'세로토닌 증후군.'},{sev:'mod',cls:'sev-mod',drugs:'NSAIDs, 아스피린, 와파린',mech:'출혈 위험 증가.'},{sev:'mod',cls:'sev-mod',drugs:'CYP2C19 억제제 (오메프라졸, 플루코나졸)',mech:'혈중농도 상승.'}],
+    contraindications:['MAOI 병용 또는 14일 이내','QTc > 500ms','선천성 QT 증후군','Pimozide 병용','저칼륨·저마그네슘혈증'],
+    monitoring:['EKG (기저치, 고용량 시)','K⁺, Mg²⁺','자살 충동 (초기 2~4주)','성기능·체중'],
+    note:'노인 최대 10mg/일. 간기능 저하 시 10mg/일 제한. CYP2C19 poor metabolizer에서 혈중농도 상승.' },
 
-function getEkgLabel(risk) {
-  if (risk === 'low') return { cls: 'ekg-low', label: '저위험' };
-  if (risk === 'mod') return { cls: 'ekg-mod', label: 'QT 주의' };
-  return { cls: 'ekg-high', label: 'EKG ⚠️' };
+  { id:'sertraline', nameKor:'설트랄린', nameEng:'Sertraline', brand:'Zoloft / 졸로프트', drugClass:'SSRI', ekgRisk:'low',
+    formulary:[{code:'SETRA',name:'셀트라 정 50mg',isNew:false}],
+    pros:['가장 광범위하게 사용되는 SSRI','심장 안전성 우수','임부 안전성 상대적 양호','다양한 적응증 (MDD, OCD, PTSD, PD)','QTc 영향 최소'],
+    cons:['설사 등 GI 부작용 빈번','성기능 장애','와파린 INR 증가','CYP2D6 약한 억제','중단 증후군'],
+    duration:'첫 삽화: 6~12개월. 재발성: 2년 이상.',
+    titration:[{dose:'25~50mg',note:'시작'},{dose:'1~2주마다',note:'증량'},{dose:'50~200mg',note:'목표'}],
+    maintenance:'50~200mg/일',
+    tapering:'50mg씩 2~4주 간격 감량. 급격한 중단 시 현기증, 자극과민, 불면.',
+    ekg:{risk:'low',items:[{tag:'QTc',cls:'qtc-tag',desc:'임상적 QTc 연장 드묾. SSRI 중 심장 안전성 최우수.'}]},
+    interactions:[{sev:'ci',cls:'sev-ci',drugs:'MAOIs',mech:'세로토닌 증후군. 14일.'},{sev:'high',cls:'sev-high',drugs:'와파린',mech:'INR 증가. PT/INR 모니터링.'},{sev:'high',cls:'sev-high',drugs:'NSAIDs / 아스피린',mech:'GI 출혈 위험.'},{sev:'mod',cls:'sev-mod',drugs:'Tramadol, triptans',mech:'세로토닌 증후군.'},{sev:'mod',cls:'sev-mod',drugs:'Pimozide',mech:'혈중농도 상승 → QT 연장.'}],
+    contraindications:['MAOI/14일 이내','Pimozide 병용','알코올 병용'],
+    monitoring:['INR (와파린 병용)','자살 충동','GI 증상','전해질'],
+    note:'임신 중 비교적 안전한 SSRI (1st line). 심근경색 후 우울증 선호.' },
+
+  { id:'fluoxetine', nameKor:'플루옥세틴', nameEng:'Fluoxetine', brand:'Prozac / 프로작', drugClass:'SSRI', ekgRisk:'low',
+    formulary:[{code:'FOXE',name:'폭세틴 캡슐 10mg',isNew:false},{code:'FOXET',name:'폭세틴 캡슐 20mg',isNew:false}],
+    pros:['반감기 매우 길어 중단 증후군 거의 없음','식욕억제·체중 감소','폭식증(BN) 적응증','빠른 용량 탄력성'],
+    cons:['강력한 CYP2D6 억제 → 상호작용 많음','반감기 길어 용량 조정 어려움','MAOI 전환 5주 세척기간','초기 불안·불면','성기능 장애'],
+    duration:'6~12개월. MAOI 전환 전 5주 세척기간 필수.',
+    titration:[{dose:'10~20mg',note:'시작'},{dose:'4주 후',note:'재평가'},{dose:'20~60mg',note:'목표'},{dose:'최대 80mg',note:'OCD'}],
+    maintenance:'20~60mg/일 (MDD); 최대 80mg (OCD)',
+    tapering:'반감기 2~6일 (대사체 최대 16일) → 중단 증후군 거의 없음.',
+    ekg:{risk:'low',items:[{tag:'QTc',cls:'qtc-tag',desc:'SSRI 중 QTc 영향 최소.'}]},
+    interactions:[{sev:'ci',cls:'sev-ci',drugs:'MAOIs',mech:'Fluoxetine→MAOI: 5주 / MAOI→fluoxetine: 14일.'},{sev:'ci',cls:'sev-ci',drugs:'Thioridazine, pimozide',mech:'CYP2D6 억제 → QT 연장.'},{sev:'high',cls:'sev-high',drugs:'TCAs',mech:'CYP2D6 억제 → 2~4배 상승.'},{sev:'high',cls:'sev-high',drugs:'타목시펜(tamoxifen)',mech:'활성대사체 감소 → 항암 효과 저하.'},{sev:'high',cls:'sev-high',drugs:'Codeine, tramadol',mech:'CYP2D6 억제로 활성화 저하.'},{sev:'mod',cls:'sev-mod',drugs:'Carbamazepine, phenytoin',mech:'혈중농도 변화.'}],
+    contraindications:['MAOI 병용 (5주 세척기간)','Thioridazine/pimozide 병용'],
+    monitoring:['CYP2D6 기질 약물 확인','자살 충동','체중'],
+    note:'다른 SSRI 중단 후 fluoxetine 가교 사용 가능.' },
+
+  { id:'paroxetine', nameKor:'파록세틴', nameEng:'Paroxetine', brand:'Paxil / 팍실', drugClass:'SSRI', ekgRisk:'low',
+    formulary:[],
+    pros:['강한 항불안 효과 (공황, 사회공포증, PTSD)','진정 효과 — 불면 동반 시 유용','다양한 적응증'],
+    cons:['중단 증후군 가장 심한 SSRI','강한 CYP2D6 억제','항콜린 부작용','체중 증가','임신 심장기형 위험 (Category D)'],
+    duration:'6~12개월. 중단 시 매우 서서히 감량.',
+    titration:[{dose:'10mg',note:'시작'},{dose:'1주마다 10mg',note:'증량'},{dose:'20~50mg',note:'목표'},{dose:'최대 60mg',note:'OCD'}],
+    maintenance:'20~50mg/일',
+    tapering:'⚠️ 가장 심한 중단 증후군. FINISH 증후군. 10mg씩 2~4주 간격.',
+    ekg:{risk:'low',items:[{tag:'QTc',cls:'qtc-tag',desc:'임상적 QTc 연장 드묾.'}]},
+    interactions:[{sev:'ci',cls:'sev-ci',drugs:'MAOIs',mech:'세로토닌 증후군. 14일.'},{sev:'ci',cls:'sev-ci',drugs:'Thioridazine',mech:'CYP2D6 억제로 급상승.'},{sev:'high',cls:'sev-high',drugs:'타목시펜',mech:'항암 효과 감소.'},{sev:'high',cls:'sev-high',drugs:'TCAs, risperidone, aripiprazole',mech:'CYP2D6 억제 → 혈중농도 상승.'},{sev:'mod',cls:'sev-mod',drugs:'항콜린 약물',mech:'항콜린 상가.'}],
+    contraindications:['MAOIs/14일 이내','Thioridazine 병용','임신 (1삼분기)','타목시펜 치료 중'],
+    monitoring:['중단 증후군','체중','항콜린 부작용 (노인)','자살 충동'],
+    note:'임산부 Category D. 반감기 짧아(21h) 복용 누락 시 중단 증후군 쉽게 발생.' },
+
+  { id:'fluvoxamine', nameKor:'플루복사민', nameEng:'Fluvoxamine', brand:'Luvox / 루복스', drugClass:'SSRI', ekgRisk:'low',
+    formulary:[],
+    pros:['OCD 1차 치료제','항불안 효과 우수','불면 동반 시 유리','COVID-19 중증화 예방 연구 주목'],
+    cons:['CYP1A2/2C19 강력 억제 → 광범위 상호작용','진정·졸음','2회 분복 필요','구역·구토 빈번','체중 증가'],
+    duration:'OCD: 1~2년 이상. MDD: 6~12개월.',
+    titration:[{dose:'50mg',note:'취침 전 시작'},{dose:'4~7일 간격',note:'50mg 증량'},{dose:'100~300mg',note:'목표'}],
+    maintenance:'100~300mg/일 (1~2회 분복)',
+    tapering:'4주 이상 서서히. 50mg씩 단계적 감소.',
+    ekg:{risk:'low',items:[{tag:'QTc',cls:'qtc-tag',desc:'임상적 QTc 연장 드묾.'}]},
+    interactions:[{sev:'ci',cls:'sev-ci',drugs:'MAOIs',mech:'세로토닌 증후군.'},{sev:'ci',cls:'sev-ci',drugs:'Tizanidine, thioridazine, alosetron',mech:'CYP1A2 억제 → 급상승.'},{sev:'ci',cls:'sev-ci',drugs:'Pimozide, cisapride',mech:'QT 연장 위험.'},{sev:'high',cls:'sev-high',drugs:'클로자핀(clozapine)',mech:'CYP1A2 억제 → 5~10배 상승 → 경련.'},{sev:'high',cls:'sev-high',drugs:'테오필린',mech:'독성 위험.'},{sev:'high',cls:'sev-high',drugs:'와파린',mech:'INR 상승.'},{sev:'mod',cls:'sev-mod',drugs:'카페인, 올란자핀',mech:'CYP1A2 억제 → 혈중농도 상승.'}],
+    contraindications:['MAOIs','Tizanidine/pimozide/cisapride/alosetron 병용'],
+    monitoring:['CYP1A2 기질 혈중농도','INR','클로자핀 농도','간기능'],
+    note:'클로자핀 병용 시 특히 주의. 흡연자는 CYP1A2 유도로 용량 증량 필요 가능.' },
+
+  { id:'venlafaxine', nameKor:'벤라팍신', nameEng:'Venlafaxine', brand:'Effexor XR / 이팩사', drugClass:'SNRI', ekgRisk:'mod',
+    formulary:[],
+    pros:['우울·불안·신경병증성 통증에 효과','SSRI 무반응 시 유용','NE 효과로 만성통증 유리','집중력·피로 개선'],
+    cons:['혈압 상승 (고용량)','중단 증후군 심함','구역·구토 (초기)','발한','심박수 증가','고용량 QTc 연장'],
+    duration:'6~12개월 (MDD). 통증: 개별화.',
+    titration:[{dose:'37.5mg XR',note:'시작'},{dose:'4~7일',note:'75mg'},{dose:'75~225mg',note:'목표'}],
+    maintenance:'75~225mg/일 (XR, 1회)',
+    tapering:'⚠️ 중단 증후군 심함. 75mg씩 2~4주 서서히. Fluoxetine 가교 전략 가능.',
+    ekg:{risk:'mod',items:[{tag:'QTc',cls:'qtc-tag',desc:'고용량(225mg↑) QTc 연장. 용량 의존성.'},{tag:'PR',cls:'pr-tag',desc:'PR 간격 경미 연장 가능.'}]},
+    interactions:[{sev:'ci',cls:'sev-ci',drugs:'MAOIs',mech:'세로토닌 증후군. 14일.'},{sev:'high',cls:'sev-high',drugs:'QT 연장 약물, 항부정맥제',mech:'QTc 상가.'},{sev:'high',cls:'sev-high',drugs:'Linezolid, methylene blue',mech:'세로토닌 증후군.'},{sev:'mod',cls:'sev-mod',drugs:'항고혈압제',mech:'길항.'},{sev:'mod',cls:'sev-mod',drugs:'NSAIDs, 와파린',mech:'출혈 위험.'}],
+    contraindications:['MAOIs/14일 이내','조절 안 된 고혈압','QTc > 500ms'],
+    monitoring:['혈압 (매 방문)','심박수','EKG (고용량)','자살 충동'],
+    note:'≥225mg 시 혈압/맥박 상승. 고혈압 환자 저용량 유지. CYP2D6 대사.' },
+
+  { id:'desvenlafaxine', nameKor:'데스벤라팍신', nameEng:'Desvenlafaxine', brand:'Pristiq / 프리스틱', drugClass:'SNRI', ekgRisk:'mod',
+    formulary:[{code:'DFAX5',name:'데팍신 서방정 50mg',isNew:false}],
+    pros:['고정 용량 50mg — titration 불필요','Venlafaxine 활성 대사체 (CYP2D6 변환 불필요)','상호작용 단순 (glucuronidation)','혈중농도 예측성 높음','다제 복용 환자 유리'],
+    cons:['중단 증후군 (venlafaxine 수준)','혈압 상승 가능','발한','성기능 장애','100mg 추가 효과 근거 제한적'],
+    duration:'첫 삽화: 6~12개월. 재발: 2년 이상.',
+    titration:[{dose:'50mg',note:'시작=유지'},{dose:'→ 100mg',note:'필요 시 (근거 제한)'}],
+    maintenance:'50mg/일 (고정)',
+    tapering:'50mg → 25mg(분할) → 격일 → 중단. Brain zap, 어지럼 주의.',
+    ekg:{risk:'mod',items:[{tag:'QTc',cls:'qtc-tag',desc:'고용량(100mg) 경미 QTc 연장. 50mg 임상적 의의 낮음.'},{tag:'PR',cls:'pr-tag',desc:'PR 간격 경미 변화 가능.'}]},
+    interactions:[{sev:'ci',cls:'sev-ci',drugs:'MAOIs',mech:'세로토닌 증후군. 14일.'},{sev:'ci',cls:'sev-ci',drugs:'Linezolid, methylene blue',mech:'세로토닌 증후군.'},{sev:'high',cls:'sev-high',drugs:'QT 연장 약물',mech:'고용량 QTc 상가.'},{sev:'mod',cls:'sev-mod',drugs:'NSAIDs, 아스피린, 와파린',mech:'출혈 위험.'},{sev:'mod',cls:'sev-mod',drugs:'항고혈압제',mech:'혈압 상승 길항.'}],
+    contraindications:['MAOIs/14일 이내','Linezolid/methylene blue','조절 안 된 고혈압','QTc > 500ms'],
+    monitoring:['혈압 (매 방문)','심박수','중단 증후군','자살 충동'],
+    note:'CYP2D6 poor metabolizer에서도 안정적. 신기능 저하 시 용량 감량 (eGFR<30: 25mg/일).' },
+
+  { id:'duloxetine', nameKor:'둘록세틴', nameEng:'Duloxetine', brand:'Cymbalta / 심발타', drugClass:'SNRI', ekgRisk:'low',
+    formulary:[{code:'DULOC3',name:'드록틴 캡슐 30mg',isNew:false},{code:'DULOC6',name:'드록틴 캡슐 60mg',isNew:false}],
+    pros:['당뇨병성 신경병증·섬유근통 FDA 승인','만성요통·골관절염 적응증','요실금(SUI) 개선','불안장애 효과'],
+    cons:['간독성 (음주자·간질환 금기)','구역·구토 (초기 2~4주)','요저류','중단 증후군','혈압 경미 상승'],
+    duration:'6~12개월. 만성통증: 장기 유지.',
+    titration:[{dose:'30mg',note:'1~2주 시작'},{dose:'60mg',note:'목표·유지'},{dose:'최대 120mg',note:'분복'}],
+    maintenance:'60mg/일 (1~2회)',
+    tapering:'30mg씩 2~4주 감량.',
+    ekg:{risk:'low',items:[{tag:'QTc',cls:'qtc-tag',desc:'임상적 QTc 연장 거의 없음.'}]},
+    interactions:[{sev:'ci',cls:'sev-ci',drugs:'MAOIs',mech:'세로토닌 증후군. 14일.'},{sev:'ci',cls:'sev-ci',drugs:'Thioridazine',mech:'CYP2D6 억제 → 급상승.'},{sev:'high',cls:'sev-high',drugs:'알코올, 간독성 약물',mech:'간독성 상가. 음주자 금기.'},{sev:'high',cls:'sev-high',drugs:'CYP1A2 억제제 (fluvoxamine, 시프로플록사신)',mech:'혈중농도 5배↑.'},{sev:'mod',cls:'sev-mod',drugs:'NSAIDs, 항응고제',mech:'출혈 위험.'}],
+    contraindications:['MAOIs','간질환/간기능 저하','과음자','좁은각 녹내장'],
+    monitoring:['간기능 (기저→3개월→정기)','혈압','요저류','자살 충동'],
+    note:'당뇨병성 신경병증 1차 선택. 음주 습관 반드시 확인.' },
+
+  { id:'milnacipran', nameKor:'밀나시프란', nameEng:'Milnacipran', brand:'Ixel / 익셀', drugClass:'SNRI', ekgRisk:'low',
+    formulary:[],
+    pros:['섬유근통 적응증','NE 효과 비교적 강함','CYP 영향 적어 상호작용 단순'],
+    cons:['발한·열감·조홍 빈번','혈압·심박수 상승','배뇨곤란','국내 처방 빈도 낮음'],
+    duration:'6~12개월.',
+    titration:[{dose:'25mg ×2',note:'시작'},{dose:'1주 후',note:'증량'},{dose:'50mg ×2',note:'목표'}],
+    maintenance:'100mg/일 (분복)',
+    tapering:'2~4주 서서히 감량.',
+    ekg:{risk:'low',items:[{tag:'QTc',cls:'qtc-tag',desc:'임상적 QTc 연장 없음.'}]},
+    interactions:[{sev:'ci',cls:'sev-ci',drugs:'MAOIs',mech:'세로토닌 증후군.'},{sev:'high',cls:'sev-high',drugs:'교감신경흥분제',mech:'NE 효과 과도 증강.'},{sev:'mod',cls:'sev-mod',drugs:'항고혈압제',mech:'혈압 상승 길항.'}],
+    contraindications:['MAOIs','조절 안 된 고혈압','eGFR<30 (용량 감량)'],
+    monitoring:['혈압·심박수','배뇨 증상','자살 충동'],
+    note:'신기능 저하 시 용량 감량.' },
+
+  { id:'amitriptyline', nameKor:'아미트립틸린', nameEng:'Amitriptyline', brand:'Tryptanol / 에트라빌', drugClass:'TCA', ekgRisk:'high',
+    formulary:[{code:'AMIT',name:'명인 아미트리프틸린 정 10mg',isNew:false}],
+    pros:['만성 신경병증 통증 1차 (저용량)','섬유근통·편두통 예방','진정·수면 효과','우울증·공황 효과 입증','저렴한 비용'],
+    cons:['강한 항콜린 (구강건조, 변비, 요저류, 인지저하)','QT 연장·QRS 확장·PR 연장 — 심각한 심독성','과량 복용 치명적','체중 증가','기립성 저혈압','Beers criteria'],
+    duration:'우울증: 6~12개월. 통증/예방: 장기 가능.',
+    titration:[{dose:'10~25mg',note:'취침 전 시작'},{dose:'1~2주마다 25mg',note:'증량'},{dose:'75~150mg',note:'항우울 목표'},{dose:'10~75mg',note:'통증/예방'}],
+    maintenance:'75~150mg/일 (항우울); 10~75mg/일 (통증)',
+    tapering:'2~4주 서서히. 콜린성 반동 (구역, 발한, 설사, 불면) 주의.',
+    ekg:{risk:'high',items:[{tag:'QTc',cls:'qtc-tag',desc:'QTc 연장 (용량 의존). Torsades de Pointes 위험.'},{tag:'QRS',cls:'qrs-tag',desc:'QRS 확장 (>100ms = 독성 징후). 과량 복용 시 광범위 확장.'},{tag:'PR',cls:'pr-tag',desc:'PR 연장, T파 편평화/역전.'}]},
+    interactions:[{sev:'ci',cls:'sev-ci',drugs:'MAOIs',mech:'세로토닌 증후군/고혈압 위기. 14일.'},{sev:'ci',cls:'sev-ci',drugs:'최근 AMI, Class IA/IC 항부정맥제',mech:'심각한 부정맥.'},{sev:'high',cls:'sev-high',drugs:'QT 연장 약물',mech:'QT/QRS 상가 독성.'},{sev:'high',cls:'sev-high',drugs:'Fluoxetine, paroxetine',mech:'CYP2D6 억제 → TCA 2~4배 상승.'},{sev:'high',cls:'sev-high',drugs:'항콜린 약물',mech:'항콜린 상가 (섬망, 요저류, 장폐색).'},{sev:'mod',cls:'sev-mod',drugs:'CNS 억제제',mech:'중추신경 억제 증강.'}],
+    contraindications:['MAOIs/14일 이내','최근(14일) AMI','QTc > 500ms','2도↑ 방실차단','좁은각 녹내장','요저류','심각한 간기능 저하'],
+    monitoring:['⚠️ 기저 EKG 필수','QTc·QRS 정기 확인','TDM (50~150 ng/mL)','혈압 (기립성)','항콜린 증상'],
+    note:'Overdose: QRS>100ms, QTc>500ms → 심실빈맥/사망. 노인 Beers criteria 부적절 약물.' },
+
+  { id:'nortriptyline', nameKor:'노르트립틸린', nameEng:'Nortriptyline', brand:'Sensoval / 노리트렌', drugClass:'TCA', ekgRisk:'high',
+    formulary:[{code:'SENS10',name:'센시발 정 10mg',isNew:false,note:'품절'}],
+    pros:['아미트립틸린 대비 항콜린 효과 적음','기립성 저혈압 비교적 적음','TDM 명확 (50~150 ng/mL)','신경병증 통증·편두통 예방'],
+    cons:['여전히 심각한 심독성','항콜린 부작용','QTc/QRS 연장','과량 복용 치명적','체중 증가'],
+    duration:'우울증: 6~12개월. 통증: 장기 가능.',
+    titration:[{dose:'10~25mg',note:'취침 전 시작'},{dose:'1~2주마다',note:'25mg 증량'},{dose:'50~150mg',note:'목표'}],
+    maintenance:'50~150mg/일',
+    tapering:'2~4주 서서히.',
+    ekg:{risk:'high',items:[{tag:'QTc',cls:'qtc-tag',desc:'QTc 연장.'},{tag:'QRS',cls:'qrs-tag',desc:'QRS 확장 가능.'},{tag:'PR',cls:'pr-tag',desc:'PR 연장 가능.'}]},
+    interactions:[{sev:'ci',cls:'sev-ci',drugs:'MAOIs',mech:'세로토닌 증후군.'},{sev:'ci',cls:'sev-ci',drugs:'최근 AMI',mech:'부정맥 위험.'},{sev:'high',cls:'sev-high',drugs:'CYP2D6 억제제',mech:'TCA 혈중농도 급상승.'},{sev:'high',cls:'sev-high',drugs:'QT 연장 약물',mech:'QTc 상가.'}],
+    contraindications:['MAOIs','최근 AMI','QTc > 500ms','심각한 전도 장애'],
+    monitoring:['기저 EKG 필수','QTc/QRS','TDM (50~150 ng/mL)','혈압'],
+    note:'TCA 중 노인 상대적 선호. TDM 명확하여 유용.' },
+
+  { id:'imipramine', nameKor:'이미프라민', nameEng:'Imipramine', brand:'Tofranil / 토프라닐', drugClass:'TCA', ekgRisk:'high',
+    formulary:[],
+    pros:['야뇨증 소아 적응증','공황장애 효과 입증','우울증 효과 우수','저렴한 비용'],
+    cons:['심각한 심독성 (QTc/QRS 연장)','강한 항콜린','진정·기립성 저혈압','과량 복용 치명적','소아 EKG 모니터링 필수'],
+    duration:'우울증: 6~12개월. 야뇨증: 3~6개월 후 재평가.',
+    titration:[{dose:'25~75mg',note:'야간 시작'},{dose:'1~2주마다',note:'25~50mg 증량'},{dose:'100~300mg',note:'항우울 목표'},{dose:'25~75mg',note:'야뇨증'}],
+    maintenance:'100~200mg/일 (MDD)',
+    tapering:'2~4주 서서히.',
+    ekg:{risk:'high',items:[{tag:'QTc',cls:'qtc-tag',desc:'QTc 연장 (TCA 중 가장 현저).'},{tag:'QRS',cls:'qrs-tag',desc:'고용량·과량 시 QRS 현저 확장 → 심실빈맥.'},{tag:'PR',cls:'pr-tag',desc:'PR 연장, T파 변화.'}]},
+    interactions:[{sev:'ci',cls:'sev-ci',drugs:'MAOIs',mech:'고혈압 위기·세로토닌 증후군.'},{sev:'ci',cls:'sev-ci',drugs:'최근 AMI, Class I 항부정맥제',mech:'심독성.'},{sev:'high',cls:'sev-high',drugs:'CYP2D6 억제제',mech:'혈중농도 상승.'},{sev:'high',cls:'sev-high',drugs:'항콜린 약물',mech:'상가 독성.'}],
+    contraindications:['MAOIs','최근 AMI','심각한 부정맥','좁은각 녹내장','요저류'],
+    monitoring:['기저 EKG 필수','QTc/QRS 주기적','TDM','혈압','소아 EKG 필수'],
+    note:'소아 야뇨증: 치료 전·중 EKG 필수.' },
+
+  { id:'mirtazapine', nameKor:'미르타자핀', nameEng:'Mirtazapine', brand:'Remeron / 레메론', drugClass:'기타', ekgRisk:'low',
+    formulary:[{code:'MUL7',name:'멀타핀 정 7.5mg',isNew:false},{code:'MUL15',name:'멀타핀 정 15mg',isNew:false}],
+    pros:['성기능 장애 없음','진정·수면 효과 우수','식욕 증가 (체중 감소 환자)','항구역 효과 (5-HT3 차단)','EKG 영향 거의 없음'],
+    cons:['체중 증가 (장기 문제)','진정·졸음 (낮에도)','저용량이 더 진정','구갈','과립구 감소증 (드묾)'],
+    duration:'6~12개월. 불면·식욕 개선 목적 장기 가능.',
+    titration:[{dose:'15mg',note:'취침 전 시작'},{dose:'1~2주 후',note:'재평가'},{dose:'30~45mg',note:'목표'}],
+    maintenance:'15~45mg/일 (취침 전)',
+    tapering:'15mg씩 2~4주 간격. 중단 증후군 경미.',
+    ekg:{risk:'low',items:[{tag:'QTc',cls:'qtc-tag',desc:'임상적 QTc 연장 없음. EKG 안전.'}]},
+    interactions:[{sev:'ci',cls:'sev-ci',drugs:'MAOIs',mech:'세로토닌 증후군. 14일.'},{sev:'high',cls:'sev-high',drugs:'CNS 억제제 (벤조, 알코올, 오피오이드)',mech:'CNS 억제 상가.'},{sev:'mod',cls:'sev-mod',drugs:'CYP3A4 억제제',mech:'혈중농도 상승 가능.'}],
+    contraindications:['MAOIs/14일 이내','심각한 간기능 저하','과립구 감소증 과거력'],
+    monitoring:['체중 (정기)','혈구 수 (발열/인후통 시)','혈압','간기능'],
+    note:'저용량(15mg)이 히스타민 억제로 더 진정. 노인·암 환자 식욕 저하 동반 우울증에 유용.' },
+
+  { id:'bupropion', nameKor:'부프로피온', nameEng:'Bupropion', brand:'Wellbutrin XL / 웰부트린', drugClass:'기타', ekgRisk:'low',
+    formulary:[],
+    pros:['성기능 장애 없음 (유일)','체중 감소/중립','금연 보조 (Zyban)','ADHD 보조','피로·집중력 개선','세로토닌 증후군 무관'],
+    cons:['경련 역치 저하 (식욕부진·대식증 금기)','불안·자극과민·불면 가능','혈압 상승','중등도 CYP2D6 억제','불안 주된 경우 비선호'],
+    duration:'6~12개월 (MDD). 금연: 7~12주.',
+    titration:[{dose:'150mg XL',note:'1주 시작'},{dose:'1주 후',note:'재평가'},{dose:'300mg XL',note:'목표'},{dose:'최대 450mg',note:'분복'}],
+    maintenance:'150~300mg/일 (XL)',
+    tapering:'서서히 감량 권장.',
+    ekg:{risk:'low',items:[{tag:'QTc',cls:'qtc-tag',desc:'임상적 QTc 연장 없음.'}]},
+    interactions:[{sev:'ci',cls:'sev-ci',drugs:'MAOIs',mech:'고혈압 위기. 14일.'},{sev:'ci',cls:'sev-ci',drugs:'경련 역치 저하 약물 (tramadol, 항정신병약)',mech:'경련 상가.'},{sev:'high',cls:'sev-high',drugs:'CYP2D6 기질 (TCAs, 항정신병약)',mech:'CYP2D6 억제 → 혈중농도 상승.'},{sev:'mod',cls:'sev-mod',drugs:'알코올·BZD 급중단',mech:'경련 역치 저하 상가.'}],
+    contraindications:['경련 장애','식욕부진증·대식증','MAOIs/14일','알코올·BZD 급성 금단'],
+    monitoring:['혈압','경련 징후','수면/불안','체중'],
+    note:'1회 최대 용량 초과 시 경련 위험 증가. IR 제형 분복 필수.' },
+
+  { id:'agomelatine', nameKor:'아고멜라틴', nameEng:'Agomelatine', brand:'Valdoxan / 발독산', drugClass:'기타', ekgRisk:'low',
+    formulary:[],
+    pros:['수면 주기 정상화 (멜라토닌 수용체)','성기능 장애 없음','중단 증후군 거의 없음','인지 기능 보전'],
+    cons:['간독성 — LFT 정기 필수','CYP1A2 억제제 병용 금기','알코올 금기','항우울 효과 근거 논란','국내 사용 제한적'],
+    duration:'6개월 이상.',
+    titration:[{dose:'25mg',note:'취침 전 시작'},{dose:'2주 후',note:'재평가'},{dose:'50mg',note:'필요 시'}],
+    maintenance:'25~50mg/일 (취침 전)',
+    tapering:'중단 증후군 거의 없음.',
+    ekg:{risk:'low',items:[{tag:'QTc',cls:'qtc-tag',desc:'QTc 연장 없음.'}]},
+    interactions:[{sev:'ci',cls:'sev-ci',drugs:'CYP1A2 강력 억제제 (fluvoxamine, 시프로플록사신)',mech:'AUC 60배↑ → 독성.'},{sev:'ci',cls:'sev-ci',drugs:'알코올',mech:'간독성 상가.'},{sev:'mod',cls:'sev-mod',drugs:'CYP1A2 기질',mech:'상호 영향.'}],
+    contraindications:['간기능 저하 (ALT/AST > ULN×3)','알코올 의존/과음','CYP1A2 강력 억제제 병용'],
+    monitoring:['⚠️ LFT: 처방 전, 6주, 12주, 24주, 48주, 증량 후','자살 충동'],
+    note:'간기능 이상 확인 즉시 중단. LFT 프로토콜 철저 준수.' },
+
+  { id:'vortioxetine', nameKor:'보르티옥세틴', nameEng:'Vortioxetine', brand:'Trintellix / 트린텔릭스', drugClass:'기타', ekgRisk:'low',
+    formulary:[{code:'BRIN10',name:'브린텔릭스 정 10mg',isNew:false}],
+    pros:['인지기능 개선 효과','Multimodal (SERT + 다중 수용체)','성기능 장애 비교적 적음','고령 인지저하 동반 우울증 유리'],
+    cons:['구역·구토 초기 빈번','비교적 고가','CYP2D6 기질 상호작용','MAOIs 금기'],
+    duration:'6~12개월. 인지 개선 장기 유지.',
+    titration:[{dose:'5~10mg',note:'시작'},{dose:'2~4주 후',note:'재평가'},{dose:'10~20mg',note:'목표'}],
+    maintenance:'10~20mg/일',
+    tapering:'중단 증후군 드물지만 서서히 권장.',
+    ekg:{risk:'low',items:[{tag:'QTc',cls:'qtc-tag',desc:'QTc 연장 없음.'}]},
+    interactions:[{sev:'ci',cls:'sev-ci',drugs:'MAOIs',mech:'세로토닌 증후군. 14일.'},{sev:'ci',cls:'sev-ci',drugs:'Linezolid, methylene blue',mech:'세로토닌 증후군.'},{sev:'high',cls:'sev-high',drugs:'CYP2D6 강력 억제제 (bupropion, fluoxetine)',mech:'혈중농도 상승 → 최대 10mg.'},{sev:'mod',cls:'sev-mod',drugs:'NSAIDs, 항응고제',mech:'출혈 위험.'}],
+    contraindications:['MAOIs','Linezolid/methylene blue'],
+    monitoring:['자살 충동','구역 증상','출혈 징후'],
+    note:'CYP2D6 강력 억제제 병용 시 최대 10mg.' },
+
+  { id:'tianeptine', nameKor:'티아넵틴', nameEng:'Tianeptine', brand:'Stablon / 스타블론', drugClass:'기타', ekgRisk:'low',
+    formulary:[],
+    pros:['빠른 효과 발현 (1~2주)','불안·신체화 증상 효과','인지기능 보전','성기능 장애 없음','위장관 부작용 경미'],
+    cons:['⚠️ μ-오피오이드 수용체 → 의존성·남용','하루 3회 복용 (반감기 ~2.5h)','FDA 미승인','오피오이드 유사 금단','조증 유발 가능'],
+    duration:'6~12개월. 장기 사용 시 의존성 위험 → 정기 재평가.',
+    titration:[{dose:'12.5mg × 3',note:'시작 = 유지'},{dose:'식전 20분',note:'복용 시점 중요'},{dose:'최대 37.5mg',note:'3회 분복'}],
+    maintenance:'12.5mg × 3회/일 (37.5mg/일)',
+    tapering:'⚠️ 급중단 금지. 4~8주 서서히: 37.5→25mg(2주)→12.5mg(2주)→중단.',
+    ekg:{risk:'low',items:[{tag:'QTc',cls:'qtc-tag',desc:'QTc 연장 없음.'}]},
+    interactions:[{sev:'ci',cls:'sev-ci',drugs:'MAOIs (비가역적)',mech:'세로토닌 증후군·고혈압 위기.'},{sev:'ci',cls:'sev-ci',drugs:'오피오이드 고용량',mech:'μ-오피오이드 상가 → 호흡 억제.'},{sev:'high',cls:'sev-high',drugs:'알코올, 벤조디아제핀',mech:'CNS 억제 상가. 의존성 증가.'},{sev:'high',cls:'sev-high',drugs:'기분 안정제 없는 양극성 장애',mech:'조증 삽화 유발.'},{sev:'mod',cls:'sev-mod',drugs:'Tramadol, triptans',mech:'세로토닌 활성 상가.'}],
+    contraindications:['MAOIs/14일 이내','15세 미만','오피오이드 의존 과거력','양극성 장애 (기분안정제 없이)','수유 중'],
+    monitoring:['⚠️ 의존성·남용 징후 정기 평가','조증 증상','금단 증상','간기능 (장기)','자살 충동'],
+    note:'기전: μ·δ-오피오이드 + AMPA 조절 + 세로토닌 재흡수 촉진. 한국·프랑스 허가, 미국 미승인. 남용 위험 환자 선별 중요.' },
+
+  { id:'trazodone', nameKor:'트라조돈', nameEng:'Trazodone', brand:'Desyrel / 데시렐', drugClass:'기타', ekgRisk:'mod',
+    formulary:[{code:'TRIT',name:'트리티코 정 25mg',isNew:false}],
+    pros:['저용량(25~100mg) 불면 보조 탁월','의존성 없는 수면 대안','불안·초조 개선','세로토닌 증후군 위험 낮음'],
+    cons:['기립성 저혈압','QTc 경미 연장','음경 지속발기증 (드물지만 위험)','고용량 과도한 진정','항우울 용량(150~400mg)이 불면 용량보다 훨씬 높음'],
+    duration:'불면: 단기~장기. 항우울: 6~12개월.',
+    titration:[{dose:'25~50mg',note:'취침 전 (불면)'},{dose:'75mg',note:'시작 (항우울)'},{dose:'150~400mg',note:'항우울 목표'}],
+    maintenance:'불면: 50~100mg/일. 항우울: 150~400mg/일',
+    tapering:'점진적 감량. 중단 증후군 경미.',
+    ekg:{risk:'mod',items:[{tag:'QTc',cls:'qtc-tag',desc:'경미한 QTc 연장. 고용량·QT 기저 연장 시 주의.'},{tag:'PR',cls:'pr-tag',desc:'PR 간격 경미 변화 가능.'}]},
+    interactions:[{sev:'ci',cls:'sev-ci',drugs:'MAOIs',mech:'세로토닌 증후군. 14일.'},{sev:'high',cls:'sev-high',drugs:'QT 연장 약물',mech:'QTc 상가.'},{sev:'high',cls:'sev-high',drugs:'CYP3A4 억제제 (케토코나졸, 클라리스로마이신)',mech:'혈중농도 상승.'},{sev:'mod',cls:'sev-mod',drugs:'CNS 억제제, 알코올',mech:'과도한 진정.'},{sev:'mod',cls:'sev-mod',drugs:'항고혈압제',mech:'기립성 저혈압 상가.'}],
+    contraindications:['MAOIs','QTc > 500ms','심한 부정맥'],
+    monitoring:['혈압 (기립성)','EKG (QT 기저 이상)','음경 지속발기증 교육','과도한 진정'],
+    note:'Priapism: 수술적 처치 필요 가능. 남성 환자 사전 교육 필수.' },
+];
+
+// ─── GUIDE RENDER ───
+function renderGuide() {
+  document.getElementById('ggrid').innerHTML = guideData.map(g => {
+    let body = '';
+    if (g.type === 'ranking') {
+      body = `<div class="ranking">${g.items.map((it,i)=>`
+        <div class="ritem"><span class="rnum r${i+1}">${i+1}</span>
+        <span class="rdrug">${it.drug}</span>
+        <span class="rnote">${it.note}</span></div>`).join('')}</div>`;
+    } else if (g.type === 'single') {
+      body = `<div class="gsingle"><span class="gsl">선호 약물</span><span class="gsd">${g.preferred}</span></div>
+              <div class="greason">${g.reason}</div>`;
+    } else if (g.type === 'warning') {
+      body = g.items.map(it=>`<div class="gwarn"><span class="wi">⚠️</span>
+        <div><div class="wt">${it.label}</div><div class="wd">${it.detail}</div></div></div>`).join('<div style="height:5px"></div>');
+    } else if (g.type === 'formulary') {
+      body = `<div class="ranking">${g.items.map(it=>`
+        <div class="ritem"><span class="rdrug pref">${it.drug}</span>
+        <span class="rnote" style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--accent)">${it.code}</span>
+        <span style="font-size:9.5px;color:var(--text-muted);margin-left:3px">${it.note}</span></div>`).join('')}</div>`;
+    }
+    return `<div class="gcard"><div class="gchdr"><span class="gicon">${g.icon}</span>
+      <div><div class="gctitle">${g.title}</div><div class="gcsub">${g.sub}</div></div></div>${body}</div>`;
+  }).join('');
+}
+
+// ─── DRUG RENDER ───
+let curFilter = 'ALL', searchTerm = '';
+
+function ekgLabel(r) {
+  return r==='low'?{cls:'ekg-low',label:'저위험'}:r==='mod'?{cls:'ekg-mod',label:'QT 주의'}:{cls:'ekg-high',label:'EKG ⚠️'};
 }
 
 function renderDrug(d) {
-  const ekg = getEkgLabel(d.ekgRisk);
-  const hasFormulary = d.formulary && d.formulary.length > 0;
+  const ekg = ekgLabel(d.ekgRisk);
+  const hasF = d.formulary && d.formulary.length > 0;
 
-  // 헤더에 들어갈 개별 복사 버튼 코드 (Pills)
-  const headerCodesHTML = hasFormulary
-    ? d.formulary.map(f =>
-        `<span class="hc-pill${f.note ? ' hc-oos' : f.isNew ? ' hc-new' : ''}" 
-               onclick="copyIndividualCode('${f.code}', this, event)" 
-               title="클릭하여 코드 복사">${f.code}</span>`
-      ).join('')
-    : '';
+  const pills = hasF ? d.formulary.map(f =>
+    `<span class="hcp${f.note?' hcp-oos':f.isNew?' hcp-new':''}"
+      onclick="cc('${f.code}',this,event)" title="${f.name} — 클릭하여 복사">${f.code}</span>`).join('') : '';
 
-  const formularyHTML = hasFormulary
-    ? `<div class="formulary-section">
-        <div class="formulary-title">🏥 하남보바스 원내 약품 코드 (클릭 시 복사)</div>
-        <div class="formulary-grid">
-          ${d.formulary.map(f => `
-            <div class="formulary-pill${f.note ? ' discontinued' : ''}" style="cursor:pointer" onclick="copyIndividualCode('${f.code}', this, event)">
-              <span class="f-code">${f.code}</span>
-              <span class="f-name">${f.name}</span>
-              ${f.isNew ? '<span class="f-new">NEW</span>' : ''}
-              ${f.note ? `<span class="f-note">${f.note}</span>` : ''}
-            </div>
-          `).join('')}
-        </div>
-      </div>`
-    : `<div class="formulary-section">
-        <div class="formulary-title">🏥 하남보바스 원내 약품 코드</div>
-        <div class="no-formulary">원내 미등재 약품입니다.</div>
-      </div>`;
+  const fblock = hasF
+    ? `<div class="fsec"><div class="ftitle">🏥 원내 코드 — 클릭하면 코드가 복사됩니다</div>
+        <div class="fgrid">${d.formulary.map(f=>`
+          <div class="fpill${f.note?' discontinued':''}" onclick="cc('${f.code}',this,event)">
+            <span class="fcode">${f.code}</span><span class="fname">${f.name}</span>
+            ${f.isNew?'<span class="fnew">NEW</span>':''}${f.note?`<span class="fnote">${f.note}</span>`:''}
+          </div>`).join('')}</div></div>`
+    : `<div class="fsec"><div class="ftitle">🏥 원내 코드</div><div class="no-f">원내 미등재 약품입니다.</div></div>`;
 
-  return `
-  <div class="drug-card" data-class="${d.drugClass}" data-id="${d.id}" id="card-${d.id}">
-    <div class="card-accent-bar"></div>
-    <div class="card-header" onclick="toggleCard('${d.id}')">
-      <span class="card-class-badge badge-${d.drugClass}">${d.drugClass}</span>
-      <div class="card-names">
-        <div class="card-name-kor">${d.nameKor}</div>
-        <div class="card-name-eng">${d.nameEng}</div>
-        <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:4px">
-          <span class="card-name-brand" style="margin-right:4px">${d.brand}</span>
-          ${headerCodesHTML}
-        </div>
-      </div>
-      <div class="card-right">
-        <span class="ekg-badge ${ekg.cls}">${ekg.label}</span>
-        <span class="chevron">▶</span>
-      </div>
+  return `<div class="drug-card" data-class="${d.drugClass}" id="card-${d.id}">
+  <div class="bar"></div>
+  <div class="card-header" onclick="tog('${d.id}')">
+    <span class="cls-badge badge-${d.drugClass}">${d.drugClass}</span>
+    <div class="card-names">
+      <div class="kor">${d.nameKor}</div>
+      <div class="eng">${d.nameEng}</div>
+      <div class="meta-row"><span class="brand">${d.brand}</span>${pills}</div>
     </div>
-    <div class="card-body" id="body-${d.id}">
-      <div class="inner-tabs" id="tabs-${d.id}">
-        <div class="inner-tab active" onclick="switchTab('${d.id}','overview',this)">개요</div>
-        <div class="inner-tab" onclick="switchTab('${d.id}','dosing',this)">용량/기간</div>
-        <div class="inner-tab" onclick="switchTab('${d.id}','ekg',this)">EKG</div>
-        <div class="inner-tab" onclick="switchTab('${d.id}','interactions',this)">상호작용</div>
-        <div class="inner-tab" onclick="switchTab('${d.id}','ci',this)">금기/모니터링</div>
+    <div class="card-right">
+      <span class="ekgb ${ekg.cls}">${ekg.label}</span>
+      <span class="chev">▶</span>
+    </div>
+  </div>
+  <div class="card-body" id="body-${d.id}">
+    <div class="itabs" id="tabs-${d.id}">
+      <div class="itab active" onclick="st('${d.id}','ov',this)">개요</div>
+      <div class="itab" onclick="st('${d.id}','dos',this)">용량/기간</div>
+      <div class="itab" onclick="st('${d.id}','ekg',this)">EKG</div>
+      <div class="itab" onclick="st('${d.id}','int',this)">상호작용</div>
+      <div class="itab" onclick="st('${d.id}','ci',this)">금기/모니터링</div>
+    </div>
+    <div class="ipanel active" id="p-${d.id}-ov">
+      <div class="pc">
+        <div class="pros"><div class="btitle">✓ 장점</div><ul class="blist">${d.pros.map(p=>`<li>${p}</li>`).join('')}</ul></div>
+        <div class="cons"><div class="btitle">✗ 단점</div><ul class="blist">${d.cons.map(c=>`<li>${c}</li>`).join('')}</ul></div>
       </div>
-
-      <!-- OVERVIEW -->
-      <div class="inner-panel active" id="panel-${d.id}-overview">
-        <div class="pros-cons">
-          <div class="pros-box">
-            <div class="box-title">✓ 장점 (Pros)</div>
-            <ul class="box-list">${d.pros.map(p=>`<li>${p}</li>`).join('')}</ul>
-          </div>
-          <div class="cons-box">
-            <div class="box-title">✗ 단점 (Cons)</div>
-            <ul class="box-list">${d.cons.map(c=>`<li>${c}</li>`).join('')}</ul>
-          </div>
-        </div>
-        ${formularyHTML}
-        ${d.note ? `<div class="note-box"><div class="note-label">📌 임상 참고</div><p>${d.note}</p></div>` : ''}
+      ${fblock}
+      ${d.note?`<div class="notebox"><div class="nl">📌 임상 참고</div><p>${d.note}</p></div>`:''}
+    </div>
+    <div class="ipanel" id="p-${d.id}-dos">
+      <div class="titflow"><div class="tittitle">⬆ Titration 흐름</div>
+        <div class="titsteps">${d.titration.map((s,i)=>`${i>0?'<span class="tarr">→</span>':''}<div class="ts"><div class="d">${s.dose}</div><div class="n">${s.note}</div></div>`).join('')}</div>
       </div>
-
-      <!-- DOSING -->
-      <div class="inner-panel" id="panel-${d.id}-dosing">
-        <div class="titration-flow">
-          <div class="titration-title">⬆ Titration 흐름</div>
-          <div class="titration-steps">
-            ${d.titration.map((s,i) => `
-              ${i>0 ? '<span class="tit-arrow">→</span>' : ''}
-              <div class="tit-step"><div class="dose">${s.dose}</div><div class="note">${s.note}</div></div>
-            `).join('')}
-          </div>
-        </div>
-        <div class="info-grid">
-          <div class="info-box">
-            <div class="info-label">유지 용량</div>
-            <div class="dose-val">${d.maintenance}</div>
-          </div>
-          <div class="info-box">
-            <div class="info-label">사용 기간</div>
-            <div class="info-val" style="font-size:12px">${d.duration.split('.')[0]}</div>
-          </div>
-        </div>
-        <div class="info-box" style="margin-bottom:12px">
-          <div class="info-label">⬇ Tapering 방법</div>
-          <div class="info-val" style="font-size:12.5px; color: var(--text-soft)">${d.tapering}</div>
-        </div>
-        <div class="info-box">
-          <div class="info-label">📅 사용 기간 상세</div>
-          <div class="info-val" style="font-size:12.5px; color: var(--text-soft)">${d.duration}</div>
-        </div>
+      <div class="igrid">
+        <div class="ibox"><div class="ilabel">유지 용량</div><div class="doseval">${d.maintenance}</div></div>
+        <div class="ibox"><div class="ilabel">사용 기간</div><div class="ival" style="font-size:11.5px">${d.duration.split('.')[0]}</div></div>
       </div>
-
-      <!-- EKG -->
-      <div class="inner-panel" id="panel-${d.id}-ekg">
-        <div class="ekg-section">
-          <div class="ekg-risk-bar">
-            <div class="ekg-header">
-              <span class="ekg-badge ${ekg.cls}" style="font-size:12px; padding:4px 12px">EKG 위험도: ${ekg.label}</span>
-              <span class="ekg-risk-label">${d.nameKor}</span>
-            </div>
-            <div class="ekg-items">
-              ${d.ekg.items.map(item => `
-                <div class="ekg-item">
-                  <span class="ekg-tag ${item.cls}">${item.tag}</span>
-                  <span class="ekg-desc">${item.desc}</span>
-                </div>
-              `).join('')}
-            </div>
-          </div>
-          <div class="note-box" style="background: rgba(245,158,11,0.05); border-color: rgba(245,158,11,0.2);">
-            <div class="note-label" style="color: var(--warn)">⚡ EKG 임상 원칙</div>
-            <p>기저 QTc > 450ms (남) / 470ms (여): 주의 처방. QTc > 500ms: 원칙적 금기. QRS > 100ms (TCA): 독성 징후로 즉시 평가. 전해질(K⁺, Mg²⁺) 정상화 필수.</p>
-          </div>
+      <div class="ibox" style="margin-bottom:9px"><div class="ilabel">⬇ Tapering</div><div class="ival" style="font-size:12px;color:var(--text-soft)">${d.tapering}</div></div>
+      <div class="ibox"><div class="ilabel">📅 사용 기간 상세</div><div class="ival" style="font-size:12px;color:var(--text-soft)">${d.duration}</div></div>
+    </div>
+    <div class="ipanel" id="p-${d.id}-ekg">
+      <div class="ekgsec">
+        <div class="ekgbar"><div class="ekghdr"><span class="ekgb ${ekg.cls}" style="font-size:11px;padding:3px 10px">EKG 위험도: ${ekg.label}</span><span class="ekgrl">${d.nameKor}</span></div>
+          <div class="ekgitems">${d.ekg.items.map(it=>`<div class="ekgi"><span class="etag ${it.cls}">${it.tag}</span><span class="edesc">${it.desc}</span></div>`).join('')}</div>
         </div>
-      </div>
-
-      <!-- INTERACTIONS -->
-      <div class="inner-panel" id="panel-${d.id}-interactions">
-        <div class="interaction-list">
-          ${d.interactions.map(i => `
-            <div class="interaction-item">
-              <span class="int-sev ${i.cls}">${i.sev === 'ci' ? '금기' : i.sev === 'high' ? '심각' : '주의'}</span>
-              <div class="int-body">
-                <div class="int-drugs">${i.drugs}</div>
-                <div class="int-mech">${i.mech}</div>
-              </div>
-            </div>
-          `).join('')}
-        </div>
-      </div>
-
-      <!-- CI / MONITORING -->
-      <div class="inner-panel" id="panel-${d.id}-ci">
-        <div class="section-title">🚫 금기 (Contraindications)</div>
-        <div class="ci-list">
-          ${d.contraindications.map(c => `
-            <div class="ci-item"><span class="ci-icon">✕</span><span class="ci-text">${c}</span></div>
-          `).join('')}
-        </div>
-        <div class="section-title" style="margin-top:16px">🔬 모니터링 항목</div>
-        <div class="monitor-list">
-          ${d.monitoring.map(m => `<span class="monitor-pill">${m}</span>`).join('')}
+        <div class="notebox" style="background:rgba(217,119,6,.05);border-color:rgba(217,119,6,.18)">
+          <div class="nl" style="color:var(--warn)">⚡ EKG 임상 원칙</div>
+          <p>기저 QTc > 450ms (남) / 470ms (여): 주의 처방. QTc > 500ms: 원칙적 금기. QRS > 100ms (TCA): 독성 징후 즉시 평가. K⁺, Mg²⁺ 정상화 필수.</p>
         </div>
       </div>
     </div>
-  </div>`;
+    <div class="ipanel" id="p-${d.id}-int">
+      <div class="ilist">${d.interactions.map(it=>`<div class="iitem"><span class="isev ${it.cls}">${it.sev==='ci'?'금기':it.sev==='high'?'심각':'주의'}</span><div class="ibody"><div class="idrug">${it.drugs}</div><div class="imech">${it.mech}</div></div></div>`).join('')}</div>
+    </div>
+    <div class="ipanel" id="p-${d.id}-ci">
+      <div class="stitle">🚫 금기 (Contraindications)</div>
+      <div class="cilist">${d.contraindications.map(c=>`<div class="ciitem"><span class="ciicon">✕</span><span class="citext">${c}</span></div>`).join('')}</div>
+      <div class="stitle">🔬 모니터링 항목</div>
+      <div class="monlist">${d.monitoring.map(m=>`<span class="monpill">${m}</span>`).join('')}</div>
+    </div>
+  </div>
+</div>`;
 }
 
-function toggleCard(id) {
-  const card = document.getElementById('card-' + id);
-  card.classList.toggle('open');
-}
+// ─── INTERACTIONS ───
+function tog(id) { document.getElementById('card-'+id).classList.toggle('open'); }
 
-// 개별 코드 복사 함수
-function copyIndividualCode(code, element, event) {
-  if (event) event.stopPropagation(); // 카드 펼쳐짐 방지
-
-  const done = () => {
-    const originalText = element.textContent;
-    element.classList.add('copied');
-    // 헤더 pill인 경우 텍스트를 잠시 바꿈 (선택사항)
-    if (element.classList.contains('hc-pill')) {
-        element.textContent = '복사됨';
-        setTimeout(() => { element.textContent = code; element.classList.remove('copied'); }, 1000);
-    } else {
-        setTimeout(() => { element.classList.remove('copied'); }, 1000);
-    }
-  };
-
-  if (navigator.clipboard) {
-    navigator.clipboard.writeText(code).then(done).catch(() => {
-      fallbackCopy(code); done();
-    });
-  } else {
-    fallbackCopy(code); done();
-  }
-}
-
-function fallbackCopy(text) {
-  const ta = document.createElement('textarea');
-  ta.value = text; ta.style.cssText = 'position:fixed;opacity:0';
-  document.body.appendChild(ta); ta.select();
-  document.execCommand('copy'); document.body.removeChild(ta);
-}
-
-function switchTab(drugId, tab, el) {
-  document.querySelectorAll(`#tabs-${drugId} .inner-tab`).forEach(t => t.classList.remove('active'));
+function st(did, tab, el) {
+  document.querySelectorAll(`#tabs-${did} .itab`).forEach(t=>t.classList.remove('active'));
   el.classList.add('active');
-  document.querySelectorAll(`[id^="panel-${drugId}-"]`).forEach(p => p.classList.remove('active'));
-  document.getElementById(`panel-${drugId}-${tab}`).classList.add('active');
+  document.querySelectorAll(`[id^="p-${did}-"]`).forEach(p=>p.classList.remove('active'));
+  document.getElementById(`p-${did}-${tab}`).classList.add('active');
 }
 
-function filterAndRender() {
-  const container = document.getElementById('drugList');
-  let filtered = drugs.filter(d => {
-    const matchClass = currentFilter === 'ALL' || d.drugClass === currentFilter;
+function cc(code, el, ev) {
+  if (ev) ev.stopPropagation();
+  const done = () => {
+    el.classList.add('flash','flash-pill');
+    toast(`📋 "${code}" 복사됨`);
+    setTimeout(()=>el.classList.remove('flash','flash-pill'), 1100);
+  };
+  navigator.clipboard ? navigator.clipboard.writeText(code).then(done).catch(()=>{fb(code);done();}) : (fb(code),done());
+}
+
+function fb(t) {
+  const a=document.createElement('textarea');a.value=t;a.style.cssText='position:fixed;opacity:0';
+  document.body.appendChild(a);a.select();document.execCommand('copy');document.body.removeChild(a);
+}
+
+function toast(msg) {
+  const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');
+  clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),1800);
+}
+
+function render() {
+  const isGuide = curFilter === '가이드';
+  const dl = document.getElementById('drugList');
+  const gv = document.getElementById('guideView');
+  dl.style.display = isGuide ? 'none' : '';
+  gv.classList.toggle('visible', isGuide);
+  if (isGuide) { document.getElementById('cntBadge').textContent = 'Guide'; return; }
+
+  let list = drugs.filter(d => {
+    const mc = curFilter === 'ALL' || d.drugClass === curFilter;
     const q = searchTerm.toLowerCase();
-    const matchSearch = !q || d.nameKor.includes(q) || d.nameEng.toLowerCase().includes(q) ||
-      d.brand.toLowerCase().includes(q) || d.drugClass.toLowerCase().includes(q);
-    return matchClass && matchSearch;
+    const ms = !q || d.nameKor.includes(q) || d.nameEng.toLowerCase().includes(q)
+      || d.brand.toLowerCase().includes(q)
+      || (d.formulary && d.formulary.some(f=>f.code.toLowerCase().includes(q)||f.name.includes(q)));
+    return mc && ms;
   });
 
-  document.getElementById('countBadge').textContent = filtered.length + ' drugs';
-
-  if (filtered.length === 0) {
-    container.innerHTML = `<div class="empty-state"><div class="big">🔍</div><p>검색 결과 없음: "${searchTerm}"</p></div>`;
-    return;
-  }
-  container.innerHTML = filtered.map(renderDrug).join('');
+  document.getElementById('cntBadge').textContent = list.length + ' drugs';
+  dl.innerHTML = list.length
+    ? list.map(renderDrug).join('')
+    : `<div class="empty"><div class="big">🔍</div><p>검색 결과 없음: "${searchTerm}"</p></div>`;
 }
 
-// Class tabs
-document.querySelectorAll('.tab-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    currentFilter = btn.dataset.class;
-    filterAndRender();
-  });
-});
+document.querySelectorAll('.tab-btn').forEach(b=>b.addEventListener('click',()=>{
+  document.querySelectorAll('.tab-btn').forEach(x=>x.classList.remove('active'));
+  b.classList.add('active'); curFilter=b.dataset.class; render();
+}));
+document.getElementById('searchInput').addEventListener('input',e=>{searchTerm=e.target.value;render();});
 
-// Search
-document.getElementById('searchInput').addEventListener('input', e => {
-  searchTerm = e.target.value;
-  filterAndRender();
-});
-
-// Initial render
-filterAndRender();
+renderGuide();
+render();
 </script>
 </body>
 </html>
