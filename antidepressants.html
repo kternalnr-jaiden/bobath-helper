@@ -387,52 +387,31 @@
     border: 1px solid rgba(0,212,170,0.3); flex-shrink: 0;
   }
 
-  /* ─── COPY BUTTON ─── */
-  .copy-btn {
-    background: var(--surface3); border: 1px solid var(--border);
-    color: var(--text-muted); font-size: 11px; font-weight: 600;
-    padding: 5px 10px; border-radius: 7px; cursor: pointer;
-    transition: all 0.18s; white-space: nowrap; flex-shrink: 0;
-    font-family: 'Noto Sans KR', sans-serif;
-  }
-  .copy-btn:hover { background: var(--accent-dim); border-color: var(--accent); color: var(--accent); }
-  .copy-btn.copied { background: var(--ok-dim); border-color: var(--ok); color: var(--ok); }
-  .copy-row {
-    display: flex; justify-content: flex-end;
-    padding: 8px 16px 0; gap: 6px;
-  }
-
-  /* ─── HEADER INLINE CODE PILLS ─── */
+  /* ─── NEW CLICKABLE PILLS IN HEADER ─── */
   .hc-pill {
     font-family: 'JetBrains Mono', monospace;
     font-size: 10px; font-weight: 700;
-    padding: 1px 6px; border-radius: 5px;
+    padding: 2px 8px; border-radius: 5px;
     background: rgba(0,158,128,0.12);
     color: var(--accent);
     border: 1px solid rgba(0,158,128,0.3);
+    cursor: pointer;
+    transition: all 0.2s;
+    user-select: none;
+    position: relative;
   }
-  .hc-pill.hc-new {
-    background: rgba(22,163,74,0.12); color: var(--ok);
-    border-color: rgba(22,163,74,0.35);
+  .hc-pill:hover {
+    background: var(--accent); color: white; transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
   }
-  .hc-pill.hc-oos {
-    background: rgba(220,38,38,0.08); color: var(--danger);
-    border-color: rgba(220,38,38,0.25); text-decoration: line-through; opacity: 0.7;
-  }
+  .hc-pill:active { transform: translateY(0); }
+  .hc-pill.hc-new { background: rgba(22,163,74,0.12); color: var(--ok); border-color: rgba(22,163,74,0.35); }
+  .hc-pill.hc-oos { background: rgba(220,38,38,0.08); color: var(--danger); border-color: rgba(220,38,38,0.25); text-decoration: line-through; opacity: 0.7; }
+  .hc-pill.copied { background: var(--ok) !important; color: white !important; border-color: var(--ok) !important; }
 </style>
 </head>
 <body>
-<a href="index.html" style="
-position:fixed;
-top:10px;
-left:10px;
-background:#333;
-color:white;
-padding:8px 12px;
-border-radius:8px;
-text-decoration:none;
-z-index:999;
-">🏠 홈</a>
+<a href="index.html" style="position:fixed; top:10px; left:10px; background:#333; color:white; padding:8px 12px; border-radius:8px; text-decoration:none; z-index:999;">🏠 홈</a>
   
 <header>
   <div class="header-top">
@@ -465,8 +444,8 @@ z-index:999;
 </div>
 
 <script>
+// 데이터 배열 (유지)
 const drugs = [
-  // ─────────────────── SSRI ───────────────────
   {
     id: 'escitalopram',
     nameKor: '에스시탈로프람',
@@ -659,8 +638,6 @@ const drugs = [
     monitoring: ['CYP1A2 기질 약물 혈중농도', 'INR (와파린 병용)', '클로자핀 혈중농도', '간기능'],
     note: '클로자핀 병용 환자에서 특히 주의. 흡연자는 CYP1A2 유도로 용량 증량 필요할 수 있음.'
   },
-
-  // ─────────────────── SNRI ───────────────────
   {
     id: 'venlafaxine',
     nameKor: '벤라팍신',
@@ -769,8 +746,6 @@ const drugs = [
     monitoring: ['혈압·심박수', '배뇨 증상', '자살 충동'],
     note: '신기능 저하 시 용량 감량 필요. 간기능 저하는 상대적으로 덜 영향.'
   },
-
-  // ─────────────────── TCA ───────────────────
   {
     id: 'amitriptyline',
     nameKor: '아미트립틸린',
@@ -887,8 +862,6 @@ const drugs = [
     monitoring: ['기저 EKG 필수', 'QTc/QRS 주기적 확인', 'TDM', '혈압', '소아: 심전도 필수'],
     note: '소아 야뇨증 사용 시 치료 전·중 EKG 필수. 탈삼환계 항우울제 중 심독성 가장 심한 편.'
   },
-
-  // ─────────────────── 기타 ───────────────────
   {
     id: 'mirtazapine',
     nameKor: '미르타자핀',
@@ -1155,12 +1128,21 @@ function renderDrug(d) {
   const ekg = getEkgLabel(d.ekgRisk);
   const hasFormulary = d.formulary && d.formulary.length > 0;
 
+  // 헤더에 들어갈 개별 복사 버튼 코드 (Pills)
+  const headerCodesHTML = hasFormulary
+    ? d.formulary.map(f =>
+        `<span class="hc-pill${f.note ? ' hc-oos' : f.isNew ? ' hc-new' : ''}" 
+               onclick="copyIndividualCode('${f.code}', this, event)" 
+               title="클릭하여 코드 복사">${f.code}</span>`
+      ).join('')
+    : '';
+
   const formularyHTML = hasFormulary
     ? `<div class="formulary-section">
-        <div class="formulary-title">🏥 하남보바스 원내 약품 코드</div>
+        <div class="formulary-title">🏥 하남보바스 원내 약품 코드 (클릭 시 복사)</div>
         <div class="formulary-grid">
           ${d.formulary.map(f => `
-            <div class="formulary-pill${f.note ? ' discontinued' : ''}">
+            <div class="formulary-pill${f.note ? ' discontinued' : ''}" style="cursor:pointer" onclick="copyIndividualCode('${f.code}', this, event)">
               <span class="f-code">${f.code}</span>
               <span class="f-name">${f.name}</span>
               ${f.isNew ? '<span class="f-new">NEW</span>' : ''}
@@ -1174,12 +1156,6 @@ function renderDrug(d) {
         <div class="no-formulary">원내 미등재 약품입니다.</div>
       </div>`;
 
-  const headerCodesHTML = hasFormulary
-    ? d.formulary.map(f =>
-        `<span class="hc-pill${f.note ? ' hc-oos' : f.isNew ? ' hc-new' : ''}">${f.code}</span>`
-      ).join('')
-    : '';
-
   return `
   <div class="drug-card" data-class="${d.drugClass}" data-id="${d.id}" id="card-${d.id}">
     <div class="card-accent-bar"></div>
@@ -1188,8 +1164,8 @@ function renderDrug(d) {
       <div class="card-names">
         <div class="card-name-kor">${d.nameKor}</div>
         <div class="card-name-eng">${d.nameEng}</div>
-        <div style="display:flex;align-items:center;gap:5px;flex-wrap:wrap;margin-top:2px">
-          <span class="card-name-brand">${d.brand}</span>
+        <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:4px">
+          <span class="card-name-brand" style="margin-right:4px">${d.brand}</span>
           ${headerCodesHTML}
         </div>
       </div>
@@ -1206,9 +1182,6 @@ function renderDrug(d) {
         <div class="inner-tab" onclick="switchTab('${d.id}','interactions',this)">상호작용</div>
         <div class="inner-tab" onclick="switchTab('${d.id}','ci',this)">금기/모니터링</div>
       </div>
-      ${hasFormulary ? `<div class="copy-row">
-        <button class="copy-btn" id="copybtn-${d.id}" onclick="copyDrug('${d.id}')">📋 원내코드 복사</button>
-      </div>` : ''}
 
       <!-- OVERVIEW -->
       <div class="inner-panel active" id="panel-${d.id}-overview">
@@ -1318,26 +1291,28 @@ function toggleCard(id) {
   card.classList.toggle('open');
 }
 
-function copyDrug(id) {
-  const d = drugs.find(x => x.id === id);
-  if (!d || !d.formulary || !d.formulary.length) return;
+// 개별 코드 복사 함수
+function copyIndividualCode(code, element, event) {
+  if (event) event.stopPropagation(); // 카드 펼쳐짐 방지
 
-  // 원내코드만 간결하게: "LEXA5 / LEXA / LEXA20" 형식으로 바로 붙여넣기 가능
-  const codesOnly = d.formulary.map(f => f.code).join(' / ');
-
-  const btn = document.getElementById('copybtn-' + id);
   const done = () => {
-    btn.textContent = '✓ 복사됨';
-    btn.classList.add('copied');
-    setTimeout(() => { btn.textContent = '📋 원내코드 복사'; btn.classList.remove('copied'); }, 2000);
+    const originalText = element.textContent;
+    element.classList.add('copied');
+    // 헤더 pill인 경우 텍스트를 잠시 바꿈 (선택사항)
+    if (element.classList.contains('hc-pill')) {
+        element.textContent = '복사됨';
+        setTimeout(() => { element.textContent = code; element.classList.remove('copied'); }, 1000);
+    } else {
+        setTimeout(() => { element.classList.remove('copied'); }, 1000);
+    }
   };
 
   if (navigator.clipboard) {
-    navigator.clipboard.writeText(codesOnly).then(done).catch(() => {
-      fallbackCopy(codesOnly); done();
+    navigator.clipboard.writeText(code).then(done).catch(() => {
+      fallbackCopy(code); done();
     });
   } else {
-    fallbackCopy(codesOnly); done();
+    fallbackCopy(code); done();
   }
 }
 
