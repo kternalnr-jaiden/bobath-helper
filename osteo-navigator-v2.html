@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Osteo-Navigator v2.1 — 하남보바스병원</title>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600;700&family=Outfit:wght@700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
 :root {
   --bg:#f1f5f9;--surface:#fff;--surface2:#f8fafc;--surface3:#eef2f7;
@@ -23,20 +23,20 @@
 }
 *{margin:0;padding:0;box-sizing:border-box;}
 html{scroll-behavior:smooth;}
-body{background:var(--bg);color:var(--text);font-family:'Noto Sans KR',sans-serif;font-size:14px;line-height:1.65;min-height:100vh;}
+body{background:var(--bg);color:var(--text);font-family:'Malgun Gothic','Apple SD Gothic Neo','Noto Sans KR',sans-serif;font-size:14px;line-height:1.65;min-height:100vh;}
 
 header{background:var(--surface);border-bottom:1px solid var(--border);padding:14px 18px 0;position:sticky;top:0;z-index:100;box-shadow:var(--sh);}
 .header-top{display:flex;align-items:center;gap:10px;padding-bottom:12px;}
-.home-btn{display:inline-flex;align-items:center;gap:4px;background:var(--surface3);border:1px solid var(--border);color:var(--text-muted);font-size:11.5px;font-weight:600;padding:5px 10px;border-radius:8px;text-decoration:none;transition:all .18s;flex-shrink:0;font-family:'Noto Sans KR',sans-serif;}
+.home-btn{display:inline-flex;align-items:center;gap:4px;background:var(--surface3);border:1px solid var(--border);color:var(--text-muted);font-size:11.5px;font-weight:600;padding:5px 10px;border-radius:8px;text-decoration:none;transition:all .18s;flex-shrink:0;font-family:'Malgun Gothic','Apple SD Gothic Neo','Noto Sans KR',sans-serif;}
 .home-btn:hover{background:var(--accent-dim);border-color:var(--accent);color:var(--accent);}
 .header-brand{flex:1;min-width:0;}
-.header-title{font-family:'Outfit',sans-serif;font-size:18px;font-weight:900;letter-spacing:-.5px;color:var(--text);line-height:1.2;display:flex;align-items:center;gap:8px;}
+.header-title{font-family:'Malgun Gothic','Apple SD Gothic Neo','Noto Sans KR',sans-serif;font-size:19px;font-weight:700;letter-spacing:-.3px;color:var(--text);line-height:1.2;display:flex;align-items:center;gap:8px;}
 .header-title span{color:var(--accent);}
 .ver-badge{background:var(--accent);color:#fff;font-size:10px;font-weight:700;padding:2px 8px;border-radius:12px;font-family:'JetBrains Mono',monospace;}
 .header-sub{font-size:10px;color:var(--text-muted);letter-spacing:.4px;text-transform:uppercase;margin-top:2px;}
 .tab-bar{display:flex;overflow-x:auto;scrollbar-width:none;}
 .tab-bar::-webkit-scrollbar{display:none;}
-.tab-btn{flex-shrink:0;padding:10px 16px;font-family:'Noto Sans KR',sans-serif;font-size:12px;font-weight:600;cursor:pointer;border:none;background:transparent;color:var(--text-muted);border-bottom:2px solid transparent;transition:all .18s;white-space:nowrap;}
+.tab-btn{flex-shrink:0;padding:10px 16px;font-family:'Malgun Gothic','Apple SD Gothic Neo','Noto Sans KR',sans-serif;font-size:12px;font-weight:600;cursor:pointer;border:none;background:transparent;color:var(--text-muted);border-bottom:2px solid transparent;transition:all .18s;white-space:nowrap;}
 .tab-btn.active{color:var(--accent);border-bottom-color:var(--accent);}
 .tab-btn:hover:not(.active){color:var(--text-soft);}
 
@@ -45,13 +45,13 @@ header{background:var(--surface);border-bottom:1px solid var(--border);padding:1
 .tab-panel.active{display:block;}
 
 .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--sh);padding:20px 22px;margin-bottom:14px;}
-.card-title{font-family:'Outfit',sans-serif;font-size:15px;font-weight:800;color:var(--primary);margin-bottom:16px;padding-bottom:11px;border-bottom:1.5px solid var(--border);display:flex;align-items:center;gap:8px;letter-spacing:-.2px;}
+.card-title{font-family:'Malgun Gothic','Apple SD Gothic Neo','Noto Sans KR',sans-serif;font-size:15px;font-weight:700;color:var(--primary);margin-bottom:16px;padding-bottom:11px;border-bottom:1.5px solid var(--border);display:flex;align-items:center;gap:8px;letter-spacing:-.1px;}
 
 .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
 @media(max-width:600px){.form-grid{grid-template-columns:1fr;}}
 .field label{display:block;font-size:10px;font-weight:700;color:var(--text-muted);letter-spacing:.6px;text-transform:uppercase;margin-bottom:5px;}
 .field label .opt{font-size:9.5px;color:#a0aec0;font-weight:400;text-transform:none;margin-left:3px;}
-.field select,.field input[type=number]{width:100%;padding:9px 12px;border:1.5px solid var(--border);border-radius:8px;font-family:'Noto Sans KR',sans-serif;font-size:13px;color:var(--text);background:var(--surface2);transition:border-color .18s,box-shadow .18s;-moz-appearance:textfield;outline:none;}
+.field select,.field input[type=number]{width:100%;padding:9px 12px;border:1.5px solid var(--border);border-radius:8px;font-family:'Malgun Gothic','Apple SD Gothic Neo','Noto Sans KR',sans-serif;font-size:13px;color:var(--text);background:var(--surface2);transition:border-color .18s,box-shadow .18s;-moz-appearance:textfield;outline:none;}
 .field select:focus,.field input[type=number]:focus{border-color:var(--accent);background:#fff;box-shadow:0 0 0 3px rgba(2,132,199,.1);}
 .field input[type=number]::-webkit-inner-spin-button{opacity:.5;}
 .tscore-group{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;align-items:end;}
@@ -63,7 +63,7 @@ header{background:var(--surface);border-bottom:1px solid var(--border);padding:1
 .check-item{display:flex;align-items:center;gap:9px;padding:10px 13px;border-radius:9px;border:1.5px solid var(--border);cursor:pointer;transition:border-color .18s,background .18s;background:var(--surface2);font-size:12.5px;}
 .check-item:hover{border-color:var(--accent);background:var(--accent-dim);}
 .check-item input[type=checkbox]{width:15px;height:15px;accent-color:var(--accent);cursor:pointer;flex-shrink:0;}
-.btn-analyze{width:100%;padding:13px;background:var(--primary);color:#fff;border:none;border-radius:9px;font-family:'Noto Sans KR',sans-serif;font-size:14px;font-weight:700;cursor:pointer;margin-top:16px;transition:background .18s,transform .1s;display:flex;align-items:center;justify-content:center;gap:7px;}
+.btn-analyze{width:100%;padding:13px;background:var(--primary);color:#fff;border:none;border-radius:9px;font-family:'Malgun Gothic','Apple SD Gothic Neo','Noto Sans KR',sans-serif;font-size:14px;font-weight:700;cursor:pointer;margin-top:16px;transition:background .18s,transform .1s;display:flex;align-items:center;justify-content:center;gap:7px;}
 .btn-analyze:hover{background:#1e293b;}
 .btn-analyze:active{transform:scale(.99);}
 
@@ -79,10 +79,33 @@ table.dt{width:100%;border-collapse:collapse;font-size:12.5px;}
 table.dt th{background:var(--primary);color:#fff;padding:9px 12px;text-align:left;font-weight:600;font-size:11.5px;}
 table.dt th:first-child{border-radius:8px 0 0 0;}
 table.dt th:last-child{border-radius:0 8px 0 0;}
-table.dt td{padding:9px 12px;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.55;}
+table.dt td{padding:9px 12px;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.55;word-break:keep-all;overflow-wrap:break-word;}
 table.dt tr:last-child td{border-bottom:none;}
 table.dt tr:nth-child(even) td{background:var(--surface2);}
 table.dt tr:hover td{background:var(--accent-dim);}
+
+/* ── 약제별 장단점 비교 테이블 ── */
+#drugTable{table-layout:fixed;}
+#drugTable col.c-code   { width:105px; }
+#drugTable col.c-drug   { width:130px; }
+#drugTable col.c-route  { width:52px;  }
+#drugTable col.c-frac   { width:80px;  }
+#drugTable col.c-pros   { width:21%;   }
+#drugTable col.c-cons   { width:21%;   }
+#drugTable col.c-renal  { width:72px;  }
+#drugTable col.c-male   { width:60px;  }
+
+/* ── 투여주기 테이블 ── */
+#schedTable{table-layout:fixed;}
+#schedTable col.sc-int   { width:68px;  }
+#schedTable col.sc-name  { width:108px; }
+#schedTable col.sc-code  { width:115px; }
+#schedTable col.sc-route { width:100px; }
+#schedTable col.sc-reg   { width:22%;   }
+#schedTable col.sc-dur   { width:88px;  }
+#schedTable col.sc-male  { width:54px;  }
+#schedTable col.sc-ins   { width:50px;  }
+#schedTable col.sc-note  { width:auto;  }
 .dn{font-weight:700;color:var(--primary);}
 .ds{font-size:11px;color:var(--text-muted);}
 
@@ -137,16 +160,16 @@ ul.pc li{margin-bottom:2px;}
 .cc-note{font-size:11px;color:var(--orange);margin-top:3px;line-height:1.4;}
 .cc-out-section{margin-top:8px;padding-top:8px;border-top:1px dashed var(--border);}
 .cc-out-label{font-size:10px;font-weight:700;color:var(--purple);text-transform:uppercase;letter-spacing:.4px;margin-bottom:5px;}
-.code-group-title{font-family:'Outfit',sans-serif;font-size:14px;font-weight:800;color:var(--primary);margin:20px 0 10px;padding-left:10px;border-left:3px solid var(--accent);}
+.code-group-title{font-family:'Malgun Gothic','Apple SD Gothic Neo','Noto Sans KR',sans-serif;font-size:14px;font-weight:700;color:var(--primary);margin:20px 0 10px;padding-left:10px;border-left:3px solid var(--accent);}
 
-.btn-copy{background:var(--surface3);border:1px solid var(--border);border-radius:6px;padding:4px 9px;font-size:11px;cursor:pointer;color:var(--text-muted);transition:all .15s;font-family:'Noto Sans KR',sans-serif;margin-top:8px;display:inline-block;}
+.btn-copy{background:var(--surface3);border:1px solid var(--border);border-radius:6px;padding:4px 9px;font-size:11px;cursor:pointer;color:var(--text-muted);transition:all .15s;font-family:'Malgun Gothic','Apple SD Gothic Neo','Noto Sans KR',sans-serif;margin-top:8px;display:inline-block;}
 .btn-copy:hover{background:var(--accent-dim);color:var(--accent);border-color:var(--accent);}
 .ciw{display:inline-flex;align-items:center;gap:4px;vertical-align:middle;}
-.btn-ci{background:none;border:1px solid rgba(2,132,199,.28);border-radius:5px;padding:1px 6px;font-size:10px;cursor:pointer;color:var(--accent);transition:all .15s;line-height:1.4;white-space:nowrap;font-family:'Noto Sans KR',sans-serif;}
+.btn-ci{background:none;border:1px solid rgba(2,132,199,.28);border-radius:5px;padding:1px 6px;font-size:10px;cursor:pointer;color:var(--accent);transition:all .15s;line-height:1.4;white-space:nowrap;font-family:'Malgun Gothic','Apple SD Gothic Neo','Noto Sans KR',sans-serif;}
 .btn-ci:hover{background:var(--accent-dim);border-color:var(--accent);}
 .btn-ci.copied{background:var(--ok-dim);color:var(--ok);border-color:rgba(22,163,74,.4);}
 
-.sched-filter{padding:5px 12px;border-radius:20px;border:1.5px solid var(--border);background:var(--surface2);color:var(--text-muted);font-family:'Noto Sans KR',sans-serif;font-size:11.5px;font-weight:600;cursor:pointer;transition:all .15s;}
+.sched-filter{padding:5px 12px;border-radius:20px;border:1.5px solid var(--border);background:var(--surface2);color:var(--text-muted);font-family:'Malgun Gothic','Apple SD Gothic Neo','Noto Sans KR',sans-serif;font-size:11.5px;font-weight:600;cursor:pointer;transition:all .15s;}
 .sched-filter:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-dim);}
 .sched-filter.active{background:var(--primary);color:#fff;border-color:var(--primary);}
 .ipill{display:inline-block;padding:2px 9px;border-radius:10px;font-size:11px;font-weight:700;white-space:nowrap;}
@@ -411,12 +434,17 @@ th.sortable:hover{background:#1e293b;}
       <button class="sched-filter" onclick="filterInterval('3개월',this)">3개월 1회 (VitD)</button>
     </div>
     <div class="tw"><table class="dt" id="schedTable">
+      <colgroup>
+        <col class="sc-int"><col class="sc-name"><col class="sc-code">
+        <col class="sc-route"><col class="sc-reg"><col class="sc-dur">
+        <col class="sc-male"><col class="sc-ins"><col class="sc-note">
+      </colgroup>
       <thead><tr>
         <th class="sortable" onclick="sortSched('interval_order')">투여 간격 ↕</th>
         <th class="sortable" onclick="sortSched('name')">약제명 ↕</th>
         <th>원내코드</th><th>투여경로</th><th>용법 상세</th>
-        <th class="sortable" onclick="sortSched('max_dur_val')">최대 사용기간 ↕</th>
-        <th>남성처방</th><th>급여</th><th>주요 특이사항</th>
+        <th class="sortable" onclick="sortSched('max_dur_val')">최대 기간 ↕</th>
+        <th>남성</th><th>급여</th><th>주요 특이사항</th>
       </tr></thead>
       <tbody id="schedBody"></tbody>
     </table></div>
@@ -562,7 +590,7 @@ function analyze(){
   conds.forEach(c=>{cH+=`<div class="cond-item ${c.cls}"><div class="cond-label">${c.label}</div><div class="cond-drugs">${c.drugs}</div><div class="cond-reason">${c.reason}</div><div class="cond-codes">🏷️ 원내코드:<br>${codeRow(c.keys)}</div></div>`;});
   cH+='</div>';
 
-  let tbl=`<thead><tr><th>원내코드</th><th>약제</th><th>투여경로</th><th>골절 예방</th><th>장점</th><th>단점/주의</th><th>신기능</th><th>남성처방</th></tr></thead><tbody>`;
+  let tbl=`<colgroup><col class="c-code"><col class="c-drug"><col class="c-route"><col class="c-frac"><col class="c-pros"><col class="c-cons"><col class="c-renal"><col class="c-male"></colgroup><thead><tr><th>원내코드</th><th>약제</th><th>경로</th><th>골절예방</th><th>장점</th><th>단점/주의</th><th>신기능</th><th>남성</th></tr></thead><tbody>`;
   drugs.forEach(d=>{
     const ci=CODES[d.name];
     const isMC=gender==='male'&&!d.male_ok;
