@@ -39,16 +39,20 @@
   }
   body { font-family: 'Pretendard', 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif; background: var(--bg); color: var(--text); font-size: 14px; min-height: 100vh; }
 
-  .app-header { background: var(--surface); border-bottom: 1px solid var(--border); padding: 0 24px; position: sticky; top: 0; z-index: 100; }
-  .header-inner { max-width: 1140px; margin: 0 auto; display: flex; align-items: center; gap: 20px; height: 60px; }
-  .logo-icon { width: 30px; height: 30px; background: var(--accent); border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-  .logo-icon svg { width: 16px; height: 16px; fill: none; stroke: #fff; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
-  .header-title { font-size: 15px; font-weight: 700; color: var(--text); letter-spacing: -0.2px; }
-  .header-sub { font-size: 12px; color: var(--text-3); }
-  .nav-tabs { display: flex; margin-left: auto; }
-  .nav-tab { padding: 0 14px; height: 60px; display: flex; align-items: center; font-size: 13px; font-weight: 500; color: var(--text-2); border: none; background: none; cursor: pointer; border-bottom: 2px solid transparent; white-space: nowrap; }
-  .nav-tab:hover { color: var(--text); }
-  .nav-tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+  header{background:var(--surface);border-bottom:1px solid var(--border);padding:14px 18px 0;position:sticky;top:0;z-index:100;box-shadow:0 1px 3px rgba(0,0,0,0.06),0 1px 2px rgba(0,0,0,0.04);}
+  .header-top{display:flex;align-items:center;gap:10px;padding-bottom:12px;}
+  .home-btn{display:inline-flex;align-items:center;gap:4px;background:var(--surface2);border:1px solid var(--border);color:var(--text-2);font-size:11.5px;font-weight:600;padding:5px 10px;border-radius:8px;text-decoration:none;transition:all .18s;flex-shrink:0;font-family:'Malgun Gothic','Apple SD Gothic Neo','Noto Sans KR',sans-serif;}
+  .home-btn:hover{background:rgba(26,86,160,0.08);border-color:var(--accent);color:var(--accent);}
+  .header-brand{flex:1;min-width:0;}
+  .header-title{font-family:'Malgun Gothic','Apple SD Gothic Neo','Noto Sans KR',sans-serif;font-size:19px;font-weight:700;letter-spacing:-.3px;color:var(--text);line-height:1.2;display:flex;align-items:center;gap:8px;}
+  .header-title .brand-accent{color:var(--accent);}
+  .ver-badge{background:var(--accent);color:#fff;font-size:10px;font-weight:700;padding:2px 8px;border-radius:12px;font-family:monospace;}
+  .header-sub{font-size:10px;color:var(--text-3);letter-spacing:.4px;text-transform:uppercase;margin-top:2px;}
+  .tab-bar{display:flex;overflow-x:auto;scrollbar-width:none;}
+  .tab-bar::-webkit-scrollbar{display:none;}
+  .tab-btn{flex-shrink:0;padding:10px 16px;font-family:'Malgun Gothic','Apple SD Gothic Neo','Noto Sans KR',sans-serif;font-size:12px;font-weight:600;cursor:pointer;border:none;background:transparent;color:var(--text-2);border-bottom:2px solid transparent;transition:all .18s;white-space:nowrap;}
+  .tab-btn.active{color:var(--accent);border-bottom-color:var(--accent);}
+  .tab-btn:hover:not(.active){color:var(--text);}
  
   .main { max-width: 1140px; margin: 0 auto; padding: 20px 24px; }
   .panel { display: none; }
@@ -238,35 +242,25 @@
     .guide-grid { grid-template-columns: 1fr; }
     .cr-compare-grid { grid-template-columns: 1fr; }
     .header-sub { display: none; }
-    .nav-tab { padding: 0 10px; font-size: 12px; }
+    .tab-btn { padding: 8px 10px; font-size: 11px; }
   }
 </style>
 </head>
 <body>
 
+<header>
   <div class="header-top">
     <a href="index.html" class="home-btn">🏠 홈</a>
     <div class="header-brand">
       <div class="header-title">Sleepmed-<span class="brand-accent">Navigator</span> <span class="ver-badge">v1.0</span></div>
-      <div class="header-sub">수면제 종류 및 처방 가이드 — 하남보바스병원</div>
+      <div class="header-sub">수면제 처방 가이드 · 약전 연동 · Sleep Med Decision Support — 하남보바스병원</div>
     </div>
   </div>
-
-<header class="app-header">
-  <div class="header-inner">
-    <div class="logo-icon">
-      <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
-    </div>
-    <div style="display:flex;flex-direction:column;">
-      <div class="header-title">수면제 처방 의사결정 지원</div>
-      <div class="header-sub">하남보바스병원 약전 연동 · Sleep Med Decision Support</div>
-    </div>
-    <nav class="nav-tabs">
-      <button class="nav-tab active" onclick="switchTab('library')">약물 라이브러리</button>
-      <button class="nav-tab" onclick="switchTab('zolpidem')">Zolpidem IR vs CR</button>
-      <button class="nav-tab" onclick="switchTab('compare')">약물 비교</button>
-      <button class="nav-tab" onclick="switchTab('guide')">처방 가이드</button>
-    </nav>
+  <div class="tab-bar">
+    <button class="tab-btn active" onclick="switchTab('library',this)">💊 약물 라이브러리</button>
+    <button class="tab-btn" onclick="switchTab('zolpidem',this)">🔬 Zolpidem IR vs CR</button>
+    <button class="tab-btn" onclick="switchTab('compare',this)">⚖️ 약물 비교</button>
+    <button class="tab-btn" onclick="switchTab('guide',this)">📋 처방 가이드</button>
   </div>
 </header>
 
@@ -936,12 +930,11 @@ function runCompare() {
 document.querySelector('[onclick="setType(\'all\',this)"]').classList.add('active');
 document.querySelector('[onclick="setForm(\'all\',this)"]').classList.add('active');
 
-function switchTab(t) {
+function switchTab(t, btn) {
   document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.nav-tab').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
   document.getElementById(`panel-${t}`).classList.add('active');
-  const idx = ['library','zolpidem','compare','guide'].indexOf(t);
-  document.querySelectorAll('.nav-tab')[idx].classList.add('active');
+  if (btn) btn.classList.add('active');
   if (t === 'compare') renderComparePills();
 }
 
