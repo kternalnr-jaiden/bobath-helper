@@ -1,0 +1,946 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>수면제 처방 의사결정 지원 v2</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #f5f6f8;
+    --surface: #ffffff;
+    --surface2: #f0f2f5;
+    --border: #e2e5ea;
+    --border-strong: #c8cdd6;
+    --text: #1a1d23;
+    --text-2: #4a5062;
+    --text-3: #8a91a0;
+    --accent: #1a56a0;
+    --accent-bg: #e8f0fb;
+    --accent-text: #0d3a78;
+    --teal: #0b7b6e;
+    --teal-bg: #e6f5f3;
+    --teal-text: #074d45;
+    --red: #c0392b;
+    --red-bg: #fdf0ee;
+    --red-text: #7b1e15;
+    --amber: #9a6200;
+    --amber-bg: #fff8e6;
+    --amber-text: #6b4300;
+    --green: #2d7a3a;
+    --green-bg: #edf7ef;
+    --green-text: #1a4d23;
+    --purple: #5a3fa5;
+    --purple-bg: #f0ecfc;
+    --purple-text: #3a2870;
+    --radius-sm: 6px;
+    --radius-md: 10px;
+    --radius-lg: 14px;
+  }
+  body { font-family: 'Pretendard', 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif; background: var(--bg); color: var(--text); font-size: 14px; min-height: 100vh; }
+
+  .app-header { background: var(--surface); border-bottom: 1px solid var(--border); padding: 0 24px; position: sticky; top: 0; z-index: 100; }
+  .header-inner { max-width: 1140px; margin: 0 auto; display: flex; align-items: center; gap: 20px; height: 60px; }
+  .logo-icon { width: 30px; height: 30px; background: var(--accent); border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .logo-icon svg { width: 16px; height: 16px; fill: none; stroke: #fff; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+  .header-title { font-size: 15px; font-weight: 700; color: var(--text); letter-spacing: -0.2px; }
+  .header-sub { font-size: 12px; color: var(--text-3); }
+  .nav-tabs { display: flex; margin-left: auto; }
+  .nav-tab { padding: 0 14px; height: 60px; display: flex; align-items: center; font-size: 13px; font-weight: 500; color: var(--text-2); border: none; background: none; cursor: pointer; border-bottom: 2px solid transparent; white-space: nowrap; }
+  .nav-tab:hover { color: var(--text); }
+  .nav-tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+  .main { max-width: 1140px; margin: 0 auto; padding: 20px 24px; }
+  .panel { display: none; }
+  .panel.active { display: block; }
+
+  /* Filter bar */
+  .filter-bar { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 14px 18px; margin-bottom: 18px; display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+  .filter-label { font-size: 11px; font-weight: 700; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.4px; white-space: nowrap; }
+  .filter-group { display: flex; flex-wrap: wrap; gap: 5px; align-items: center; }
+  .chip { padding: 4px 11px; border-radius: 100px; border: 1px solid var(--border); background: var(--surface); color: var(--text-2); font-size: 12px; font-weight: 500; cursor: pointer; transition: all 0.12s; }
+  .chip:hover { border-color: var(--accent); color: var(--accent); }
+  .chip.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .chip.risk.active { background: var(--red); border-color: var(--red); color: #fff; }
+  .divider-v { width: 1px; background: var(--border); height: 24px; }
+
+  /* Drug grid */
+  .drug-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(330px, 1fr)); gap: 14px; }
+
+  /* Drug card */
+  .drug-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 16px; cursor: pointer; transition: border-color 0.15s, box-shadow 0.15s; position: relative; }
+  .drug-card:hover { border-color: #a0b8d8; box-shadow: 0 4px 12px rgba(0,0,0,0.07); }
+  .drug-card.compare-active { border: 2px solid var(--teal); }
+  .drug-card.dimmed { opacity: 0.38; pointer-events: none; }
+  .drug-card.risk-warn { border-left: 3px solid var(--red); }
+  .drug-card.risk-caution { border-left: 3px solid var(--amber); }
+
+  /* Formulary badge */
+  .formulary-tag { display: inline-flex; align-items: center; gap: 4px; font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 4px; white-space: nowrap; }
+  .formulary-instock { background: var(--teal-bg); color: var(--teal-text); }
+  .formulary-nonbenefit { background: var(--amber-bg); color: var(--amber-text); }
+  .formulary-external { background: var(--surface2); color: var(--text-3); border: 1px solid var(--border); }
+  .drug-code { font-size: 10px; font-weight: 700; color: var(--text-3); font-family: monospace; background: var(--surface2); padding: 2px 6px; border-radius: 3px; }
+
+  .card-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; margin-bottom: 10px; }
+  .drug-name-block { display: flex; flex-direction: column; gap: 5px; min-width: 0; }
+  .drug-name-row { display: flex; align-items: center; gap: 7px; flex-wrap: wrap; }
+  .drug-name { font-size: 16px; font-weight: 700; letter-spacing: -0.3px; }
+  .drug-brand { font-size: 11px; color: var(--text-3); }
+  .badges-row { display: flex; gap: 4px; flex-wrap: wrap; align-items: center; }
+  .badge { display: inline-flex; align-items: center; padding: 2px 7px; border-radius: 4px; font-size: 11px; font-weight: 600; }
+  .badge-bzd { background: var(--red-bg); color: var(--red-text); }
+  .badge-zdrug { background: var(--accent-bg); color: var(--accent-text); }
+  .badge-dora { background: var(--teal-bg); color: var(--teal-text); }
+  .badge-tca { background: var(--purple-bg); color: var(--purple-text); }
+  .badge-mel { background: var(--green-bg); color: var(--green-text); }
+  .badge-sari { background: var(--amber-bg); color: var(--amber-text); }
+  .badge-atypical { background: #f3eefb; color: #4a2080; }
+  .badge-type { background: var(--surface2); color: var(--text-2); }
+  .badge-cr { background: #fff0f6; color: #a01060; border: 1px solid #f0b0d0; }
+
+  .select-btn { width: 22px; height: 22px; border-radius: 50%; border: 1.5px solid var(--border); background: var(--surface); display: flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0; transition: all 0.12s; }
+  .select-btn:hover { border-color: var(--teal); }
+  .select-btn.checked { background: var(--teal); border-color: var(--teal); }
+  .select-btn svg { width: 11px; height: 11px; stroke: #fff; stroke-width: 2.5; fill: none; display: none; }
+  .select-btn.checked svg { display: block; }
+
+  .hl-bar-wrap { margin-bottom: 11px; }
+  .hl-bar-label { display: flex; justify-content: space-between; margin-bottom: 3px; }
+  .hl-bar-track { height: 4px; background: var(--surface2); border-radius: 2px; overflow: hidden; }
+  .hl-bar-fill { height: 100%; border-radius: 2px; }
+
+  .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; margin-bottom: 10px; }
+  .info-item { display: flex; flex-direction: column; gap: 2px; }
+  .info-lbl { font-size: 10px; color: var(--text-3); font-weight: 600; text-transform: uppercase; letter-spacing: 0.3px; }
+  .info-val { font-size: 12px; color: var(--text); font-weight: 500; }
+  .info-val.mono { font-family: monospace; font-size: 11px; }
+  .cog-dots { display: flex; gap: 3px; align-items: center; }
+  .dot { width: 9px; height: 9px; border-radius: 50%; background: var(--surface2); }
+  .dot.h { background: var(--red); }
+  .dot.m { background: var(--amber); }
+  .dot.l { background: var(--green); }
+  .dot.n { background: var(--border-strong); }
+
+  .side-box { font-size: 12px; color: var(--text-2); background: var(--surface2); padding: 5px 9px; border-radius: 4px; margin-bottom: 7px; line-height: 1.5; }
+  .tip-box { font-size: 12px; color: var(--accent-text); background: var(--accent-bg); padding: 7px 9px; border-radius: var(--radius-sm); line-height: 1.5; }
+  .risk-badge { display: inline-flex; align-items: center; font-size: 11px; padding: 2px 7px; border-radius: 4px; }
+  .risk-badge.warn { background: var(--red-bg); color: var(--red-text); }
+  .risk-badge.caution { background: var(--amber-bg); color: var(--amber-text); }
+  .risk-row { display: flex; gap: 4px; flex-wrap: wrap; margin-bottom: 7px; }
+
+  /* ===== Zolpidem CR Tab ===== */
+  .cr-hero { background: linear-gradient(135deg, #e8f0fb 0%, #f0ecfc 100%); border: 1px solid #c8d8f5; border-radius: var(--radius-lg); padding: 22px 24px; margin-bottom: 20px; }
+  .cr-hero h2 { font-size: 18px; font-weight: 700; color: var(--accent-text); margin-bottom: 6px; }
+  .cr-hero p { font-size: 13px; color: var(--text-2); line-height: 1.6; }
+
+  .cr-compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+  .cr-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 20px; }
+  .cr-card.ir { border-top: 3px solid var(--accent); }
+  .cr-card.cr { border-top: 3px solid #a01060; }
+  .cr-card-title { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
+  .cr-card-sub { font-size: 12px; color: var(--text-3); margin-bottom: 14px; }
+  .cr-stat-row { display: flex; flex-direction: column; gap: 9px; }
+  .cr-stat { display: flex; justify-content: space-between; align-items: flex-start; padding: 7px 0; border-bottom: 1px solid var(--border); gap: 12px; }
+  .cr-stat:last-child { border-bottom: none; }
+  .cr-stat-lbl { font-size: 12px; color: var(--text-2); font-weight: 500; min-width: 80px; }
+  .cr-stat-val { font-size: 12px; color: var(--text); font-weight: 600; text-align: right; }
+  .cr-stat-val.better { color: var(--green); }
+  .cr-stat-val.worse { color: var(--red); }
+  .cr-stat-val.neutral { color: var(--amber); }
+
+  .cr-diff-table { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; margin-bottom: 20px; }
+  .cr-diff-table table { width: 100%; border-collapse: collapse; }
+  .cr-diff-table th { padding: 11px 16px; font-size: 12px; font-weight: 700; background: var(--surface2); border-bottom: 1px solid var(--border); text-align: left; color: var(--text-2); }
+  .cr-diff-table td { padding: 10px 16px; font-size: 12px; border-bottom: 1px solid var(--border); vertical-align: top; line-height: 1.5; }
+  .cr-diff-table tr:last-child td { border-bottom: none; }
+  .cr-diff-table td:first-child { font-weight: 600; color: var(--text-2); background: var(--surface2); width: 110px; }
+  .cr-diff-table td.win { color: var(--green); font-weight: 600; }
+  .cr-diff-table td.lose { color: var(--red); }
+
+  .release-chart { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 20px; margin-bottom: 20px; }
+  .release-chart h3 { font-size: 14px; font-weight: 700; margin-bottom: 16px; color: var(--text); }
+  .release-visual { display: flex; flex-direction: column; gap: 14px; }
+  .release-row { display: flex; align-items: center; gap: 14px; }
+  .release-label { font-size: 12px; font-weight: 600; color: var(--text-2); width: 80px; flex-shrink: 0; }
+  .release-track { flex: 1; height: 28px; background: var(--surface2); border-radius: 6px; position: relative; overflow: hidden; }
+  .release-fill { position: absolute; top: 4px; bottom: 4px; border-radius: 4px; display: flex; align-items: center; padding: 0 8px; }
+  .release-fill span { font-size: 10px; font-weight: 600; color: #fff; white-space: nowrap; }
+  .release-time { display: flex; justify-content: space-between; padding: 0 0; }
+  .release-time span { font-size: 10px; color: var(--text-3); }
+  .time-axis { display: flex; gap: 0; margin-top: 4px; padding-left: 94px; }
+  .time-tick { flex: 1; font-size: 10px; color: var(--text-3); text-align: center; }
+
+  .caution-box { background: var(--amber-bg); border: 1px solid #f5c06b; border-radius: var(--radius-lg); padding: 16px 18px; }
+  .caution-box h3 { font-size: 13px; font-weight: 700; color: var(--amber-text); margin-bottom: 9px; }
+  .caution-list { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+  .caution-list li { font-size: 12px; color: var(--amber-text); padding-left: 12px; position: relative; line-height: 1.6; }
+  .caution-list li::before { content: '·'; position: absolute; left: 0; font-weight: 700; }
+
+  /* Compare Tab */
+  .compare-bar { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 13px 18px; margin-bottom: 18px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .compare-pills { display: flex; gap: 7px; flex-wrap: wrap; }
+  .compare-pill { display: flex; align-items: center; gap: 5px; padding: 4px 9px; background: var(--teal-bg); border: 1px solid var(--teal); border-radius: 100px; font-size: 12px; font-weight: 500; color: var(--teal-text); }
+  .compare-pill-x { cursor: pointer; font-size: 14px; }
+  .btn { padding: 6px 14px; border-radius: var(--radius-sm); font-size: 12px; font-weight: 600; cursor: pointer; border: 1px solid var(--border); background: var(--surface); color: var(--text-2); }
+  .btn:hover { background: var(--surface2); }
+  .btn-teal { background: var(--teal); border-color: var(--teal); color: #fff; }
+  .btn-teal:hover { opacity: 0.88; }
+
+  .compare-table-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; }
+  .compare-table { width: 100%; border-collapse: collapse; }
+  .compare-table th { padding: 12px 16px; font-size: 13px; font-weight: 700; background: var(--surface2); border-bottom: 1px solid var(--border); text-align: left; }
+  .compare-table th:first-child { width: 120px; font-size: 11px; font-weight: 600; color: var(--text-3); }
+  .compare-table td { padding: 10px 16px; font-size: 12px; border-bottom: 1px solid var(--border); vertical-align: top; line-height: 1.5; }
+  .compare-table tr:last-child td { border-bottom: none; }
+  .compare-table td:first-child { font-weight: 600; color: var(--text-2); background: var(--surface2); font-size: 11px; }
+  .better { color: var(--green); font-weight: 700; }
+  .worse { color: var(--red); }
+
+  /* Guide Tab */
+  .guide-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .guide-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 18px; }
+  .guide-card h3 { font-size: 13px; font-weight: 700; margin-bottom: 12px; color: var(--text); display: flex; align-items: center; gap: 7px; }
+  .step-list { list-style: none; display: flex; flex-direction: column; gap: 9px; }
+  .step-item { display: flex; gap: 10px; }
+  .step-num { width: 20px; height: 20px; border-radius: 50%; background: var(--accent-bg); color: var(--accent-text); display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; flex-shrink: 0; margin-top: 2px; }
+  .step-text { font-size: 12px; line-height: 1.6; color: var(--text-2); }
+  .step-text strong { color: var(--text); }
+  .flow-diamond { background: var(--amber-bg); border: 1px solid var(--amber); color: var(--amber-text); border-radius: var(--radius-sm); padding: 8px 12px; font-size: 12px; font-weight: 600; }
+  .flow-result { background: var(--accent-bg); border: 1px solid var(--accent); color: var(--accent-text); border-radius: var(--radius-sm); padding: 7px 12px; font-size: 12px; font-weight: 500; }
+  .flow-arrow { text-align: center; color: var(--text-3); font-size: 14px; padding: 3px 0; }
+  .flow-row { display: flex; gap: 7px; }
+  .flow-branch { display: flex; flex-direction: column; gap: 5px; flex: 1; }
+  .flow-branch-lbl { font-size: 10px; font-weight: 700; color: var(--text-3); text-align: center; }
+  .algorithm-flow { display: flex; flex-direction: column; gap: 5px; }
+  .warning-section { margin-top: 18px; background: #fff9f0; border: 1px solid #f5c06b; border-radius: var(--radius-lg); padding: 16px 18px; }
+  .warning-section h3 { font-size: 13px; font-weight: 700; color: var(--amber-text); margin-bottom: 9px; }
+  .warning-list { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+  .warning-list li { font-size: 12px; color: var(--amber-text); padding-left: 12px; position: relative; line-height: 1.6; }
+  .warning-list li::before { content: '·'; position: absolute; left: 0; font-weight: 700; }
+
+  .empty { text-align: center; padding: 48px 0; color: var(--text-3); font-size: 13px; }
+
+  /* Copy button */
+  .copy-btn { display: inline-flex; align-items: center; gap: 3px; font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 4px; border: 1px solid var(--teal); background: var(--teal-bg); color: var(--teal-text); cursor: pointer; transition: all 0.12s; font-family: monospace; white-space: nowrap; }
+  .copy-btn:hover { background: var(--teal); color: #fff; }
+  .copy-btn.copied { background: var(--green); border-color: var(--green); color: #fff; }
+  .copy-btn svg { width: 9px; height: 9px; flex-shrink: 0; }
+
+  @media (max-width: 720px) {
+    .main { padding: 12px; }
+    .drug-grid { grid-template-columns: 1fr; }
+    .guide-grid { grid-template-columns: 1fr; }
+    .cr-compare-grid { grid-template-columns: 1fr; }
+    .header-sub { display: none; }
+    .nav-tab { padding: 0 10px; font-size: 12px; }
+  }
+</style>
+</head>
+<body>
+
+  <div class="header-top">
+    <a href="index.html" class="home-btn">🏠 홈</a>
+    <div class="header-brand">
+      <div class="header-title">Sleepmed-<span class="brand-accent">Navigator</span> <span class="ver-badge">v1.0</span></div>
+      <div class="header-sub">수면제 종류 및 처방 가이드 — 하남보바스병원</div>
+    </div>
+  </div>
+
+<header class="app-header">
+  <div class="header-inner">
+    <div class="logo-icon">
+      <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+    </div>
+    <div style="display:flex;flex-direction:column;">
+      <div class="header-title">수면제 처방 의사결정 지원</div>
+      <div class="header-sub">하남보바스병원 약전 연동 · Sleep Med Decision Support</div>
+    </div>
+    <nav class="nav-tabs">
+      <button class="nav-tab active" onclick="switchTab('library')">약물 라이브러리</button>
+      <button class="nav-tab" onclick="switchTab('zolpidem')">Zolpidem IR vs CR</button>
+      <button class="nav-tab" onclick="switchTab('compare')">약물 비교</button>
+      <button class="nav-tab" onclick="switchTab('guide')">처방 가이드</button>
+    </nav>
+  </div>
+</header>
+
+<main class="main">
+
+<!-- ===== 약물 라이브러리 ===== -->
+<div id="panel-library" class="panel active">
+  <div class="filter-bar">
+    <div class="filter-group">
+      <span class="filter-label">불면 유형</span>
+      <button class="chip active" onclick="setType('all',this)">전체</button>
+      <button class="chip" onclick="setType('Onset',this)">입면 장애</button>
+      <button class="chip" onclick="setType('Maintenance',this)">수면 유지</button>
+      <button class="chip" onclick="setType('Mixed',this)">혼합형</button>
+    </div>
+    <div class="divider-v"></div>
+    <div class="filter-group">
+      <span class="filter-label">약전</span>
+      <button class="chip" onclick="setForm('all',this)">전체</button>
+      <button class="chip" onclick="setForm('instock',this)">병원 약전</button>
+      <button class="chip" onclick="setForm('external',this)">원외처방</button>
+    </div>
+    <div class="divider-v"></div>
+    <div class="filter-group">
+      <span class="filter-label">환자 위험</span>
+      <button class="chip risk" onclick="toggleRisk('elderly',this)">고령자</button>
+      <button class="chip risk" onclick="toggleRisk('renal',this)">신기능↓</button>
+      <button class="chip risk" onclick="toggleRisk('hepatic',this)">간기능↓</button>
+      <button class="chip risk" onclick="toggleRisk('respiratory',this)">호흡기/OSA</button>
+      <button class="chip risk" onclick="toggleRisk('substance',this)">약물 남용력</button>
+    </div>
+  </div>
+  <div id="drug-grid" class="drug-grid"></div>
+</div>
+
+<!-- ===== Zolpidem IR vs CR ===== -->
+<div id="panel-zolpidem" class="panel">
+  <div class="cr-hero">
+    <h2>Zolpidem IR vs CR — 제형 비교</h2>
+    <p>Zolpidem IR(속방형)과 CR(서방형)은 동일 성분이지만 방출 기전이 달라 적응증과 부작용 프로파일이 다릅니다. 두 제형의 약동학적 차이를 이해하고 임상 상황에 맞게 선택하세요.</p>
+  </div>
+
+  <!-- 약물 방출 시각화 -->
+  <div class="release-chart">
+    <h3>약물 혈중 농도 방출 프로파일 (개략적 도식)</h3>
+    <div class="release-visual">
+      <div class="release-row">
+        <div class="release-label" style="font-size:11px;color:var(--accent-text);font-weight:700;">Zolpidem IR<br><span style="font-weight:400;color:var(--text-3);">5/10 mg</span></div>
+        <div class="release-track">
+          <div class="release-fill" style="left:4%;width:38%;background:#1a56a0;">
+            <span>즉시 방출 (빠른 입면)</span>
+          </div>
+        </div>
+      </div>
+      <div class="release-row">
+        <div class="release-label" style="font-size:11px;color:#a01060;font-weight:700;">Zolpidem CR<br><span style="font-weight:400;color:var(--text-3);">6.25/12.5 mg</span></div>
+        <div class="release-track">
+          <div class="release-fill" style="left:4%;width:22%;background:#a01060;">
+            <span>1층: 속방</span>
+          </div>
+          <div class="release-fill" style="left:27%;width:42%;background:#d060a0;opacity:0.85;">
+            <span>2층: 지연 방출 (수면 유지)</span>
+          </div>
+        </div>
+      </div>
+      <div style="padding-left:94px;">
+        <div class="time-axis" style="display:flex;">
+          <div class="time-tick">0h</div>
+          <div class="time-tick">1h</div>
+          <div class="time-tick">2h</div>
+          <div class="time-tick">3h</div>
+          <div class="time-tick">4h</div>
+          <div class="time-tick">5h</div>
+          <div class="time-tick">6h+</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 카드 비교 -->
+  <div class="cr-compare-grid">
+    <div class="cr-card ir">
+      <div class="cr-card-title">Zolpidem <span style="background:var(--accent-bg);color:var(--accent-text);padding:1px 6px;border-radius:4px;font-size:12px;">IR</span></div>
+      <div class="cr-card-sub">스틸녹스 정 / 원외처방</div>
+      <div class="cr-stat-row">
+        <div class="cr-stat"><span class="cr-stat-lbl">제형</span><span class="cr-stat-val">속방정 (Immediate Release)</span></div>
+        <div class="cr-stat"><span class="cr-stat-lbl">용량</span><span class="cr-stat-val">여성 5mg / 남성 10mg</span></div>
+        <div class="cr-stat"><span class="cr-stat-lbl">반감기</span><span class="cr-stat-val">2~3시간</span></div>
+        <div class="cr-stat"><span class="cr-stat-lbl">효과 발현</span><span class="cr-stat-val better">약 15~30분 (빠름)</span></div>
+        <div class="cr-stat"><span class="cr-stat-lbl">수면 유지</span><span class="cr-stat-val worse">제한적 (3~4h)</span></div>
+        <div class="cr-stat"><span class="cr-stat-lbl">다음날 졸음</span><span class="cr-stat-val better">상대적으로 낮음</span></div>
+        <div class="cr-stat"><span class="cr-stat-lbl">주 적응증</span><span class="cr-stat-val">입면 장애</span></div>
+        <div class="cr-stat"><span class="cr-stat-lbl">보험급여</span><span class="cr-stat-val">급여 (향정신성)</span></div>
+        <div class="cr-stat"><span class="cr-stat-lbl">병원 약전</span><span class="cr-stat-val worse">원외처방</span></div>
+      </div>
+    </div>
+
+    <div class="cr-card cr">
+      <div class="cr-card-title">Zolpidem <span style="background:#fff0f6;color:#a01060;padding:1px 6px;border-radius:4px;font-size:12px;border:1px solid #f0b0d0;">CR</span></div>
+      <div class="cr-card-sub">스틸녹스 CR 정 / 원외처방</div>
+      <div class="cr-stat-row">
+        <div class="cr-stat"><span class="cr-stat-lbl">제형</span><span class="cr-stat-val">이층 서방정 (Controlled Release)</span></div>
+        <div class="cr-stat"><span class="cr-stat-lbl">용량</span><span class="cr-stat-val">여성 6.25mg / 남성 12.5mg</span></div>
+        <div class="cr-stat"><span class="cr-stat-lbl">반감기</span><span class="cr-stat-val">~2.8시간 (지속 효과)</span></div>
+        <div class="cr-stat"><span class="cr-stat-lbl">효과 발현</span><span class="cr-stat-val neutral">약 30분 (IR 대비 약간 늦음)</span></div>
+        <div class="cr-stat"><span class="cr-stat-lbl">수면 유지</span><span class="cr-stat-val better">우수 (5~6h 지속)</span></div>
+        <div class="cr-stat"><span class="cr-stat-lbl">다음날 졸음</span><span class="cr-stat-val worse">IR 대비 높음 (특히 여성)</span></div>
+        <div class="cr-stat"><span class="cr-stat-lbl">주 적응증</span><span class="cr-stat-val">혼합형 (입면 + 유지)</span></div>
+        <div class="cr-stat"><span class="cr-stat-lbl">보험급여</span><span class="cr-stat-val">급여 (향정신성)</span></div>
+        <div class="cr-stat"><span class="cr-stat-lbl">병원 약전</span><span class="cr-stat-val worse">원외처방</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 상세 비교 표 -->
+  <div class="cr-diff-table">
+    <table>
+      <thead>
+        <tr>
+          <th>비교 항목</th>
+          <th>Zolpidem IR (속방형)</th>
+          <th>Zolpidem CR (서방형)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>방출 기전</td>
+          <td>단일층, 즉시 방출</td>
+          <td class="win">이층정: 1층(속방) + 2층(지연 방출)</td>
+        </tr>
+        <tr>
+          <td>입면 효과</td>
+          <td class="win">우수 (빠른 발현)</td>
+          <td>우수 (약간 늦으나 충분)</td>
+        </tr>
+        <tr>
+          <td>수면 유지</td>
+          <td>제한적</td>
+          <td class="win">개선됨 (중간 각성 감소)</td>
+        </tr>
+        <tr>
+          <td>다음날 잔류 효과</td>
+          <td class="win">낮음</td>
+          <td>상대적으로 높음</td>
+        </tr>
+        <tr>
+          <td>운전·집중력</td>
+          <td class="win">IR보다 상대적으로 안전</td>
+          <td>다음날 오전 운전 주의 (FDA 경고)</td>
+        </tr>
+        <tr>
+          <td>여성 복용량</td>
+          <td>5mg (대사 차이)</td>
+          <td>6.25mg (대사 차이)</td>
+        </tr>
+        <tr>
+          <td>수면 행동 장애</td>
+          <td>가능 (수면보행 등)</td>
+          <td>가능 (동일 위험)</td>
+        </tr>
+        <tr>
+          <td>의존성·남용 가능성</td>
+          <td>있음 (향정신성)</td>
+          <td>있음 (향정신성)</td>
+        </tr>
+        <tr>
+          <td>고령자 권고</td>
+          <td>IR 5mg (감량) 신중 사용</td>
+          <td>CR 6.25mg 최대, 일반적 비권고</td>
+        </tr>
+        <tr>
+          <td>적합한 환자</td>
+          <td class="win">순수 입면 장애, 단기 사용</td>
+          <td class="win">중간 각성 동반, 혼합형 불면</td>
+        </tr>
+        <tr>
+          <td>CR→IR 전환</td>
+          <td colspan="2" style="color:var(--text-2);">동등 용량 없음. 증상에 따라 재적정 필요. IR과 CR은 단순 교체 불가 — 임상 재평가 권장.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="caution-box">
+    <h3>⚠ Zolpidem CR 처방 시 주의사항</h3>
+    <ul class="caution-list">
+      <li>CR 정은 쪼개거나 씹지 말고 통째로 복용 — 분쇄 시 서방 기전 파괴되어 과용량 방출.</li>
+      <li>FDA 2013: 여성은 다음날 혈중 농도가 남성보다 높아 졸음 지속 시간이 길어짐 → 최저 권고용량(6.25mg) 원칙.</li>
+      <li>복합 수면 행동(수면보행, 수면 운전, 수면 중 식사) 보고 시 즉시 중단.</li>
+      <li>취침 직전 복용, 최소 7~8시간 수면 확보 가능할 때만 투약.</li>
+      <li>알코올, 다른 CNS 억제제와 절대 병용 금지.</li>
+      <li>기존 IR에서 CR로 단순 전환 시 동등 용량이 없으므로 임상적 재평가 필수.</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ===== 약물 비교 ===== -->
+<div id="panel-compare" class="panel">
+  <div class="compare-bar">
+    <div style="font-size:13px;color:var(--text-2);">라이브러리 탭 카드 우상단 <strong style="color:var(--text);">✓</strong> 버튼으로 최대 2개 선택</div>
+    <div id="compare-pills" class="compare-pills"></div>
+    <div style="margin-left:auto;display:flex;gap:7px;">
+      <button class="btn" onclick="clearCompare()">초기화</button>
+      <button class="btn btn-teal" onclick="runCompare()">비교하기</button>
+    </div>
+  </div>
+  <div id="compare-result"></div>
+</div>
+
+<!-- ===== 처방 가이드 ===== -->
+<div id="panel-guide" class="panel">
+  <div class="guide-grid">
+    <div class="guide-card">
+      <h3>
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        처방 전 체크리스트
+      </h3>
+      <ul class="step-list">
+        <li class="step-item"><div class="step-num">1</div><div class="step-text"><strong>수면 위생 교육</strong> 먼저 — 수면 스케줄 고정, 카페인·알코올 제한, 빛 노출 조절</div></li>
+        <li class="step-item"><div class="step-num">2</div><div class="step-text"><strong>CBT-I</strong> 고려 (AASM 2017 1차 치료 권고)</div></li>
+        <li class="step-item"><div class="step-num">3</div><div class="step-text">불면 <strong>원인 질환</strong> 확인 (우울증, 통증, RLS, OSA)</div></li>
+        <li class="step-item"><div class="step-num">4</div><div class="step-text">동반 약물 <strong>상호작용</strong> 검토 (CNS 억제제 병용)</div></li>
+        <li class="step-item"><div class="step-num">5</div><div class="step-text"><strong>처방 기간 설정</strong> — 원칙 2~4주, 장기 시 재평가 계획</div></li>
+      </ul>
+    </div>
+    <div class="guide-card">
+      <h3>
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+        약제 선택 알고리즘
+      </h3>
+      <div class="algorithm-flow">
+        <div class="flow-diamond">불면 유형은?</div>
+        <div class="flow-arrow">↓</div>
+        <div class="flow-row">
+          <div class="flow-branch">
+            <div class="flow-branch-lbl">입면 장애</div>
+            <div class="flow-result">Ramelteon<br>→ Zolpidem IR</div>
+          </div>
+          <div class="flow-branch">
+            <div class="flow-branch-lbl">수면 유지</div>
+            <div class="flow-result">Doxepin 3mg<br>→ Suvorexant</div>
+          </div>
+          <div class="flow-branch">
+            <div class="flow-branch-lbl">혼합형</div>
+            <div class="flow-result">Suvorexant<br>→ Zolpidem CR</div>
+          </div>
+        </div>
+        <div class="flow-arrow" style="margin-top:6px;">↓ 고령자</div>
+        <div class="flow-diamond" style="border-color:var(--red);background:var(--red-bg);color:var(--red-text);font-size:11px;">BZD·Z-drug 회피 (BEERS)<br>Melatonin / Doxepin 3mg 우선</div>
+      </div>
+    </div>
+    <div class="guide-card">
+      <h3>
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--red)" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        특수 집단 주의사항
+      </h3>
+      <ul class="step-list">
+        <li class="step-item"><div class="step-num" style="background:var(--red-bg);color:var(--red-text);">고</div><div class="step-text"><strong>고령자:</strong> BZD·Z-drug → 낙상·인지저하↑. Ramelteon, Doxepin 3mg 우선.</div></li>
+        <li class="step-item"><div class="step-num" style="background:var(--amber-bg);color:var(--amber-text);">신</div><div class="step-text"><strong>신기능↓:</strong> 대부분 용량 조절 불필요. 활성 대사체 주의.</div></li>
+        <li class="step-item"><div class="step-num" style="background:var(--amber-bg);color:var(--amber-text);">간</div><div class="step-text"><strong>간기능↓:</strong> BZD 반감기 연장. Ramelteon CI. Suvorexant 5mg 감량.</div></li>
+        <li class="step-item"><div class="step-num" style="background:var(--red-bg);color:var(--red-text);">호</div><div class="step-text"><strong>OSA·COPD:</strong> BZD·Z-drug 호흡 억제 위험. DORA 상대적 안전.</div></li>
+        <li class="step-item"><div class="step-num" style="background:var(--purple-bg);color:var(--purple-text);">임</div><div class="step-text"><strong>임산부:</strong> 모든 수면제 신중. 비약물 치료 우선.</div></li>
+      </ul>
+    </div>
+    <div class="guide-card">
+      <h3>
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--amber)" stroke-width="2"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+        중단 및 전환 전략
+      </h3>
+      <ul class="step-list">
+        <li class="step-item"><div class="step-num">①</div><div class="step-text"><strong>점진적 감량:</strong> 2~4주에 걸쳐 25% 단위 감량. 급중단 → 반동성 불면.</div></li>
+        <li class="step-item"><div class="step-num">②</div><div class="step-text"><strong>BZD → DORA 전환:</strong> 단기 병용 후 BZD 감량. Suvorexant로 연착륙.</div></li>
+        <li class="step-item"><div class="step-num">③</div><div class="step-text"><strong>IR → CR 전환:</strong> 단순 교체 불가 — 임상 재평가 후 새로 적정.</div></li>
+        <li class="step-item"><div class="step-num">④</div><div class="step-text"><strong>재발 시:</strong> 동일 약제 재처방 전 원인 재평가 우선.</div></li>
+      </ul>
+    </div>
+  </div>
+  <div class="warning-section">
+    <h3>⚠ 임상 주의 (Clinical Caution)</h3>
+    <ul class="warning-list">
+      <li>병용 처방: CNS 억제 효과 증폭 → 단일 요법 원칙. 불가피 시 호흡 억제 모니터링.</li>
+      <li>Zolpidem (IR·CR): 여성은 남성 대비 혈중 농도 50% 높음 → FDA 권고 최저용량 필수.</li>
+      <li>Suvorexant: CYP3A4 강력 억제제 (clarithromycin, ketoconazole) 병용 CI.</li>
+      <li>Ramelteon: 중증 간장애 시 AUC 급증 → 금기.</li>
+      <li>장기 처방 시 3~6개월마다 인지 기능·낙상·의존성 재평가 권고.</li>
+    </ul>
+  </div>
+</div>
+
+</main>
+
+<script>
+/* ─── 약물 데이터 (하남보바스 약전 코드 연동) ─── */
+const drugs = [
+  {
+    id: 'triazolam',
+    name: 'Triazolam', brand: '할시온', drugClass: 'BZD',
+    halfLife: '1.5~5h', halfLifeVal: 5, cognitive: 'High', cogVal: 3,
+    usage: 'Onset', dose: '0.125~0.25mg',
+    mechanism: 'GABA-A 수용체 양성 알로스테릭 조절',
+    effects: '의존성↑, 반동성 불면, 기억 장애',
+    contraindications: '심한 간기능 저하, 수면 무호흡, 임신',
+    tip: '매우 짧은 반감기. 단기 입면 장애에만 제한적 사용. 남용 가능성 높음.',
+    formulary: 'instock', formularyCode: 'TRAM025', coverage: '급여',
+    formularyDose: '0.25mg/tab',
+    risks: { elderly:'warn', respiratory:'warn', substance:'warn', hepatic:'caution', renal:'ok' },
+    interactions: ['Ketoconazole', 'Clarithromycin', 'CYP3A4 inhibitors', '알코올']
+  },
+  {
+    id: 'zolpidem',
+    name: 'Zolpidem IR', brand: '졸피드 / 스틸녹스', drugClass: 'Z-drug',
+    halfLife: '2~3h', halfLifeVal: 3, cognitive: 'Moderate', cogVal: 2,
+    usage: 'Onset', dose: '남성 10mg / 여성 5mg',
+    mechanism: 'GABA-A 수용체 선택적 결합 (α1 subunit), 단층 즉시 방출',
+    effects: '복합 수면 행동, 기억 장애, 다음날 졸음',
+    contraindications: '심한 간기능 저하, 수면 무호흡, 근무력증',
+    tip: '입면 장애 표준 치료제. 여성은 반감기 길어 5mg 권고.',
+    formulary: 'instock', formularyCode: 'ZOLPID', coverage: '급여',
+    formularyDose: '10mg/tab',
+    risks: { elderly:'caution', respiratory:'warn', substance:'caution', hepatic:'caution', renal:'ok' },
+    interactions: ['알코올', 'CNS 억제제', 'Rifampicin']
+  },
+  {
+    id: 'zolpidem_cr',
+    name: 'Zolpidem CR', brand: '스틸녹스 CR', drugClass: 'Z-drug',
+    halfLife: '~2.8h (지속)', halfLifeVal: 5, cognitive: 'Moderate', cogVal: 2,
+    usage: 'Mixed', dose: '남성 12.5mg / 여성 6.25mg',
+    mechanism: 'GABA-A 수용체 선택적 결합 (α1), 이층 서방형 방출 (속방층+지연층)',
+    effects: '다음날 잔류 졸음 (IR 대비 높음), 복합 수면 행동',
+    contraindications: '심한 간기능 저하, 수면 무호흡, 정제 분쇄 금지',
+    tip: '중간 각성 동반 혼합형 불면에 IR 대비 우위. IR과 단순 교체 불가.',
+    formulary: 'external', formularyCode: null, coverage: null,
+    isCR: true,
+    risks: { elderly:'caution', respiratory:'warn', substance:'caution', hepatic:'caution', renal:'ok' },
+    interactions: ['알코올', 'CNS 억제제', 'Rifampicin']
+  },
+  {
+    id: 'eszopiclone',
+    name: 'Eszopiclone', brand: '루네스타', drugClass: 'Z-drug',
+    halfLife: '6h', halfLifeVal: 10, cognitive: 'Moderate', cogVal: 2,
+    usage: 'Mixed', dose: '1~3mg',
+    mechanism: 'GABA-A 수용체 선택적 결합 (BZD binding site)',
+    effects: '금속성 쓴맛, 두통, 졸음',
+    contraindications: '심한 간기능 저하',
+    tip: '수면 유지까지 커버 가능한 Z-drug. 1mg에서 점진적 증량.',
+    formulary: 'external', formularyCode: null, coverage: null,
+    risks: { elderly:'caution', respiratory:'caution', substance:'caution', hepatic:'warn', renal:'ok' },
+    interactions: ['CYP3A4 inhibitors', '알코올']
+  },
+  {
+    id: 'suvorexant',
+    name: 'Suvorexant', brand: '벨솜라', drugClass: 'DORA',
+    halfLife: '12h', halfLifeVal: 22, cognitive: 'Low', cogVal: 1,
+    usage: 'Mixed', dose: '10mg (5~20mg)',
+    mechanism: 'Orexin 수용체 (OX1R·OX2R) 길항 → 각성 억제',
+    effects: '가위눌림, 이상 수면 행동, 졸음',
+    contraindications: 'CYP3A4 강력 억제제 병용, 기면증',
+    tip: '의존성 없는 생리적 수면 구조 유지. 알츠하이머 불면에도 효과적.',
+    formulary: 'external', formularyCode: null, coverage: null,
+    risks: { elderly:'ok', respiratory:'ok', substance:'ok', hepatic:'caution', renal:'ok' },
+    interactions: ['Ketoconazole', 'Clarithromycin (CI)', 'Diltiazem']
+  },
+  {
+    id: 'doxepin',
+    name: 'Doxepin (저용량)', brand: '시레나 / 신에쿠아', drugClass: 'TCA',
+    halfLife: '15~20h', halfLifeVal: 38, cognitive: 'Low', cogVal: 1,
+    usage: 'Maintenance', dose: '3~6mg',
+    mechanism: 'H1 히스타민 수용체 선택적 길항 (저용량)',
+    effects: '입마름, 변비, 다음날 졸음',
+    contraindications: '녹내장, MAOI 병용, 소변 정체',
+    tip: 'FDA 승인 수면 유지 TCA. 저용량에서 항콜린 부작용 미미.',
+    formulary: 'external', formularyCode: null, coverage: null,
+    risks: { elderly:'caution', respiratory:'ok', substance:'ok', hepatic:'ok', renal:'ok' },
+    interactions: ['MAOI', 'Cimetidine']
+  },
+  {
+    id: 'ramelteon',
+    name: 'Ramelteon', brand: '로제렘', drugClass: 'Melatonin Agonist',
+    halfLife: '1~2.5h', halfLifeVal: 2, cognitive: 'None', cogVal: 0,
+    usage: 'Onset', dose: '8mg (취침 30분 전)',
+    mechanism: 'MT1·MT2 멜라토닌 수용체 효현 → 일주기 리듬 조절',
+    effects: '두통, 졸음, 어지러움 (경미)',
+    contraindications: '심한 간기능 저하, Fluvoxamine 병용',
+    tip: '향정신성 아님. 의존성 없음. 수면 위상 지연에 효과적.',
+    formulary: 'external', formularyCode: null, coverage: null,
+    risks: { elderly:'ok', respiratory:'ok', substance:'ok', hepatic:'warn', renal:'ok' },
+    interactions: ['Fluvoxamine (CI)', 'Rifampicin']
+  },
+  {
+    id: 'trazodone',
+    name: 'Trazodone', brand: '트리티코', drugClass: 'SARI',
+    halfLife: '5~13h', halfLifeVal: 13, cognitive: 'Low', cogVal: 1,
+    usage: 'Mixed', dose: '25~100mg (off-label)',
+    mechanism: '5-HT2A 길항 + SERT 억제 → 진정 효과',
+    effects: '기립성 저혈압, 지속발기증(드물), 어지러움',
+    contraindications: 'MAOI 병용, 최근 심근경색',
+    tip: 'Off-label 사용. 우울증 동반 불면에 유용. 보험 적용 시 항우울제로 처방.',
+    formulary: 'instock', formularyCode: 'TRIT', coverage: '급여',
+    formularyDose: '25mg/tab',
+    risks: { elderly:'caution', respiratory:'ok', substance:'ok', hepatic:'ok', renal:'ok' },
+    interactions: ['MAOI', 'Serotonergic agents', 'CYP3A4 inhibitors']
+  },
+  {
+    id: 'melatonin',
+    name: 'Melatonin', brand: '라톤 서방정', drugClass: 'Melatonin',
+    halfLife: '0.5~1h', halfLifeVal: 1, cognitive: 'None', cogVal: 0,
+    usage: 'Onset', dose: '2mg (취침 1~2시간 전)',
+    mechanism: 'MT1·MT2 멜라토닌 수용체 효현 → 일주기 리듬 조절 (Melatonin 직접 보충)',
+    effects: '두통, 졸음 (경미), 고용량 시 호르몬 영향',
+    contraindications: '자가면역질환 (주의), 면역억제제 병용',
+    tip: 'Ramelteon과 달리 호르몬 직접 보충. 2mg 서방형은 고령자 1차 선택으로 유럽 허가.',
+    formulary: 'instock', formularyCode: 'LATON', coverage: '비급여',
+    formularyDose: '2mg/tab',
+    risks: { elderly:'ok', respiratory:'ok', substance:'ok', hepatic:'ok', renal:'ok' },
+    interactions: ['Fluvoxamine', '항응고제 (warfarin 모니터링)']
+  },
+  {
+    id: 'quetiapine',
+    name: 'Quetiapine (저용량)', brand: '쿠에타핀', drugClass: 'Atypical',
+    halfLife: '6~7h', halfLifeVal: 12, cognitive: 'Low', cogVal: 1,
+    usage: 'Mixed', dose: '12.5~25mg (off-label, 수면)',
+    mechanism: 'H1·5-HT2A 수용체 길항 → 진정 효과 (저용량)',
+    effects: '다음날 졸음, 체중 증가, 대사 증후군, EPS (저용량 미미)',
+    contraindications: 'QT 연장 위험 환자, 심혈관 질환',
+    tip: 'Off-label 수면 사용. 우울증·섬망 동반 불면 또는 다른 수면제 부적합 시 고려.',
+    formulary: 'instock', formularyCode: 'QET012/QET025', coverage: '급여',
+    formularyDose: '12.5mg·25mg/tab',
+    risks: { elderly:'caution', respiratory:'ok', substance:'ok', hepatic:'caution', renal:'ok' },
+    interactions: ['CYP3A4 inhibitors', 'QT 연장 약물', '항고혈압제']
+  },
+  {
+    id: 'mirtazapine',
+    name: 'Mirtazapine (저용량)', brand: '멀타핀', drugClass: 'Atypical',
+    halfLife: '20~40h', halfLifeVal: 40, cognitive: 'Low', cogVal: 1,
+    usage: 'Mixed', dose: '7.5~15mg (off-label, 수면)',
+    mechanism: 'H1·α2 수용체 길항 → 진정 효과 (저용량에서 강함, 고용량에서 오히려 감소)',
+    effects: '체중 증가, 식욕 증가, 다음날 졸음',
+    contraindications: 'MAOI 병용',
+    tip: 'Off-label 수면 사용. 식욕 부진 동반 노인 불면 시 이중 효과. 7.5mg이 15mg보다 진정 강함.',
+    formulary: 'instock', formularyCode: 'MUL7/MUL15', coverage: '급여',
+    formularyDose: '7.5mg·15mg/tab',
+    risks: { elderly:'caution', respiratory:'ok', substance:'ok', hepatic:'caution', renal:'caution' },
+    interactions: ['MAOI', 'CYP3A4 inhibitors', '알코올']
+  }
+];
+
+let activeType = 'all';
+let activeForm = 'all';
+let activeRisks = new Set();
+let compareList = [];
+
+function classBadge(cls) {
+  const m = { 'BZD':'badge-bzd','Z-drug':'badge-zdrug','DORA':'badge-dora','TCA':'badge-tca','Melatonin Agonist':'badge-mel','Melatonin':'badge-mel','SARI':'badge-sari','Atypical':'badge-atypical' };
+  return `<span class="badge ${m[cls]||''}">${cls}</span>`;
+}
+
+function hlColor(v) {
+  if (v <= 4) return '#1a56a0';
+  if (v <= 14) return '#0b7b6e';
+  return '#e17055';
+}
+
+function cogDots(val) {
+  const labels = ['None','Low','Moderate','High'];
+  const cls = ['n','l','m','h'];
+  let html = '<div class="cog-dots">';
+  for (let i=0;i<3;i++) html += `<div class="dot ${i<val?cls[val]:''}"></div>`;
+  html += `</div><span style="font-size:10px;color:var(--text-3);margin-left:4px;">${labels[val]}</span>`;
+  return html;
+}
+
+function formularyTag(d) {
+  if (d.formulary === 'instock') {
+    const cov = d.coverage === '비급여'
+      ? `<span class="formulary-tag formulary-nonbenefit">비급여</span>`
+      : `<span class="formulary-tag formulary-instock">급여</span>`;
+    const codes = d.formularyCode.split('/');
+    const copyBtns = codes.map(code => `
+      <button class="copy-btn" onclick="copyCode('${code.trim()}',this)" title="${code.trim()} 복사">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+        ${code.trim()}
+      </button>`).join('');
+    return `${cov}${copyBtns}${d.formularyDose ? `<span style="font-size:10px;color:var(--text-3);">${d.formularyDose}</span>` : ''}`;
+  }
+  return `<span class="formulary-tag formulary-external">원외처방</span>`;
+}
+
+function copyCode(code, btn) {
+  navigator.clipboard.writeText(code).then(() => {
+    btn.classList.add('copied');
+    btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> 복사됨`;
+    setTimeout(() => {
+      btn.classList.remove('copied');
+      btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2-2v1"/></svg> ${code}`;
+    }, 1800);
+  }).catch(() => {
+    /* fallback for older browsers */
+    const el = document.createElement('textarea');
+    el.value = code; el.style.position = 'fixed'; el.style.opacity = '0';
+    document.body.appendChild(el); el.select();
+    document.execCommand('copy'); document.body.removeChild(el);
+    btn.classList.add('copied');
+    btn.textContent = '복사됨';
+    setTimeout(() => { btn.classList.remove('copied'); btn.textContent = code; }, 1800);
+  });
+}
+
+function riskBadgesHtml(d) {
+  if (!activeRisks.size) return '';
+  const labels = { elderly:'고령자', renal:'신기능↓', hepatic:'간기능↓', respiratory:'호흡기/OSA', substance:'약물남용력' };
+  let html = '<div class="risk-row">';
+  activeRisks.forEach(r => {
+    const lv = d.risks[r];
+    if (lv === 'warn') html += `<span class="risk-badge warn">⚠ ${labels[r]}</span>`;
+    else if (lv === 'caution') html += `<span class="risk-badge caution">△ ${labels[r]}</span>`;
+  });
+  html += '</div>';
+  return html;
+}
+
+function cardRiskClass(d) {
+  let worst = 'ok';
+  activeRisks.forEach(r => {
+    const lv = d.risks[r];
+    if (lv === 'warn') worst = 'warn';
+    else if (lv === 'caution' && worst !== 'warn') worst = 'caution';
+  });
+  return worst === 'warn' ? 'risk-warn' : worst === 'caution' ? 'risk-caution' : '';
+}
+
+function renderDrugs() {
+  const grid = document.getElementById('drug-grid');
+  let list = drugs;
+  if (activeType === 'Onset') list = list.filter(d => d.usage === 'Onset' || d.usage === 'Mixed');
+  if (activeType === 'Maintenance') list = list.filter(d => d.usage === 'Maintenance' || d.usage === 'Mixed');
+  if (activeType === 'Mixed') list = list.filter(d => d.usage === 'Mixed');
+  if (activeForm === 'instock') list = list.filter(d => d.formulary === 'instock');
+  if (activeForm === 'external') list = list.filter(d => d.formulary === 'external');
+
+  if (!list.length) { grid.innerHTML = '<div class="empty">조건에 맞는 약물이 없습니다.</div>'; return; }
+
+  grid.innerHTML = list.map(d => {
+    const rc = cardRiskClass(d);
+    const isSelected = compareList.includes(d.id);
+    const isDimmed = compareList.length >= 2 && !isSelected;
+    return `
+    <div class="drug-card ${rc} ${isSelected?'compare-active':''} ${isDimmed?'dimmed':''}">
+      <div class="card-header">
+        <div class="drug-name-block">
+          <div class="drug-name-row">
+            <span class="drug-name">${d.name}</span>
+            ${d.isCR ? '<span class="badge badge-cr">CR 서방형</span>' : ''}
+          </div>
+          <div class="badges-row">
+            ${classBadge(d.drugClass)}
+            <span class="badge badge-type">${d.usage==='Onset'?'입면':d.usage==='Maintenance'?'수면유지':'혼합형'}</span>
+            <span class="drug-brand">${d.brand}</span>
+          </div>
+          <div class="badges-row" style="margin-top:3px;">${formularyTag(d)}</div>
+        </div>
+        <button class="select-btn ${isSelected?'checked':''}" onclick="toggleCompare('${d.id}',event)" title="비교 선택">
+          <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+        </button>
+      </div>
+      ${riskBadgesHtml(d)}
+      <div class="hl-bar-wrap">
+        <div class="hl-bar-label">
+          <span class="info-lbl">반감기</span>
+          <span style="font-size:11px;font-weight:700;color:${hlColor(d.halfLifeVal)}">${d.halfLife}</span>
+        </div>
+        <div class="hl-bar-track"><div class="hl-bar-fill" style="width:${Math.min(100,d.halfLifeVal/42*100)}%;background:${hlColor(d.halfLifeVal)};"></div></div>
+      </div>
+      <div class="info-grid">
+        <div class="info-item"><span class="info-lbl">용량</span><span class="info-val">${d.dose}</span></div>
+        <div class="info-item"><span class="info-lbl">인지 영향</span><div style="display:flex;align-items:center;gap:4px;margin-top:3px;">${cogDots(d.cogVal)}</div></div>
+        <div class="info-item" style="grid-column:span 2;"><span class="info-lbl">작용 기전</span><span class="info-val" style="font-size:11px;color:var(--text-2);font-weight:400;">${d.mechanism}</span></div>
+      </div>
+      <div class="side-box">부작용: ${d.effects}</div>
+      <div class="tip-box">💡 ${d.tip}</div>
+    </div>`;
+  }).join('');
+}
+
+function setType(t, btn) {
+  activeType = t;
+  document.querySelectorAll('[onclick^="setType"]').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderDrugs();
+}
+
+function setForm(f, btn) {
+  activeForm = f;
+  document.querySelectorAll('[onclick^="setForm"]').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderDrugs();
+}
+
+function toggleRisk(r, btn) {
+  activeRisks.has(r) ? (activeRisks.delete(r), btn.classList.remove('active')) : (activeRisks.add(r), btn.classList.add('active'));
+  renderDrugs();
+}
+
+function toggleCompare(id, e) {
+  e && e.stopPropagation();
+  if (compareList.includes(id)) compareList = compareList.filter(x => x !== id);
+  else if (compareList.length < 2) compareList.push(id);
+  renderDrugs();
+  renderComparePills();
+}
+
+function renderComparePills() {
+  document.getElementById('compare-pills').innerHTML = compareList.map(id => {
+    const d = drugs.find(x => x.id === id);
+    return `<div class="compare-pill">${d.name}<span class="compare-pill-x" onclick="toggleCompare('${id}')">×</span></div>`;
+  }).join('');
+}
+
+function clearCompare() {
+  compareList = [];
+  renderDrugs();
+  renderComparePills();
+  document.getElementById('compare-result').innerHTML = '';
+}
+
+function runCompare() {
+  if (compareList.length < 2) {
+    document.getElementById('compare-result').innerHTML = '<div class="empty">약물을 2개 선택해주세요.</div>';
+    return;
+  }
+  const [a, b] = compareList.map(id => drugs.find(x => x.id === id));
+  const rows = [
+    { lbl:'약물 분류', aV:a.drugClass, bV:b.drugClass },
+    { lbl:'상품명', aV:a.brand, bV:b.brand },
+    { lbl:'병원 약전', aV:a.formulary==='instock'?`✓ ${a.formularyCode} (${a.coverage})`:'원외처방', bV:b.formulary==='instock'?`✓ ${b.formularyCode} (${b.coverage})`:'원외처방' },
+    { lbl:'용량', aV:a.dose, bV:b.dose },
+    { lbl:'반감기', aV:a.halfLife, bV:b.halfLife, aN:a.halfLifeVal, bN:b.halfLifeVal, pref:'lower' },
+    { lbl:'인지 영향', aV:a.cognitive, bV:b.cognitive, aN:a.cogVal, bN:b.cogVal, pref:'lower' },
+    { lbl:'불면 유형', aV:a.usage==='Onset'?'입면':a.usage==='Maintenance'?'수면유지':'혼합형', bV:b.usage==='Onset'?'입면':b.usage==='Maintenance'?'수면유지':'혼합형' },
+    { lbl:'작용 기전', aV:a.mechanism, bV:b.mechanism },
+    { lbl:'주요 부작용', aV:a.effects, bV:b.effects },
+    { lbl:'금기', aV:a.contraindications, bV:b.contraindications },
+    { lbl:'상호작용', aV:a.interactions.join(', '), bV:b.interactions.join(', ') },
+    { lbl:'임상 팁', aV:a.tip, bV:b.tip }
+  ];
+
+  document.getElementById('compare-result').innerHTML = `
+  <div class="compare-table-wrap">
+    <table class="compare-table">
+      <thead><tr><th>항목</th><th>${a.name}</th><th>${b.name}</th></tr></thead>
+      <tbody>
+        ${rows.map(r => {
+          let ac='', bc='';
+          if (r.aN !== undefined) {
+            if (r.pref==='lower') {
+              ac = r.aN < r.bN ? 'better' : r.aN > r.bN ? 'worse' : '';
+              bc = r.bN < r.aN ? 'better' : r.bN > r.aN ? 'worse' : '';
+            }
+          }
+          return `<tr><td>${r.lbl}</td><td class="${ac}">${r.aV}</td><td class="${bc}">${r.bV}</td></tr>`;
+        }).join('')}
+      </tbody>
+    </table>
+  </div>`;
+}
+
+/* chip 초기 active 설정 */
+document.querySelector('[onclick="setType(\'all\',this)"]').classList.add('active');
+document.querySelector('[onclick="setForm(\'all\',this)"]').classList.add('active');
+
+function switchTab(t) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(b => b.classList.remove('active'));
+  document.getElementById(`panel-${t}`).classList.add('active');
+  const idx = ['library','zolpidem','compare','guide'].indexOf(t);
+  document.querySelectorAll('.nav-tab')[idx].classList.add('active');
+  if (t === 'compare') renderComparePills();
+}
+
+renderDrugs();
+</script>
+</body>
+</html>
