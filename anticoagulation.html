@@ -266,21 +266,84 @@
 </head>
 <body>
 
-  <a href="index.html" style="
-position:fixed;
-top:10px;
-left:10px;
-background:#333;
-color:white;
-padding:8px 12px;
-border-radius:8px;
-text-decoration:none;
-z-index:999;
-">🏠 홈</a>
+<!-- 스타일 시트 (CSS) -->
+<style>
+  .header-top {
+    display: flex;
+    align-items: center;
+    background: #f8f9fa; /* 배경색은 필요에 따라 조정하세요 */
+    padding: 15px 20px;
+    border-bottom: 1px solid #eee;
+    gap: 20px;
+  }
 
+  .home-btn {
+    display: inline-flex;
+    align-items: center;
+    background: #333;
+    color: white !important;
+    padding: 8px 16px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: bold;
+    transition: background 0.2s;
+    white-space: nowrap;
+  }
+
+  .home-btn:hover {
+    background: #555;
+  }
+
+  .header-brand {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .header-title {
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: #222;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .header-title span {
+    color: #007bff; /* 포인트 컬러 */
+  }
+
+  .ver-badge {
+    background: #e9ecef;
+    color: #666;
+    font-size: 0.7rem;
+    padding: 2px 6px;
+    border-radius: 4px;
+    margin-left: 5px;
+  }
+
+  .header-sub {
+    font-size: 0.85rem;
+    color: #666;
+    margin-top: 4px;
+  }
+</style>
+
+<!-- 구조 (HTML) -->
 <header>
-  <div class="header-inner">
-    <div class="header-title"><span>💉</span> 항응고제 / 항혈소판제</div>
+  <div class="header-top">
+    <!-- 홈 버튼 -->
+    <a href="index.html" class="home-btn">🏠 홈</a>
+    
+    <!-- 브랜드 및 제목 섹션 -->
+    <div class="header-brand">
+      <div class="header-title">
+        <span>💉</span> 항응고제 / 항혈소판제 <span class="ver-badge">v2.1</span>
+      </div>
+      <div class="header-sub">
+        DOAC, Antiplatelet 용량선택, 수술전 중단
+      </div>
+    </div>
   </div>
 </header>
 
