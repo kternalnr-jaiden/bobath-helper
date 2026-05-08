@@ -4,495 +4,258 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>항응고제 / 항혈소판제</title>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --primary: #1a5276;
-    --primary-dark: #154360;
-    --primary-fg: #ffffff;
-    --accent: #2e86c1;
-    --accent-light: #d6eaf8;
-    --bg: #f4f6f9;
-    --surface: #ffffff;
-    --border: #d5d8dc;
-    --text: #1c2833;
-    --text-muted: #717d7e;
-    --blue-row: #eaf4fb;
-    --danger: #c0392b;
-    --danger-light: #fadbd8;
-    --success: #1a8a5a;
-    --warning-bg: #fef9e7;
-    --radius: 10px;
-    --shadow: 0 2px 12px rgba(0,0,0,0.08);
-  }
+:root {
+  --bg:#f1f5f9;--surface:#fff;--surface2:#f8fafc;--surface3:#eef2f7;
+  --border:#e2e8f0;--border-strong:#cbd5e1;
+  --primary:#0f172a;
+  --accent:#0284c7;--accent-dim:rgba(2,132,199,0.08);--accent-light:rgba(2,132,199,0.13);
+  --ok:#16a34a;--ok-dim:rgba(22,163,74,0.09);
+  --warn:#d97706;--warn-dim:rgba(217,119,6,0.09);
+  --danger:#dc2626;--danger-dim:rgba(220,38,38,0.08);
+  --orange:#ea580c;--orange-dim:rgba(234,88,12,0.09);
+  --purple:#7c3aed;--purple-dim:rgba(124,58,237,0.09);
+  --text:#0f172a;--text-muted:#64748b;--text-soft:#475569;
+  --r:12px;
+  --sh:0 1px 3px rgba(0,0,0,0.06),0 1px 2px rgba(0,0,0,0.04);
+  --sh2:0 4px 12px rgba(0,0,0,0.07),0 2px 4px rgba(0,0,0,0.04);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:'Malgun Gothic','Apple SD Gothic Neo','Noto Sans KR',sans-serif;font-size:14px;line-height:1.65;min-height:100vh;}
 
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+header{background:var(--surface);border-bottom:1px solid var(--border);padding:14px 18px 0;position:sticky;top:0;z-index:100;box-shadow:var(--sh);}
+.header-top{display:flex;align-items:center;gap:10px;padding-bottom:12px;}
+.home-btn{display:inline-flex;align-items:center;gap:4px;background:var(--surface3);border:1px solid var(--border);color:var(--text-muted);font-size:11.5px;font-weight:600;padding:5px 10px;border-radius:8px;text-decoration:none;transition:all .18s;flex-shrink:0;font-family:'Malgun Gothic','Apple SD Gothic Neo','Noto Sans KR',sans-serif;}
+.home-btn:hover{background:var(--accent-dim);border-color:var(--accent);color:var(--accent);}
+.header-brand{flex:1;min-width:0;}
+.header-title{font-family:'Malgun Gothic','Apple SD Gothic Neo','Noto Sans KR',sans-serif;font-size:19px;font-weight:700;letter-spacing:-.3px;color:var(--text);line-height:1.2;display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.header-title span.accent{color:var(--accent);}
+.ver-badge{background:var(--accent);color:#fff;font-size:10px;font-weight:700;padding:2px 8px;border-radius:12px;font-family:'JetBrains Mono',monospace;}
+.header-sub{font-size:10px;color:var(--text-muted);letter-spacing:.4px;text-transform:uppercase;margin-top:2px;}
+.tab-bar{display:flex;overflow-x:auto;scrollbar-width:none;}
+.tab-bar::-webkit-scrollbar{display:none;}
+.tab-btn{flex-shrink:0;padding:10px 16px;font-family:'Malgun Gothic','Apple SD Gothic Neo','Noto Sans KR',sans-serif;font-size:12px;font-weight:600;cursor:pointer;border:none;background:transparent;color:var(--text-muted);border-bottom:2px solid transparent;transition:all .18s;white-space:nowrap;}
+.tab-btn.active{color:var(--accent);border-bottom-color:var(--accent);}
+.tab-btn:hover:not(.active){color:var(--text-soft);}
 
-  body {
-    font-family: 'Noto Sans KR', sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    min-height: 100vh;
-    font-size: 14px;
-  }
+.main{max-width:960px;margin:0 auto;padding:16px 15px 60px;}
+.tab-pane{display:none;}
+.tab-pane.active{display:block;}
 
-  /* ── Header ── */
-  header {
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    background: var(--primary);
-    color: var(--primary-fg);
-    box-shadow: 0 2px 12px rgba(0,0,0,0.18);
-  }
-  .header-inner {
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 12px 20px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    flex-wrap: wrap;
-  }
-  .btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    padding: 6px 14px;
-    border-radius: 7px;
-    font-size: 13px;
-    font-weight: 500;
-    border: none;
-    cursor: pointer;
-    transition: background 0.15s, transform 0.1s;
-    font-family: inherit;
-  }
-  .btn:active { transform: scale(0.97); }
-  .btn-secondary {
-    background: rgba(255,255,255,0.18);
-    color: #fff;
-    border: 1px solid rgba(255,255,255,0.3);
-  }
-  .btn-secondary:hover { background: rgba(255,255,255,0.28); }
-  .header-title {
-    font-size: 18px;
-    font-weight: 700;
-    flex: 1;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
+.hero-card{background:linear-gradient(135deg,#eff6ff,#f8fafc 60%,#ffffff);border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--sh);padding:18px 20px;margin-bottom:14px;}
+.hero-title{font-size:16px;font-weight:700;color:var(--primary);margin-bottom:6px;display:flex;align-items:center;gap:8px;}
+.hero-desc{font-size:12.5px;color:var(--text-muted);line-height:1.65;}
+.hero-pills{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px;}
+.hero-pill{display:inline-flex;align-items:center;gap:4px;background:var(--surface);border:1px solid var(--border);border-radius:999px;padding:4px 10px;font-size:11px;color:var(--text-soft);font-weight:600;}
 
-  /* ── Main ── */
-  main {
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 24px 16px 48px;
-  }
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--sh);margin-bottom:14px;overflow:hidden;}
+.card-header{padding:16px 18px 12px;border-bottom:1px solid var(--border);background:linear-gradient(180deg,rgba(248,250,252,.8),rgba(255,255,255,1));}
+.card-title{font-family:'Malgun Gothic','Apple SD Gothic Neo','Noto Sans KR',sans-serif;font-size:15px;font-weight:700;color:var(--primary);letter-spacing:-.1px;}
+.card-subtitle{font-size:12px;color:var(--text-muted);line-height:1.6;margin-top:5px;}
+.card-body{padding:0;}
+.card-body-pad{padding:14px 16px;}
 
-  /* ── Tabs ── */
-  .tabs { margin-bottom: 20px; }
-  .tab-list {
-    display: inline-flex;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 4px;
-    gap: 4px;
-    box-shadow: var(--shadow);
-  }
-  .tab-btn {
-    padding: 8px 24px;
-    border-radius: 7px;
-    border: none;
-    background: transparent;
-    font-size: 14px;
-    font-weight: 600;
-    color: var(--text-muted);
-    cursor: pointer;
-    font-family: inherit;
-    transition: all 0.18s;
-  }
-  .tab-btn.active {
-    background: var(--primary);
-    color: #fff;
-    box-shadow: 0 2px 8px rgba(26,82,118,0.3);
-  }
-  .tab-btn:not(.active):hover { background: var(--accent-light); color: var(--primary); }
-  .tab-pane { display: none; }
-  .tab-pane.active { display: block; }
+.table-wrap{overflow-x:auto;}
+table{width:100%;border-collapse:collapse;font-size:12.5px;}
+thead tr{background:var(--primary);}
+th{color:#fff;padding:10px 12px;text-align:left;font-weight:600;font-size:11.5px;white-space:nowrap;}
+td{padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.6;white-space:pre-line;word-break:keep-all;overflow-wrap:break-word;}
+tr:last-child td{border-bottom:none;}
+tbody tr:nth-child(even) td{background:var(--surface2);}
+tr.has-drug td{background:#edf7ff;}
+tr.has-drug:nth-child(even) td{background:#e5f3ff;}
+tr:hover td{background:var(--accent-dim);}
+.summary-table td{white-space:normal;}
+.summary-table th{min-width:90px;}
 
-  /* ── Card ── */
-  .card {
-    background: var(--surface);
-    border-radius: var(--radius);
-    box-shadow: var(--shadow);
-    border: 1px solid var(--border);
-    overflow: hidden;
-    margin-bottom: 20px;
-  }
-  .card-header {
-    padding: 16px 20px 12px;
-    border-bottom: 1px solid var(--border);
-  }
-  .card-title { font-size: 15px; font-weight: 700; color: var(--primary); }
-  .card-subtitle { font-size: 12.5px; color: var(--text-muted); margin-top: 4px; line-height: 1.5; }
-  .card-body { padding: 0; }
-  .card-body-pad { padding: 14px 18px; }
+.drug-name{font-weight:700;font-size:13px;color:var(--primary);margin-bottom:4px;}
+.drug-badges{display:flex;flex-direction:column;gap:4px;margin-top:5px;}
+.badge-row{display:flex;align-items:center;gap:6px;flex-wrap:wrap;}
+.code-badge{display:inline-flex;align-items:center;gap:4px;background:var(--accent-dim);color:var(--accent);border:1px solid rgba(2,132,199,.28);border-radius:6px;padding:3px 9px;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;cursor:pointer;transition:all .15s;white-space:nowrap;}
+.code-badge:hover{background:var(--accent);border-color:var(--accent);color:#fff;}
+.code-badge:active{transform:scale(.97);}
+.code-badge.copied{background:var(--ok-dim);color:var(--ok);border-color:rgba(22,163,74,.4);}
+.badge-label{font-size:11px;color:var(--text-muted);}
+.reversal-tag{display:inline-block;margin-top:6px;font-size:10.5px;color:var(--danger);font-weight:700;background:var(--danger-dim);padding:2px 8px;border-radius:999px;}
 
-  /* ── Table ── */
-  .table-wrap { overflow-x: auto; }
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 12px;
-  }
-  thead tr {
-    background: #eaf0f6;
-    border-bottom: 2px solid var(--border);
-  }
-  th {
-    padding: 10px 12px;
-    text-align: left;
-    font-weight: 600;
-    color: var(--primary-dark);
-    white-space: nowrap;
-    font-size: 12px;
-  }
-  td {
-    padding: 10px 12px;
-    border-bottom: 1px solid #eaecee;
-    vertical-align: top;
-    line-height: 1.6;
-    white-space: pre-line;
-  }
-  tr:last-child td { border-bottom: none; }
-  tr.has-drug { background: var(--blue-row); }
-  tr.has-drug:hover { background: #d4e9f7; }
-  tr:not(.has-drug):hover { background: #f8fafb; }
+.guide-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;}
+@media(max-width:700px){.guide-grid{grid-template-columns:1fr;}}
+.guide-card .card-body-pad p{margin-bottom:7px;font-size:12.5px;line-height:1.65;}
+.guide-card .card-body-pad p:last-child{margin-bottom:0;}
+.highlight-box{background:linear-gradient(135deg,#fffbeb,#fff);border:1.5px solid #fcd34d;border-radius:10px;padding:12px 14px;margin:10px 0;}
+.highlight-box p{margin-bottom:5px;font-size:13px;line-height:1.6;}
+.highlight-box p:last-child{margin-bottom:0;}
+.text-danger{color:var(--danger);font-weight:700;}
+.text-muted-sm{font-size:11.5px;color:var(--text-muted);margin-top:8px;}
 
-  th:nth-child(1) { min-width: 155px; }
-  th:nth-child(2) { min-width: 130px; }
-  th:nth-child(3) { min-width: 210px; }
-  th:nth-child(4) { min-width: 150px; }
-  th:nth-child(5) { min-width: 175px; }
-  th:nth-child(6) { min-width: 105px; }
-  th:nth-child(7) { min-width: 130px; }
-  th:nth-child(8) { min-width: 180px; }
+.toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(60px);background:var(--primary);color:#fff;padding:10px 22px;border-radius:30px;font-size:13px;font-weight:500;opacity:0;transition:opacity .25s,transform .25s;z-index:999;pointer-events:none;white-space:nowrap;box-shadow:var(--sh2);}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 
-  /* ── Drug cell ── */
-  .drug-name { font-weight: 600; font-size: 13px; margin-bottom: 4px; }
-  .drug-badges { display: flex; flex-direction: column; gap: 4px; margin-top: 5px; }
-  .badge-row { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
-  .code-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    background: var(--primary);
-    color: #fff;
-    border-radius: 5px;
-    padding: 2px 8px;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
-    font-weight: 500;
-    cursor: pointer;
-    border: none;
-    transition: background 0.15s, transform 0.1s;
-    white-space: nowrap;
-  }
-  .code-badge:hover { background: var(--accent); }
-  .code-badge:active { transform: scale(0.95); }
-  .code-badge.copied { background: var(--success); }
-  .badge-label { font-size: 11px; color: var(--accent); font-weight: 500; }
-  .reversal-tag {
-    display: inline-block;
-    margin-top: 5px;
-    font-size: 11px;
-    color: var(--danger);
-    font-weight: 600;
-    background: var(--danger-light);
-    padding: 2px 7px;
-    border-radius: 4px;
-  }
-
-  /* ── Guide grid ── */
-  .guide-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 16px;
-    margin-bottom: 20px;
-  }
-  @media (max-width: 700px) { .guide-grid { grid-template-columns: 1fr; } }
-  .guide-card .card-body-pad p { margin-bottom: 7px; font-size: 13px; line-height: 1.6; }
-  .guide-card .card-body-pad p:last-child { margin-bottom: 0; }
-
-  /* ── Highlight box ── */
-  .highlight-box {
-    background: var(--warning-bg);
-    border: 1px solid #f0e68c;
-    border-radius: 8px;
-    padding: 12px 14px;
-    margin: 10px 0;
-  }
-  .highlight-box p { margin-bottom: 5px; font-size: 13px; line-height: 1.6; }
-  .highlight-box p:last-child { margin-bottom: 0; }
-  .text-danger { color: var(--danger); font-weight: 600; }
-  .text-muted-sm { font-size: 11.5px; color: var(--text-muted); margin-top: 8px; }
-
-  /* ── Summary table (surgical hold) ── */
-  .summary-table th { min-width: 90px; }
-  .summary-table td { white-space: normal; }
-
-  /* ── Toast ── */
-  .toast {
-    position: fixed;
-    bottom: 30px;
-    left: 50%;
-    transform: translateX(-50%) translateY(60px);
-    background: var(--primary);
-    color: #fff;
-    padding: 10px 22px;
-    border-radius: 30px;
-    font-size: 13px;
-    font-weight: 500;
-    opacity: 0;
-    transition: opacity 0.25s, transform 0.25s;
-    z-index: 999;
-    pointer-events: none;
-    white-space: nowrap;
-  }
-  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+@media(max-width:780px){
+  header{padding:12px 14px 0;}
+  .header-title{font-size:17px;}
+  .main{padding:14px 12px 54px;}
+  th,td{padding:9px 10px;}
+}
 </style>
 </head>
 <body>
-
-<!-- 스타일 시트 (CSS) -->
-<style>
-  .header-top {
-    display: flex;
-    align-items: center;
-    background: #f8f9fa; /* 배경색은 필요에 따라 조정하세요 */
-    padding: 15px 20px;
-    border-bottom: 1px solid #eee;
-    gap: 20px;
-  }
-
-  .home-btn {
-    display: inline-flex;
-    align-items: center;
-    background: #333;
-    color: white !important;
-    padding: 8px 16px;
-    border-radius: 8px;
-    text-decoration: none;
-    font-size: 14px;
-    font-weight: bold;
-    transition: background 0.2s;
-    white-space: nowrap;
-  }
-
-  .home-btn:hover {
-    background: #555;
-  }
-
-  .header-brand {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .header-title {
-    font-size: 1.2rem;
-    font-weight: 800;
-    color: #222;
-    display: flex;
-    align-items: center;
-    gap: 5px;
-  }
-
-  .header-title span {
-    color: #007bff; /* 포인트 컬러 */
-  }
-
-  .ver-badge {
-    background: #e9ecef;
-    color: #666;
-    font-size: 0.7rem;
-    padding: 2px 6px;
-    border-radius: 4px;
-    margin-left: 5px;
-  }
-
-  .header-sub {
-    font-size: 0.85rem;
-    color: #666;
-    margin-top: 4px;
-  }
-</style>
-
-<!-- 구조 (HTML) -->
 <header>
   <div class="header-top">
-    <!-- 홈 버튼 -->
     <a href="index.html" class="home-btn">🏠 홈</a>
-    
-    <!-- 브랜드 및 제목 섹션 -->
     <div class="header-brand">
-      <div class="header-title">
-        <span>💉</span> 항응고제 / 항혈소판제 <span class="ver-badge">v2.1</span>
-      </div>
-      <div class="header-sub">
-        DOAC, Antiplatelet 용량선택, 수술전 중단
-      </div>
+      <div class="header-title">항응고제/항혈소판제<span class="accent">Navigator</span> <span class="ver-badge">v1.0</span></div>
+      <div class="header-sub">항응고제·항혈소판제 용량 선택 · 수술 전 중단 가이드 · 원내 코드 연동</div>
     </div>
+  </div>
+  <div class="tab-bar">
+    <button class="tab-btn active" onclick="switchTab('doac', this)">💉 DOAC / 항응고제</button>
+    <button class="tab-btn" onclick="switchTab('antiplatelet', this)">🩸 항혈소판제</button>
   </div>
 </header>
 
-<main>
-  <div class="tabs">
-    <div class="tab-list">
-      <button class="tab-btn active" onclick="switchTab('doac', this)">DOAC (항응고제)</button>
-      <button class="tab-btn" onclick="switchTab('antiplatelet', this)">항혈소판제</button>
+  <div class="main">
+  <div class="hero-card">
+    <div class="hero-title">🧭 항응고·항혈소판제  참고 화면</div>
+    <div class="hero-desc">항응고·항혈소판제  참고 화면</div>
+    <div class="hero-pills">
+      <span class="hero-pill">.</span>
+      <span class="hero-pill">.</span>
+      <span class="hero-pill">.</span>
     </div>
   </div>
 
-  <!-- ══ DOAC Tab ══ -->
   <div class="tab-pane active" id="tab-doac">
-    <div class="card">
-      <div class="card-header">
-        <div class="card-title">DOAC (Direct Oral Anticoagulants)</div>
-        <div class="card-subtitle">기존 NOAC(Novel Oral Anticoagulants)에서 현재는 <strong>DOAC</strong>(Direct Oral Anticoagulants)으로 용어가 변경되었습니다.</div>
-      </div>
-      <div class="card-body">
-        <div class="table-wrap">
-          <table>
-            <thead>
-              <tr>
-                <th>약물명</th>
-                <th>분류</th>
-                <th>용법·용량</th>
-                <th>신기능 조절</th>
-                <th>수술 전 중단</th>
-                <th>적응증</th>
-                <th>부작용</th>
-                <th>참고사항</th>
-              </tr>
-            </thead>
-            <tbody id="doac-tbody"></tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-
-    <div class="guide-grid">
-      <div class="card guide-card">
-        <div class="card-header"><div class="card-title">📌 DOAC 선택 가이드</div></div>
-        <div class="card-body-pad">
-          <p><strong>1일 1회 선호:</strong> Rivaroxaban 또는 Edoxaban</p>
-          <p><strong>1일 2회 (안정적 혈중 농도):</strong> Apixaban 또는 Dabigatran</p>
-          <p><strong>신기능 저하 (CrCl 15-30):</strong> Apixaban 가장 안전</p>
-          <p><strong>GI 출혈 위험:</strong> Apixaban 선호 (GI 출혈 가장 적음)</p>
-          <p><strong>소화불량 이슈:</strong> Dabigatran 피하기</p>
-          <p><strong>역전제 필요:</strong> Dabigatran (Idarucizumab), Apixaban/Rivaroxaban (Andexanet alfa)</p>
-        </div>
-      </div>
-
-      <div class="card guide-card">
-        <div class="card-header"><div class="card-title">📌 Apixaban 감량 기준 (2 of 3)</div></div>
-        <div class="card-body-pad">
-          <p class="text-danger">아래 3가지 중 2개 이상 해당 시 → 2.5mg bid</p>
-          <div class="highlight-box">
-            <p>① 나이 ≥ <strong>80</strong>세</p>
-            <p>② 체중 ≤ <strong>60</strong>kg</p>
-            <p>③ 혈청 Cr ≥ <strong>1.5</strong> mg/dL</p>
-          </div>
-          <p class="text-muted-sm">※ VTE 치료/예방 시에는 별도 용량 기준 적용</p>
-        </div>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="card-header"><div class="card-title">⏱️ DOAC 수술 전 중단 시기 요약</div></div>
-      <div class="card-body">
-        <div class="table-wrap">
-          <table class="summary-table">
-            <thead>
-              <tr>
-                <th>약물</th>
-                <th>CrCl ≥50</th>
-                <th>CrCl 30-49</th>
-                <th>CrCl 15-29</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr><td style="font-weight:600">Apixaban</td><td>24-48h</td><td>48h</td><td>48-72h</td></tr>
-              <tr><td style="font-weight:600">Rivaroxaban</td><td>24-48h</td><td>48h</td><td>권장하지 않음</td></tr>
-              <tr><td style="font-weight:600">Edoxaban</td><td>24-48h</td><td>48h</td><td>권장하지 않음</td></tr>
-              <tr><td style="font-weight:600">Dabigatran</td><td>24-48h</td><td>48-96h</td><td>권장하지 않음</td></tr>
-            </tbody>
-          </table>
-        </div>
-        <div style="padding:10px 16px">
-          <p class="text-muted-sm">※ 출혈 고위험 수술 시 더 긴 중단 기간 적용. 저위험 수술(치과 등)은 중단 불필요할 수 있음.</p>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ══ Antiplatelet Tab ══ -->
-  <div class="tab-pane" id="tab-antiplatelet">
-    <div class="card">
-      <div class="card-header">
-        <div class="card-title">항혈소판제 (Antiplatelet Agents)</div>
-      </div>
-      <div class="card-body">
-        <div class="table-wrap">
-          <table>
-            <thead>
-              <tr>
-                <th>약물명</th>
-                <th>분류</th>
-                <th>용법·용량</th>
-                <th>수술 전 중단</th>
-                <th>적응증</th>
-                <th>부작용</th>
-                <th>참고사항</th>
-              </tr>
-            </thead>
-            <tbody id="antiplatelet-tbody"></tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-
-    <div class="guide-grid">
-      <div class="card guide-card">
-        <div class="card-header"><div class="card-title">📌 항혈소판제 선택 가이드</div></div>
-        <div class="card-body-pad">
-          <p><strong>뇌경색 2차 예방 (기본):</strong> Aspirin 100mg 또는 Clopidogrel 75mg</p>
-          <p><strong>DAPT (급성기/스텐트):</strong> Aspirin + Clopidogrel (기간은 상황에 따라)</p>
-          <p><strong>Aspirin 불내성:</strong> Clopidogrel 단독</p>
-          <p><strong>말초동맥질환/파행:</strong> Cilostazol 추가 고려</p>
-          <p><strong>혈관성 인지장애:</strong> Cilostazol 고려 (아시아 데이터)</p>
-        </div>
-      </div>
-
-      <div class="card guide-card">
-        <div class="card-header"><div class="card-title">📌 수술 전 중단 시기 요약</div></div>
-        <div class="card-body-pad">
-          <div class="highlight-box">
-            <p><strong>Aspirin:</strong> 7일 (저위험 수술은 유지 가능)</p>
-            <p><strong>Clopidogrel:</strong> 5-7일</p>
-            <p><strong>Cilostazol:</strong> 2-3일</p>
-          </div>
-          <p class="text-muted-sm">※ 스텐트 삽입 환자는 DAPT 중단 전 반드시 심장내과/시술의 상의</p>
-        </div>
-      </div>
-    </div>
-  </div>
-</main>
+<div class="card">
+<div class="card-header">
+<div class="card-title">DOAC (Direct Oral Anticoagulants)</div>
+<div class="card-subtitle">기존 NOAC(Novel Oral Anticoagulants)에서 현재는 <strong>DOAC</strong>(Direct Oral Anticoagulants)으로 용어가 변경되었습니다.</div>
+</div>
+<div class="card-body">
+<div class="table-wrap">
+<table>
+<thead>
+<tr>
+<th>약물명</th>
+<th>분류</th>
+<th>용법·용량</th>
+<th>신기능 조절</th>
+<th>수술 전 중단</th>
+<th>적응증</th>
+<th>부작용</th>
+<th>참고사항</th>
+</tr>
+</thead>
+<tbody id="doac-tbody"></tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="guide-grid">
+<div class="card guide-card">
+<div class="card-header"><div class="card-title">📌 DOAC 선택 가이드</div></div>
+<div class="card-body-pad">
+<p><strong>1일 1회 선호:</strong> Rivaroxaban 또는 Edoxaban</p>
+<p><strong>1일 2회 (안정적 혈중 농도):</strong> Apixaban 또는 Dabigatran</p>
+<p><strong>신기능 저하 (CrCl 15-30):</strong> Apixaban 가장 안전</p>
+<p><strong>GI 출혈 위험:</strong> Apixaban 선호 (GI 출혈 가장 적음)</p>
+<p><strong>소화불량 이슈:</strong> Dabigatran 피하기</p>
+<p><strong>역전제 필요:</strong> Dabigatran (Idarucizumab), Apixaban/Rivaroxaban (Andexanet alfa)</p>
+</div>
+</div>
+<div class="card guide-card">
+<div class="card-header"><div class="card-title">📌 Apixaban 감량 기준 (2 of 3)</div></div>
+<div class="card-body-pad">
+<p class="text-danger">아래 3가지 중 2개 이상 해당 시 → 2.5mg bid</p>
+<div class="highlight-box">
+<p>① 나이 ≥ <strong>80</strong>세</p>
+<p>② 체중 ≤ <strong>60</strong>kg</p>
+<p>③ 혈청 Cr ≥ <strong>1.5</strong> mg/dL</p>
+</div>
+<p class="text-muted-sm">※ VTE 치료/예방 시에는 별도 용량 기준 적용</p>
+</div>
+</div>
+</div>
+<div class="card">
+<div class="card-header"><div class="card-title">⏱️ DOAC 수술 전 중단 시기 요약</div></div>
+<div class="card-body">
+<div class="table-wrap">
+<table class="summary-table">
+<thead>
+<tr>
+<th>약물</th>
+<th>CrCl ≥50</th>
+<th>CrCl 30-49</th>
+<th>CrCl 15-29</th>
+</tr>
+</thead>
+<tbody>
+<tr><td style="font-weight:600">Apixaban</td><td>24-48h</td><td>48h</td><td>48-72h</td></tr>
+<tr><td style="font-weight:600">Rivaroxaban</td><td>24-48h</td><td>48h</td><td>권장하지 않음</td></tr>
+<tr><td style="font-weight:600">Edoxaban</td><td>24-48h</td><td>48h</td><td>권장하지 않음</td></tr>
+<tr><td style="font-weight:600">Dabigatran</td><td>24-48h</td><td>48-96h</td><td>권장하지 않음</td></tr>
+</tbody>
+</table>
+</div>
+<div style="padding:10px 16px">
+<p class="text-muted-sm">※ 출혈 고위험 수술 시 더 긴 중단 기간 적용. 저위험 수술(치과 등)은 중단 불필요할 수 있음.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="tab-pane" id="tab-antiplatelet">
+<div class="card">
+<div class="card-header">
+<div class="card-title">항혈소판제 (Antiplatelet Agents)</div>
+</div>
+<div class="card-body">
+<div class="table-wrap">
+<table>
+<thead>
+<tr>
+<th>약물명</th>
+<th>분류</th>
+<th>용법·용량</th>
+<th>수술 전 중단</th>
+<th>적응증</th>
+<th>부작용</th>
+<th>참고사항</th>
+</tr>
+</thead>
+<tbody id="antiplatelet-tbody"></tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="guide-grid">
+<div class="card guide-card">
+<div class="card-header"><div class="card-title">📌 항혈소판제 선택 가이드</div></div>
+<div class="card-body-pad">
+<p><strong>뇌경색 2차 예방 (기본):</strong> Aspirin 100mg 또는 Clopidogrel 75mg</p>
+<p><strong>DAPT (급성기/스텐트):</strong> Aspirin + Clopidogrel (기간은 상황에 따라)</p>
+<p><strong>Aspirin 불내성:</strong> Clopidogrel 단독</p>
+<p><strong>말초동맥질환/파행:</strong> Cilostazol 추가 고려</p>
+<p><strong>혈관성 인지장애:</strong> Cilostazol 고려 (아시아 데이터)</p>
+</div>
+</div>
+<div class="card guide-card">
+<div class="card-header"><div class="card-title">📌 수술 전 중단 시기 요약</div></div>
+<div class="card-body-pad">
+<div class="highlight-box">
+<p><strong>Aspirin:</strong> 7일 (저위험 수술은 유지 가능)</p>
+<p><strong>Clopidogrel:</strong> 5-7일</p>
+<p><strong>Cilostazol:</strong> 2-3일</p>
+</div>
+<p class="text-muted-sm">※ 스텐트 삽입 환자는 DAPT 중단 전 반드시 심장내과/시술의 상의</p>
+</div>
+</div>
+</div>
+</div>
+</div>
 
 <div class="toast" id="toast"></div>
-
 <script>
 const doacs = [
   {
@@ -694,5 +457,6 @@ function showToast(msg) {
 buildDoacTable();
 buildAntiplateletTable();
 </script>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516" integrity="sha512-8DS7rgIrAmghBFwoOTujcf6D9rXvH8xm8JQ1Ja01h9QX8EzXldiszufYa4IFfKdLUKTTrnSFXLDkUEOTrZQ8Qg==" data-cf-beacon='{"version":"2024.11.0","token":"4edd5f8ec12a48cfa682ab8261b80a79","server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
 </body>
 </html>
