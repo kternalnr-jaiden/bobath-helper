@@ -131,6 +131,23 @@ header{background:var(--surface);border-bottom:1px solid var(--border);padding:1
 .inj{background:linear-gradient(90deg,rgba(220,38,38,.07),transparent);border-left:3px solid var(--danger);border-radius:0 7px 7px 0;padding:8px 11px;font-size:.72rem;color:var(--text-muted);line-height:1.6;margin-top:9px;}
 .inj b{color:var(--danger);}
 
+/* ── CLINICAL SIGNS ── */
+.cs-item{margin-bottom:8px;border-radius:8px;border:1px solid var(--border);overflow:hidden;}
+.cs-item:last-child{margin-bottom:0;}
+.cs-h{background:var(--surface2);padding:8px 12px;font-size:.74rem;font-weight:600;display:flex;align-items:center;gap:7px;cursor:pointer;user-select:none;transition:background .15s;}
+.cs-h:hover{background:#e8f0fb;}
+.cs-icon{font-size:1rem;flex-shrink:0;}
+.cs-body{padding:10px 12px;font-size:.75rem;color:var(--text-muted);line-height:1.82;display:none;border-top:1px solid var(--border);}
+.cs-body.sh{display:block;}
+.cs-body b{color:var(--text);}
+.cs-body code{background:var(--accent-dim);color:var(--accent);border-radius:3px;padding:1px 5px;font-family:'JetBrains Mono',monospace;font-size:.69rem;}
+.lv-tag{display:inline-block;font-size:.59rem;font-weight:700;padding:1px 8px;border-radius:10px;border:1px solid;margin-left:6px;vertical-align:middle;}
+/* image reference button (used in DDx, EMG, Clinical Signs) */
+.img-ref-btn{display:inline-flex;align-items:center;gap:5px;margin-top:9px;padding:5px 13px;border-radius:7px;border:1.5px solid var(--border-strong);background:var(--surface2);color:var(--text-muted);font-size:.67rem;font-weight:600;cursor:pointer;transition:all .18s;font-family:'Malgun Gothic','Apple SD Gothic Neo','Noto Sans KR',sans-serif;}
+.img-ref-btn:hover{background:var(--accent-dim);border-color:var(--accent);color:var(--accent);}
+.img-ref-btn.purple{border-color:#c4b5fd;color:#7c3aed;background:rgba(124,58,237,.06);}
+.img-ref-btn.purple:hover{background:rgba(124,58,237,.14);}
+
 /* ── EMPTY ── */
 .es{text-align:center;padding:55px 20px;color:var(--text-muted);}
 .ei{font-size:2.8rem;opacity:.14;margin-bottom:12px;}
@@ -151,7 +168,7 @@ header{background:var(--surface);border-bottom:1px solid var(--border);padding:1
   <div class="header-top">
     <a href="index.html" class="home-btn">🏠 홈</a>
     <div class="header-brand">
-      <div class="header-title">BrachialPlexus·<span>Explorer</span> <span class="ver-badge">v1.0</span></div>
+      <div class="header-title">BrachialPlexus·<span>Explorer</span> <span class="ver-badge" style="background:#fff;color:var(--accent);border:1.5px solid var(--accent)">v2.0</span></div>
       <div class="header-sub">Anatomy · Myotome · Dermatome · NCS/EMG · Differential Dx</div>
     </div>
   </div>
@@ -197,6 +214,10 @@ header{background:var(--surface);border-bottom:1px solid var(--border);padding:1
       <div class="pn">
         <div class="ph">🔍 Differential Diagnosis — 감별진단</div>
         <div class="pb" style="padding:9px"><div id="dc"></div></div>
+      </div>
+      <div class="pn" id="cs-pn" style="display:none">
+        <div class="ph">🖐 임상증상 — Clinical Signs</div>
+        <div class="pb" style="padding:9px"><div id="cs"></div></div>
       </div>
     </div>
   </div>
@@ -302,6 +323,8 @@ const D={
     inj:'<b>주요 손상:</b> CTS (가장 흔한 포착 신경병증), Pronator syndrome, AIN palsy'},
 
   ulnar:{c:'#db2777',
+    ddxImg:'nerve-image/ulnar-ddx.png',
+    emgImg:'nerve-image/ulnar-emg.png',
     pills:[{t:'C8'},{d:1},{t:'T1'},{a:1},{t:'Inferior Trunk',g:1},{a:1},{t:'Ant. Division',g:1},{a:1},{t:'Medial Cord',g:1},{a:1},{t:'Ulnar N.',b:1}],
     dt:'photo',pk:'ulnar',dA:'Digits 4½–5 + 손바닥·손등 척측',
     dm:'새끼손가락 전체 + 약지 척측 반\n손바닥 및 손등 척측',
@@ -309,9 +332,41 @@ const D={
     br:[{c:'#db2777',l:'①',t:'Ulnar digital branches — 손바닥 4½–5지'},{c:'#be185d',l:'②',t:'Palmar cutaneous branch — 손바닥 척측 근위부'},{c:'#9d174d',l:'③',t:'Dorsal ulnar cutaneous branch — 손등 척측 (Cubital 감별 핵심!)'}],
     ms:[{n:'FCU',a:'손목 굴곡 + 척측 편위',l:'C7, C8'},{n:'FDP 4–5',a:'원위지 굴곡 (4–5지)',l:'C8, T1'},{n:'ADM/FDM/ODM',a:'새끼손가락 외전·굴곡·대립',l:'C8, T1'},{n:'Palmar Interossei ×3',a:'손가락 내전 (PAD)',l:'C8, T1'},{n:'Dorsal Interossei ×4',a:'손가락 외전 (DAB)',l:'C8, T1'},{n:'Lumbricals 3&4',a:'MCP 굴곡, IP 신전 (4·5지)',l:'C8, T1'},{n:'Adductor Pollicis',a:'엄지 내전',l:'C8, T1'},{n:'FPB (deep head)',a:'엄지 굴곡 심층두',l:'C8, T1'}],
     emg:[{k:'Cubital tunnel',v:'내측상과 NCV 저하 (Inching). FCU·FDP(4,5)·내재근 이상'},{k:'Guyon canal',v:'ADM·Interossei 이상 / FCU 정상 / 손등(③) 감각 정상',n:1},{k:'NCS',v:'Ulnar motor DML 지연, SNAP 감소'},{k:'Froment',v:'(+) Adductor pollicis 마비 → FPL 보상 굴곡'}],
-    df:[{c:'#dc2626',t:'Cubital Tunnel vs. Guyon\'s Canal — 핵심 감별',b:'<b>Cubital:</b> FCU 약화 + <b>손등(③) 감각 저하</b>. <b>Guyon:</b> FCU 정상 + <b>손등(③) 감각 정상</b>.'},{c:'#d97706',t:'vs. C8 Radiculopathy',b:'C8: <code>APB</code>·<code>FPL</code> 등 타 신경 근육도 이상. Paraspinal EMG 이상.'},{c:'#7c3aed',t:'vs. Thoracic Outlet Syndrome',b:'TOS: Medial cord 전체 압박 → Ulnar + Median 내측 기여 동시 이환.'}],
-    inj:'<b>주요 손상:</b> Cubital tunnel syndrome (가장 흔함), Guyon canal syndrome, 내측상과 골절'}
-};
+    df:[
+      {c:'#dc2626',t:'Cubital Tunnel vs. Guyon\'s Canal — 핵심 감별',
+       img:'nerve-image/ulnar-guyons-canal.png', imgLabel:'Guyon\'s Canal 신경 주행도',
+       b:'<b>Cubital:</b> FCU 약화 + <b>손등(③) 감각 저하</b>.<br><b>Guyon\'s Canal <span style="color:#dc2626;font-size:.68rem">(wrist 병변)</span>:</b> FCU 정상 + <b>손등(③) 감각 정상</b>. 손목 레벨 압박으로 FCU·FDP 4-5 보존.'},
+      {c:'#d97706',t:'vs. C8 Radiculopathy',b:'C8: <code>APB</code>·<code>FPL</code> 등 타 신경 근육도 이상. Paraspinal EMG 이상.'},
+      {c:'#7c3aed',t:'vs. Thoracic Outlet Syndrome',b:'TOS: Medial cord 전체 압박 → Ulnar + Median 내측 기여 동시 이환.'}
+    ],
+    inj:'<b>주요 손상:</b> Cubital tunnel syndrome (가장 흔함), Guyon canal syndrome, 내측상과 골절',
+    cs:[
+      {t:'Claw Hand (갈퀴손)', icon:'✋', c:'#dc2626',
+       lv:'Cubital tunnel / Guyon canal', lvC:'#dc2626',
+       img:'nerve-image/ulnar-claw-hand.png',
+       b:`<b>관련 병변:</b> Cubital tunnel (고위) 또는 Guyon canal (저위)<br>
+          <b>기전:</b> <code>Lumbricals 3&4</code> 마비 → 4·5지 MCP 굴곡 소실, IP 신전 불가. <code>Interossei</code> 마비로 악화.<br>
+          <b>⚠ Ulnar Paradox:</b> 저위 병변(Guyon)에서 claw가 더 심함 — FDP 4-5 보존으로 원위지가 더 강하게 당겨짐. 고위 병변은 FDP도 마비되어 상쇄됨.`},
+      {t:'Froment Sign', icon:'📄', c:'#d97706',
+       lv:'Cubital tunnel / Guyon canal (motor)', lvC:'#d97706',
+       img:'nerve-image/ulnar-fromnet-sign.png',
+       b:`<b>관련 병변:</b> Cubital tunnel 또는 Guyon canal (deep motor branch)<br>
+          <b>기전:</b> <code>Adductor pollicis</code> 마비 → 종이 key pinch 시 엄지 내전력 소실 → <code>FPL</code> (AIN, 정중신경)로 보상 → 엄지 IP 관절 굴곡 → Froment sign (+)<br>
+          <b>추가:</b> Jeanne's sign 동반 시 (MCP 과신전) → Opponens pollicis도 약화 의심`},
+      {t:'Palmaris Brevis Sign', icon:'🖐', c:'#16a34a',
+       lv:'Guyon canal — Zone II (deep branch 단독)', lvC:'#16a34a',
+       img:'nerve-image/ulnar-palmaris-brevis-sign.png',
+       b:`<b>관련 병변:</b> Guyon canal 내 deep branch 선택적 압박 (Zone II / Type II)<br>
+          <b>기전:</b> <code>Palmaris brevis</code>는 superficial branch 지배 → Zone II 손상 시 보존됨 → 새끼 두덩 피부 주름 수축 sign (+).<br>
+          Superficial branch 보존 → 손바닥 척측·5지 감각 정상. Deep branch 손상 → <code>Interossei</code>·<code>Adductor pollicis</code> 마비 공존.`},
+      {t:'Wartenberg Sign', icon:'🤙', c:'#0284c7',
+       lv:'Cubital tunnel / Guyon canal', lvC:'#0284c7',
+       img:'nerve-image/ulnar-wartenberg-sign.png',
+       b:`<b>관련 병변:</b> Cubital tunnel 또는 Guyon canal (어느 레벨이든)<br>
+          <b>기전:</b> <code>Palmar Interosseous 3</code> 마비 (5지 내전 담당) → EDM (요골신경 지배, 5지 외전)의 힘이 unopposed → 5지 외전 위치 고정, 내전 불가<br>
+          <b>감별 포인트:</b> Cubital에서 더 흔히 뚜렷함. Guyon Zone III (superficial only) 에서는 운동 보존 → sign 없음.`}
+    ]
+  };
 
 /* ─── SVG dermatome (axillary/musculocutaneous 전용) ─── */
 function sdSvg(nid,c){
@@ -430,22 +485,49 @@ function sel(nid){
     <span class="at-cts">CTS</span>&nbsp;Carpal Tunnel Syndrome
   </td></tr>`:'');
   document.getElementById('eb').innerHTML=d.emg.map(e=>
-    `<span class="ek">${e.k}:</span> <span class="${e.n?'en':''}">${e.v}</span><br>`).join('');
+    `<span class="ek">${e.k}:</span> <span class="${e.n?'en':''}">${e.v}</span><br>`).join('')
+    +(d.emgImg?`<br><button class="img-ref-btn" onclick="openM('${d.emgImg}')">🖼 NCS/EMG 참고 이미지 보기</button>`:'');
 
-  /* ── Differential + CTS button ── */
+  /* ── Differential + per-item image btn + overall DDx btn + CTS btn ── */
   let dcHtml=d.df.map((f,i)=>`<div class="di2">
       <div class="dh${i===0?' op':''}" onclick="td(this)">
         <span class="dico" style="background:${f.c}">🔍</span>
         <span>${f.t}</span><span class="chv">▼</span>
       </div>
-      <div class="db${i===0?' sh':''}">${f.b}</div>
+      <div class="db${i===0?' sh':''}">${f.b}
+        ${f.img?`<br><button class="img-ref-btn purple" onclick="openM('${f.img}')">🖼 ${f.imgLabel||'참고 이미지'} 보기</button>`:''}
+      </div>
     </div>`).join('')+`<div class="inj">${d.inj}</div>`;
+  if(d.ddxImg){
+    dcHtml+=`<button class="img-ref-btn" style="margin-top:10px;width:100%;justify-content:center" onclick="openM('${d.ddxImg}')">🖼 감별진단 도표 전체 보기</button>`;
+  }
   if(d.cts){
     dcHtml+=`<button class="cts-btn" onclick="openM2('${d.cts.d}','${d.cts.p}')">
       🔎 CTS 참고 보기 — Dermatome &amp; Pathway
     </button>`;
   }
   document.getElementById('dc').innerHTML=dcHtml;
+
+  /* ── Clinical Signs panel (ulnar only) ── */
+  const csPn=document.getElementById('cs-pn');
+  if(d.cs && d.cs.length){
+    csPn.style.display='block';
+    document.getElementById('cs').innerHTML=d.cs.map((s,i)=>`
+      <div class="cs-item">
+        <div class="cs-h" onclick="td(this)">
+          <span class="cs-icon">${s.icon}</span>
+          <span style="color:${s.c};font-weight:700">${s.t}</span>
+          <span class="lv-tag" style="color:${s.lvC};border-color:${s.lvC};background:${s.lvC}18">${s.lv}</span>
+          <span class="chv" style="margin-left:auto">▼</span>
+        </div>
+        <div class="cs-body${i===0?' sh':''}">
+          ${s.b}
+          ${s.img?`<br><button class="img-ref-btn" style="margin-top:8px" onclick="openM('${s.img}')">🖼 임상사진 보기</button>`:''}
+        </div>
+      </div>`).join('');
+  } else {
+    csPn.style.display='none';
+  }
 
   document.getElementById('ec').style.display='none';
   document.getElementById('mc').style.display='flex';
