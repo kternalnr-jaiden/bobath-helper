@@ -244,7 +244,8 @@ const NI={
   radial          :'nerve-image/radial.png',
   median          :'nerve-image/median.png',
   median2         :'nerve-image/median(2).png',
-  ulnar           :'nerve-image/ulnar.png'
+  ulnar           :'nerve-image/ulnar.png',
+  ulnar2          :'nerve-image/ulnar(2).png'
 };
 
 /* ─── Dermatome photos ────────────────────────────────────────────────────
@@ -366,7 +367,8 @@ const D={
           <b>기전:</b> <code>Palmar Interosseous 3</code> 마비 (5지 내전 담당) → EDM (요골신경 지배, 5지 외전)의 힘이 unopposed → 5지 외전 위치 고정, 내전 불가<br>
           <b>감별 포인트:</b> Cubital에서 더 흔히 뚜렷함. Guyon Zone III (superficial only) 에서는 운동 보존 → sign 없음.`}
     ]
-  };
+  }   /* closes ulnar */
+};    /* closes const D */
 
 /* ─── SVG dermatome (axillary/musculocutaneous 전용) ─── */
 function sdSvg(nid,c){
@@ -435,16 +437,17 @@ function sel(nid){
   if(src1){
     ph0.style.display='none';
     wrap.style.display='flex';
-    if(nid==='median' && NI.median2){
+    if((nid==='median' && NI.median2)||(nid==='ulnar' && NI.ulnar2)){
       // dual: two images side by side, each ~50% width
+      const src2=nid==='median'?NI.median2:NI.ulnar2;
       wrap.className='nimg-wrap nimg-dual';
       wrap.innerHTML=`
         <div class="nimg-thumb" onclick="openM('${src1}')">
-          <img src="${src1}" alt="Median pathway 1"/>
+          <img src="${src1}" alt="${nid} pathway 1"/>
           <div class="nimg-label">① Pathway — 클릭 확대</div>
         </div>
-        <div class="nimg-thumb" onclick="openM('${NI.median2}')">
-          <img src="${NI.median2}" alt="Median pathway 2"/>
+        <div class="nimg-thumb" onclick="openM('${src2}')">
+          <img src="${src2}" alt="${nid} pathway 2"/>
           <div class="nimg-label">② Pathway (2) — 클릭 확대</div>
         </div>`;
     } else {
