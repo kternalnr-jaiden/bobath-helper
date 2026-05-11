@@ -59,6 +59,24 @@ header{background:var(--surface);border-bottom:1px solid var(--border);padding:1
 .ph0{background:linear-gradient(135deg,#1e293b,#0f172a);height:190px;border-radius:6px;display:flex;align-items:center;justify-content:center;color:#475569;flex-direction:column;gap:8px;font-size:.82rem;}
 .pi{font-size:2.5rem;opacity:.2;}
 
+/* ── PATHWAY THUMBNAIL ── */
+.nimg-wrap{display:flex;gap:8px;align-items:flex-start;flex-wrap:wrap;}
+.nimg-thumb{width:50%;flex-shrink:0;cursor:zoom-in;border-radius:6px;overflow:hidden;box-shadow:var(--sh);transition:transform .18s;}
+.nimg-thumb:hover{transform:scale(1.008);}
+.nimg-thumb img{width:100%;display:block;}
+.nimg-label{font-size:.58rem;color:var(--text-muted);text-align:center;padding:3px 0;font-style:italic;}
+/* dual: two images share the row */
+.nimg-dual .nimg-thumb{width:calc(50% - 4px);}
+
+/* ── CTS 참고 버튼 ── */
+.cts-btn{display:inline-flex;align-items:center;gap:6px;margin-top:10px;padding:7px 14px;border-radius:8px;border:1.5px solid #7c3aed;background:rgba(124,58,237,.07);color:#7c3aed;font-size:.72rem;font-weight:700;cursor:pointer;transition:all .18s;font-family:'Malgun Gothic','Apple SD Gothic Neo','Noto Sans KR',sans-serif;}
+.cts-btn:hover{background:rgba(124,58,237,.15);box-shadow:0 2px 8px rgba(124,58,237,.18);}
+
+/* ── DUAL MODAL ── */
+.modal-inner{display:flex;gap:10px;align-items:flex-start;max-width:94vw;max-height:92vh;}
+.modal-inner img{max-width:47vw;max-height:90vh;border-radius:8px;}
+.modal-single img{max-width:94vw;max-height:94vh;border-radius:8px;}
+
 /* ── PILLS (pathway) ── */
 .pf{display:flex;flex-wrap:wrap;gap:4px;align-items:center;line-height:2;}
 .pill{padding:3px 10px;border-radius:11px;font-size:.66rem;font-weight:700;font-family:'JetBrains Mono',monospace;border:1px solid;display:inline-block;}
@@ -149,7 +167,7 @@ header{background:var(--surface);border-bottom:1px solid var(--border);padding:1
       <div class="ph">📐 Anatomical Pathway <span class="note">클릭 확대</span></div>
       <div class="pb">
         <div class="ph0" id="ph0"><div class="pi">⚕</div><span>탭에서 신경을 선택하세요</span></div>
-        <img id="nimg" class="dimg" style="display:none" onclick="openM(this.src)" alt=""/>
+        <div id="nimg-wrap" style="display:none"></div>
       </div>
     </div>
     <div class="pn">
@@ -181,7 +199,9 @@ header{background:var(--surface);border-bottom:1px solid var(--border);padding:1
 </div>
 </div>
 
-<div class="modal" id="modal" onclick="closeM()"><img id="mimg" src="" alt=""/></div>
+<div class="modal" id="modal" onclick="closeM()">
+  <div id="modal-content" class="modal-single"><img id="mimg" src="" alt=""/></div>
+</div>
 
 
 <script>
@@ -198,6 +218,7 @@ const NI={
   musculocutaneous:'nerve-image/musculocutaneous.png',
   radial          :'nerve-image/radial.png',
   median          :'nerve-image/median.png',
+  median2         :'nerve-image/median(2).png',
   ulnar           :'nerve-image/ulnar.png'
 };
 
@@ -252,6 +273,8 @@ const D={
     inj:'<b>주요 손상:</b> Spiral groove 골절 (가장 흔함), Saturday night palsy, PIN 포착'},
 
   median:{c:'#7c3aed',
+    ni2:true,
+    cts:{d:'nerve-image/CTS-D.png',p:'nerve-image/CTS-P.png'},
     pills:[{t:'C6–C7'},{a:1},{t:'Lateral Cord',g:1},{s:'lat.root'},{p:1},{t:'C8–T1'},{a:1},{t:'Medial Cord',g:1},{s:'med.root'},{a:1},{t:'Median N.',b:1}],
     dt:'photo',pk:'median',dA:'Digits 1–3½ palmar + 손바닥 요측',
     dm:'엄지·검지·중지·약지 요측 반 손바닥 측\n+ 손바닥 요측 근위부',
@@ -333,10 +356,40 @@ function rderm(nid,d){
 /* ─── Select nerve ─── */
 function sel(nid){
   const d=D[nid]; if(!d) return;
-  document.getElementById('ph0').style.display='none';
-  const ni=document.getElementById('nimg');
-  if(NI[nid]){ni.src=NI[nid];ni.style.display='block';}
-  else{ni.style.display='none';document.getElementById('ph0').style.display='flex';}
+
+  /* ── Pathway image(s) ── */
+  const ph0=document.getElementById('ph0');
+  const wrap=document.getElementById('nimg-wrap');
+  const src1=NI[nid];
+  if(src1){
+    ph0.style.display='none';
+    wrap.style.display='flex';
+    if(nid==='median' && NI.median2){
+      // dual: two images side by side, each ~50% width
+      wrap.className='nimg-wrap nimg-dual';
+      wrap.innerHTML=`
+        <div class="nimg-thumb" onclick="openM('${src1}')">
+          <img src="${src1}" alt="Median pathway 1"/>
+          <div class="nimg-label">① Pathway — 클릭 확대</div>
+        </div>
+        <div class="nimg-thumb" onclick="openM('${NI.median2}')">
+          <img src="${NI.median2}" alt="Median pathway 2"/>
+          <div class="nimg-label">② Pathway (2) — 클릭 확대</div>
+        </div>`;
+    } else {
+      // single: 50% width thumbnail
+      wrap.className='nimg-wrap';
+      wrap.innerHTML=`
+        <div class="nimg-thumb" onclick="openM('${src1}')">
+          <img src="${src1}" alt="${nid} pathway"/>
+          <div class="nimg-label">클릭하여 확대</div>
+        </div>`;
+    }
+  } else {
+    wrap.style.display='none';
+    ph0.style.display='flex';
+  }
+
   document.getElementById('pf').innerHTML=pills(d.pills,d.c);
   rderm(nid,d);
   document.getElementById('mb').innerHTML=d.ms.map((m,i)=>
@@ -347,20 +400,43 @@ function sel(nid){
     </tr>`).join('');
   document.getElementById('eb').innerHTML=d.emg.map(e=>
     `<span class="ek">${e.k}:</span> <span class="${e.n?'en':''}">${e.v}</span><br>`).join('');
-  document.getElementById('dc').innerHTML=
-    d.df.map((f,i)=>`<div class="di2">
+
+  /* ── Differential + CTS button ── */
+  let dcHtml=d.df.map((f,i)=>`<div class="di2">
       <div class="dh${i===0?' op':''}" onclick="td(this)">
         <span class="dico" style="background:${f.c}">🔍</span>
         <span>${f.t}</span><span class="chv">▼</span>
       </div>
       <div class="db${i===0?' sh':''}">${f.b}</div>
     </div>`).join('')+`<div class="inj">${d.inj}</div>`;
+  if(d.cts){
+    dcHtml+=`<button class="cts-btn" onclick="openM2('${d.cts.d}','${d.cts.p}')">
+      🔎 CTS 참고 보기 — Dermatome &amp; Pathway
+    </button>`;
+  }
+  document.getElementById('dc').innerHTML=dcHtml;
+
   document.getElementById('ec').style.display='none';
   document.getElementById('mc').style.display='flex';
 }
 
 function td(h){h.classList.toggle('op');h.nextElementSibling.classList.toggle('sh');}
-function openM(s){if(!s)return;document.getElementById('mimg').src=s;document.getElementById('modal').classList.add('op');}
+
+/* single image modal */
+function openM(s){
+  if(!s) return;
+  const mc=document.getElementById('modal-content');
+  mc.className='modal-single';
+  mc.innerHTML=`<img src="${s}" alt=""/>`;
+  document.getElementById('modal').classList.add('op');
+}
+/* dual image modal */
+function openM2(s1,s2){
+  const mc=document.getElementById('modal-content');
+  mc.className='modal-inner';
+  mc.innerHTML=`<img src="${s1}" alt="CTS Dermatome"/><img src="${s2}" alt="CTS Pathway"/>`;
+  document.getElementById('modal').classList.add('op');
+}
 function closeM(){document.getElementById('modal').classList.remove('op');}
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeM();});
 
