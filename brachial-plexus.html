@@ -105,7 +105,11 @@ header{background:var(--surface);border-bottom:1px solid var(--border);padding:1
 .rt tr:hover td{background:var(--accent-dim);}
 .mn{color:var(--accent);font-weight:700;font-family:'JetBrains Mono',monospace;font-size:.7rem;}
 .at{background:#fef3c7;border:1px solid #fcd34d;color:#92400e;border-radius:3px;padding:0 5px;font-size:.6rem;font-weight:700;margin-left:4px;}
+.at-ps{background:#dcfce7;border:1px solid #86efac;color:#166534;border-radius:3px;padding:0 5px;font-size:.6rem;font-weight:700;margin-left:4px;}
+.at-cts{background:#dbeafe;border:1px solid #93c5fd;color:#1e40af;border-radius:3px;padding:0 5px;font-size:.6rem;font-weight:700;margin-left:4px;}
 .rt2{display:inline-block;padding:1px 7px;border-radius:4px;font-size:.61rem;font-weight:600;font-family:'JetBrains Mono',monospace;background:var(--accent-dim);color:var(--accent);border:1px solid var(--accent-light);white-space:nowrap;}
+/* myotome legend row */
+.rt-legend td{padding:6px 12px 8px;background:var(--surface2);border-top:1.5px solid var(--border);}
 
 /* ── EMG ── */
 .ec{background:var(--surface2);border:1px solid var(--border);border-radius:7px;padding:11px 13px;font-family:'JetBrains Mono',monospace;font-size:.72rem;line-height:1.9;}
@@ -280,7 +284,19 @@ const D={
     dm:'엄지·검지·중지·약지 요측 반 손바닥 측\n+ 손바닥 요측 근위부',
     dn:'Palmar cutaneous br. 손목터널 우회 → CTS에서 손바닥 중앙(②) 보존! Proximal 손상과의 핵심 감별.',
     br:[{c:'#7c3aed',l:'①',t:'Palmar digital branches — 1–3½지 손바닥 (CTS 시 소실)'},{c:'#16a34a',l:'②',t:'Palmar cutaneous branch — 손바닥 요측 근위부 (터널 우회 → CTS 시 보존)'}],
-    ms:[{n:'Pronator Teres',a:'전완 회내',l:'C6, C7'},{n:'FCR',a:'손목 굴곡 + 요측 편위',l:'C6, C7'},{n:'Palmaris Longus',a:'손목 굴곡 보조',l:'C7, C8'},{n:'FDS',a:'근위지 굴곡 (2–5지)',l:'C7–T1'},{n:'FDP 2–3',a:'원위지 굴곡 (2–3지)',l:'C8, T1',ai:1},{n:'FPL',a:'엄지 원위지 굴곡',l:'C8, T1',ai:1},{n:'PQ',a:'전완 회내 (원위부)',l:'C8, T1',ai:1},{n:'APB',a:'엄지 외전 (무지구)',l:'C8, T1'},{n:'Opponens Pollicis',a:'엄지 대립',l:'C8, T1'},{n:'FPB (superficial)',a:'엄지 굴곡',l:'C8, T1'},{n:'Lumbricals 1&2',a:'MCP 굴곡, IP 신전',l:'C8, T1'}],
+    ms:[
+      {n:'Pronator Teres',   a:'전완 회내',             l:'C6, C7'},
+      {n:'FCR',              a:'손목 굴곡 + 요측 편위',  l:'C6, C7',  ps:1},
+      {n:'Palmaris Longus',  a:'손목 굴곡 보조',         l:'C7, C8',  ps:1},
+      {n:'FDS',              a:'근위지 굴곡 (2–5지)',    l:'C7–T1',   ps:1},
+      {n:'FDP 2–3',          a:'원위지 굴곡 (2–3지)',    l:'C8, T1',  ai:1, ps:1},
+      {n:'FPL',              a:'엄지 원위지 굴곡',       l:'C8, T1',  ai:1, ps:1},
+      {n:'PQ',               a:'전완 회내 (원위부)',      l:'C8, T1',  ai:1, ps:1},
+      {n:'APB',              a:'엄지 외전 (무지구)',      l:'C8, T1',  ps:1, cts:1},
+      {n:'Opponens Pollicis', a:'엄지 대립',             l:'C8, T1',  ps:1, cts:1},
+      {n:'FPB (superficial)', a:'엄지 굴곡',             l:'C8, T1',  ps:1, cts:1},
+      {n:'Lumbricals 1&2',   a:'MCP 굴곡, IP 신전',      l:'C8, T1',  ps:1, cts:1}
+    ],
     emg:[{k:'CTS',v:'Median DSL·DML 지연, SNAP 감소'},{k:'Pronator synd.',v:'PT 레벨 — FDS·FPL·APB 이상, 손바닥 중앙(②) 감각 저하'},{k:'AIN palsy',v:'FPL·FDP(2,3)·PQ 이상 / 감각 완전 정상 / OK sign 불가',n:1},{k:'OK sign',v:'AIN: 불가 / CTS: 가능'}],
     df:[{c:'#dc2626',t:'CTS vs. Proximal Median (Pronator Synd.) — 핵심',b:'<b>CTS: 손바닥 중앙(②) 감각 보존</b> (Palmar cutaneous br. 터널 우회). Proximal: ② 영역까지 저하. <code>PT</code> EMG 이상 여부가 레벨 감별 핵심.'},{c:'#d97706',t:'AIN Syndrome — 순수 운동',b:'OK sign 불가, <b>감각 이상 전혀 없음</b>. NCS 정상. EMG: FPL·FDP(2,3)·PQ 탈신경.'},{c:'#7c3aed',t:'vs. C6–C8 Radiculopathy',b:'경추 통증·Spurling (+), <code>PT</code> 포함 더 근위 이상. Paraspinal EMG 이상.'}],
     inj:'<b>주요 손상:</b> CTS (가장 흔한 포착 신경병증), Pronator syndrome, AIN palsy'},
@@ -392,12 +408,27 @@ function sel(nid){
 
   document.getElementById('pf').innerHTML=pills(d.pills,d.c);
   rderm(nid,d);
-  document.getElementById('mb').innerHTML=d.ms.map((m,i)=>
-    `<tr style="background:${i%2?'#f6f9ff':'transparent'}">
-      <td><span class="mn">${m.n}</span>${m.ai?'<span class="at">AIN</span>':''}</td>
+  document.getElementById('mb').innerHTML=d.ms.map((m,i)=>{
+    // row background: AIN > PS-only > CTS+PS > plain alternating
+    let bg;
+    if(m.ai)       bg='#fef9ec';          // amber — AIN
+    else if(m.ps && m.cts) bg='#eff6ff';  // blue — CTS + PS
+    else if(m.ps)  bg='#f0fdf4';          // green — PS only
+    else           bg=i%2?'#f6f9ff':'transparent';
+    const badges=(m.ai?'<span class="at">AIN</span>':'')
+                +(m.ps?'<span class="at-ps">PS</span>':'')
+                +(m.cts?'<span class="at-cts">CTS</span>':'');
+    return `<tr style="background:${bg}">
+      <td><span class="mn">${m.n}</span>${badges}</td>
       <td style="color:var(--text-muted)">${m.a}</td>
       <td><span class="rt2">${m.l}</span></td>
-    </tr>`).join('');
+    </tr>`;
+  }).join('')
+  +(nid==='median'?`<tr class="rt-legend"><td colspan="3" style="font-size:.62rem;color:var(--text-muted);line-height:2">
+    <span class="at">AIN</span>&nbsp;Anterior Interosseous N.&ensp;
+    <span class="at-ps">PS</span>&nbsp;Pronator Syndrome&ensp;
+    <span class="at-cts">CTS</span>&nbsp;Carpal Tunnel Syndrome
+  </td></tr>`:'');
   document.getElementById('eb').innerHTML=d.emg.map(e=>
     `<span class="ek">${e.k}:</span> <span class="${e.n?'en':''}">${e.v}</span><br>`).join('');
 
