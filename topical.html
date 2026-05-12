@@ -13,8 +13,32 @@
             --green: #27ae60;
             --purple: #9b59b6;
             --orange: #e67e22;
+            --surface3:#eef2f7;
+            --border:#e2e8f0;
+            --text-muted:#64748b;
+            --accent-dim:rgba(2,132,199,0.08);
+            --shadow-soft:0 1px 3px rgba(0,0,0,0.06),0 1px 2px rgba(0,0,0,0.04);
         }
         body { font-family: 'Pretendard', sans-serif; background-color: var(--bg); color: var(--primary); margin: 0; padding: 15px; line-height: 1.5; }
+        .floating-home { position: fixed; top: 10px; left: 10px; z-index: 999; }
+        .home-btn {
+            display:inline-flex;
+            align-items:center;
+            gap:4px;
+            background:var(--surface3);
+            border:1px solid var(--border);
+            color:var(--text-muted);
+            font-size:11.5px;
+            font-weight:600;
+            padding:5px 10px;
+            border-radius:8px;
+            text-decoration:none;
+            transition:all .18s;
+            box-shadow: var(--shadow-soft);
+            font-family:'Malgun Gothic','Apple SD Gothic Neo','Noto Sans KR','Pretendard',sans-serif;
+        }
+        .home-btn:hover { background: var(--accent-dim); border-color: #0284c7; color: #0284c7; }
+
         .container { max-width: 1000px; margin: 0 auto; background: var(--white); padding: 25px; border-radius: 12px; box-shadow: 0 5px 15px rgba(0,0,0,0.08); }
         h1 { text-align: center; font-size: 1.4rem; margin-bottom: 25px; }
 
@@ -114,17 +138,9 @@
     </style>
 </head>
 <body>
-    <a href="index.html" style="
-position:fixed;
-top:10px;
-left:10px;
-background:#333;
-color:white;
-padding:8px 12px;
-border-radius:8px;
-text-decoration:none;
-z-index:999;
-">🏠 홈</a>
+    <div class="floating-home">
+        <a href="index.html" class="home-btn">🏠 홈</a>
+    </div>
 
 <div class="container">
     <h1>🏥 원내 외용제 관리 가이드 (v3.0)</h1>
@@ -411,5 +427,6 @@ z-index:999;
     renderList(inventory);
     document.getElementById('step1').style.display = 'block';
 </script>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516" integrity="sha512-8DS7rgIrAmghBFwoOTujcf6D9rXvH8xm8JQ1Ja01h9QX8EzXldiszufYa4IFfKdLUKTTrnSFXLDkUEOTrZQ8Qg==" data-cf-beacon='{"version":"2024.11.0","token":"4edd5f8ec12a48cfa682ab8261b80a79","server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
 </body>
 </html>
