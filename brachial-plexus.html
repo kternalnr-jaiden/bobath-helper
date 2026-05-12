@@ -153,6 +153,32 @@ header{background:var(--surface);border-bottom:1px solid var(--border);padding:1
 .img-ref-btn.purple{border-color:#c4b5fd;color:#7c3aed;background:rgba(124,58,237,.06);}
 .img-ref-btn.purple:hover{background:rgba(124,58,237,.14);}
 
+/* ── OTHER NERVE CARDS ── */
+.nc-search-wrap{position:relative;margin-bottom:10px;}
+.nc-search{width:100%;padding:7px 10px 7px 32px;border:1px solid var(--border);border-radius:8px;font-size:.76rem;background:var(--surface2);color:var(--text);outline:none;transition:.18s;font-family:'Malgun Gothic','Apple SD Gothic Neo','Noto Sans KR',sans-serif;}
+.nc-search:focus{border-color:var(--accent);background:#fff;box-shadow:0 0 0 2px var(--accent-dim);}
+.nc-search-ico{position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--text-muted);font-size:.8rem;pointer-events:none;}
+.nc-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+@media(max-width:900px){.nc-grid{grid-template-columns:1fr;}}
+.nc{background:var(--surface);border:1px solid var(--border);border-radius:9px;padding:10px 12px;transition:all .18s;}
+.nc:hover{border-color:var(--accent);box-shadow:var(--sh2);transform:translateY(-1px);}
+.nc-name{font-size:.77rem;font-weight:700;color:var(--text);margin-bottom:4px;}
+.nc-root{display:inline-block;background:var(--accent-dim);color:var(--accent);border:1px solid var(--accent-light);border-radius:4px;font-size:.58rem;font-weight:700;padding:1px 7px;font-family:'JetBrains Mono',monospace;margin-bottom:5px;}
+.nc-row{font-size:.67rem;color:var(--text-muted);line-height:1.55;margin-bottom:2px;}
+.nc-row b{color:var(--text-soft);font-weight:600;}
+.nc-note{font-size:.62rem;color:var(--text-muted);background:var(--surface2);border-radius:5px;padding:4px 8px;margin-top:5px;line-height:1.5;font-style:italic;}
+.nc-empty{text-align:center;padding:30px;color:var(--text-muted);font-size:.8rem;font-style:italic;grid-column:1/-1;}
+
+/* ── WINGED SCAPULA TABLE ── */
+.ws-table{width:100%;border-collapse:collapse;font-size:.73rem;}
+.ws-table th{text-align:left;color:var(--text-muted);padding:8px 11px;background:var(--surface2);font-size:.63rem;letter-spacing:.07em;text-transform:uppercase;border-bottom:2px solid var(--border);}
+.ws-table td{padding:8px 11px;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.55;}
+.ws-table tr:last-child td{border-bottom:none;}
+.ws-table tr:hover td{background:var(--accent-dim);}
+.ws-feat{font-weight:700;color:var(--text);}
+.ws-medial{color:#2563eb;font-weight:700;}
+.ws-lateral{color:#dc2626;font-weight:700;}
+
 /* ── EMPTY ── */
 .es{text-align:center;padding:55px 20px;color:var(--text-muted);}
 .ei{font-size:2.8rem;opacity:.14;margin-bottom:12px;}
@@ -183,6 +209,7 @@ header{background:var(--surface);border-bottom:1px solid var(--border);padding:1
     <button class="tab" data-n="radial">           <span class="dot"></span>Radial 요골</button>
     <button class="tab" data-n="median">           <span class="dot"></span>Median 정중</button>
     <button class="tab" data-n="ulnar">            <span class="dot"></span>Ulnar 척골</button>
+    <button class="tab" data-n="other">            <span class="dot"></span>Side Branches</button>
   </div>
 </header>
 
@@ -200,7 +227,7 @@ header{background:var(--surface);border-bottom:1px solid var(--border);padding:1
       <div class="ph">🔗 Root → Trunk → Division → Cord → Nerve</div>
       <div class="pb"><div class="pf" id="pf"><span style="color:var(--text-muted);font-size:.78rem;font-style:italic">신경 선택 시 경로 표시</span></div></div>
     </div>
-    <div class="pn">
+    <div class="pn" id="derm-card">
       <div class="ph">🖐 Dermatome <span class="note">사진 클릭 확대</span></div>
       <div class="pb" id="dpanel"><span style="color:var(--text-muted);font-size:.78rem;font-style:italic">신경 선택 시 표시됩니다</span></div>
     </div>
@@ -223,6 +250,39 @@ header{background:var(--surface);border-bottom:1px solid var(--border);padding:1
       <div class="pn" id="cs-pn" style="display:none">
         <div class="ph">🖐 임상증상 — Clinical Signs</div>
         <div class="pb" style="padding:9px"><div id="cs"></div></div>
+      </div>
+    </div>
+    <!-- ── Side Branches panel (other tab) ── -->
+    <div id="other-panel" style="display:none;flex-direction:column;gap:12px">
+      <div class="pn">
+        <div class="ph">🔗 Side Branch Nerves <span class="note">Root·Trunk·Cord 직접 분지</span></div>
+        <div class="pb">
+          <div class="nc-search-wrap">
+            <span class="nc-search-ico">🔍</span>
+            <input class="nc-search" id="nerve-search" placeholder="신경명 · 근육 · Root (예: C5) 검색..." oninput="renderOtherNerves(this.value)">
+          </div>
+          <div class="nc-grid" id="nerve-cards"></div>
+        </div>
+      </div>
+      <div class="pn">
+        <div class="ph">🦋 Winged Scapula — 감별진단</div>
+        <div class="pb0">
+          <table class="ws-table">
+            <thead><tr>
+              <th>항목</th>
+              <th>Long Thoracic N.</th>
+              <th>Spinal Accessory N.</th>
+              <th>Dorsal Scapular N.</th>
+            </tr></thead>
+            <tbody>
+              <tr><td class="ws-feat">주요 근육</td><td>Serratus anterior</td><td>Trapezius</td><td>Rhomboids</td></tr>
+              <tr><td class="ws-feat">Winging 방향</td><td><span class="ws-medial">Medial Winging</span></td><td><span class="ws-lateral">Lateral Winging</span></td><td>Mild Medial Winging</td></tr>
+              <tr><td class="ws-feat">견갑골 위치</td><td style="font-size:.68rem">하각이 내측·후방으로 이동</td><td style="font-size:.68rem">상각이 외측·하방으로 이동</td><td style="font-size:.68rem">견갑골 외측·상방 이동</td></tr>
+              <tr><td class="ws-feat">유발 동작</td><td style="font-style:italic">벽 밀기 (Push against wall)</td><td style="font-style:italic">견관절 외전</td><td style="font-style:italic">저항성 당기기</td></tr>
+              <tr><td class="ws-feat">Root</td><td>C5 · C6 · C7</td><td>CN XI</td><td>C5</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   </div>
@@ -251,7 +311,8 @@ const NI={
   median          :'nerve-image/median.png',
   median2         :'nerve-image/median(2).png',
   ulnar           :'nerve-image/ulnar.png',
-  ulnar2          :'nerve-image/ulnar(2).png'
+  ulnar2          :'nerve-image/ulnar(2).png',
+  other           :'nerve-image/brachial-default.png'
 };
 
 /* ─── Dermatome photos ────────────────────────────────────────────────────
@@ -268,6 +329,38 @@ const DI={
   ulnar           :'nerve-image/ulnar-D.png',
   median          :'nerve-image/median-D.png'
 };
+
+/* ─── Other (Side Branch) nerve reference data ─── */
+const OTHER_NERVES=[
+  {name:'Dorsal Scapular N.',    root:'C5',        muscle:'Rhomboid major/minor · Levator scapulae', action:'견갑골 후인(Retraction) · 거상',              notes:'Root 레벨 직접 분지. 손상 시 Mild medial winging'},
+  {name:'Long Thoracic N.',      root:'C5·C6·C7',  muscle:'Serratus anterior',                       action:'견갑골 전인(Protraction) · 흉벽 고정',        notes:'손상 시 Medial winging (Nerve of Bell)'},
+  {name:'Suprascapular N.',      root:'C5·C6',     muscle:'Supraspinatus · Infraspinatus',            action:'견관절 외전 초기 15° · 외회전',               notes:'Suprascapular notch 통과. 회전근개 EMG 필수'},
+  {name:'Subclavian N.',         root:'C5·C6',     muscle:'Subclavius',                               action:'쇄골 하강(Depression)',                       notes:'Superior trunk 소분지'},
+  {name:'Lateral Pectoral N.',   root:'C5·C6·C7',  muscle:'Pectoralis major (쇄골두)',                action:'상완 내전 · 내회전',                          notes:'Lateral cord 분지'},
+  {name:'Medial Pectoral N.',    root:'C8·T1',     muscle:'Pectoralis major · Pectoralis minor',      action:'상완 내전 · 내회전',                          notes:'Pectoralis minor 관통'},
+  {name:'Upper Subscapular N.',  root:'C5·C6',     muscle:'Subscapularis (상부)',                     action:'상완 내회전',                                 notes:'Posterior cord 분지'},
+  {name:'Thoracodorsal N.',      root:'C6·C7·C8',  muscle:'Latissimus dorsi',                        action:'상완 신전 · 내전 · 내회전',                   notes:'Middle subscapular nerve. 광배근 지배'},
+  {name:'Lower Subscapular N.',  root:'C5·C6',     muscle:'Subscapularis (하부) · Teres major',      action:'상완 내회전 · 내전',                          notes:'Posterior cord 분지'},
+  {name:'MABC',                  root:'C8·T1',     muscle:'—',                                       action:'감각 전용',                                   notes:'전완 내측 피부감각 (Medial antebrachial cutaneous N.)'},
+  {name:'Medial Cutaneous N. of Arm', root:'C8·T1',muscle:'—',                                      action:'감각 전용',                                   notes:'상완 내측 피부감각 (Medial brachial cutaneous N.)'}
+];
+
+function renderOtherNerves(term){
+  const t=(term||'').toLowerCase();
+  const filtered=!t?OTHER_NERVES:OTHER_NERVES.filter(n=>
+    n.name.toLowerCase().includes(t)||n.muscle.toLowerCase().includes(t)||n.root.toLowerCase().includes(t)
+  );
+  const grid=document.getElementById('nerve-cards');
+  if(!filtered.length){grid.innerHTML='<div class="nc-empty">검색 결과가 없습니다</div>';return;}
+  grid.innerHTML=filtered.map(n=>`
+    <div class="nc">
+      <div class="nc-name">${n.name}</div>
+      <span class="nc-root">${n.root}</span>
+      <div class="nc-row"><b>근육:</b> ${n.muscle}</div>
+      <div class="nc-row"><b>기능:</b> ${n.action}</div>
+      <div class="nc-note">${n.notes}</div>
+    </div>`).join('');
+}
 
 /* ─── Nerve data ─── */
 const D={
@@ -402,6 +495,11 @@ const D={
           <b>감별 포인트:</b> Cubital에서 더 흔히 뚜렷함. Guyon Zone III (superficial only) 에서는 운동 보존 → sign 없음.`}
     ]
   }   /* closes ulnar */
+  ,other:{c:'#6366f1',
+    isOther:true,
+    pills:[{t:'C5',g:1},{d:1},{t:'T1',g:1},{a:1},{t:'Root / Trunk / Cord',g:1},{a:1},{t:'Side Branches',b:1}],
+    dt:'none'
+  }
 };    /* closes const D */
 
 /* ─── SVG dermatome (axillary/musculocutaneous 전용) ─── */
@@ -499,6 +597,24 @@ function sel(nid){
   }
 
   document.getElementById('pf').innerHTML=pills(d.pills,d.c);
+
+  /* ── other tab: Side Branches 전용 패널 ── */
+  const otherPn=document.getElementById('other-panel');
+  const dermCard=document.getElementById('derm-card');
+  if(d.isOther){
+    dermCard.style.display='none';
+    otherPn.style.display='flex';
+    document.getElementById('ec').style.display='none';
+    document.getElementById('mc').style.display='none';
+    document.getElementById('cs-pn').style.display='none';
+    renderOtherNerves('');
+    document.getElementById('nerve-search').value='';
+    return;
+  }
+  /* 일반 탭: other-panel 숨기고 dermatome 복원 */
+  otherPn.style.display='none';
+  dermCard.style.display='';
+
   rderm(nid,d);
   document.getElementById('mb').innerHTML=d.ms.map((m,i)=>{
     let bg;
