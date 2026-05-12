@@ -107,6 +107,11 @@ header{background:var(--surface);border-bottom:1px solid var(--border);padding:1
 .at{background:#fef3c7;border:1px solid #fcd34d;color:#92400e;border-radius:3px;padding:0 5px;font-size:.6rem;font-weight:700;margin-left:4px;}
 .at-ps{background:#dcfce7;border:1px solid #86efac;color:#166534;border-radius:3px;padding:0 5px;font-size:.6rem;font-weight:700;margin-left:4px;}
 .at-cts{background:#dbeafe;border:1px solid #93c5fd;color:#1e40af;border-radius:3px;padding:0 5px;font-size:.6rem;font-weight:700;margin-left:4px;}
+.at-snp{background:#ffedd5;border:1px solid #fdba74;color:#9a3412;border-radius:3px;padding:0 5px;font-size:.6rem;font-weight:700;margin-left:4px;}
+.at-pin{background:#ede9fe;border:1px solid #c4b5fd;color:#5b21b6;border-radius:3px;padding:0 5px;font-size:.6rem;font-weight:700;margin-left:4px;}
+.at-cuts{background:#ccfbf1;border:1px solid #5eead4;color:#0f766e;border-radius:3px;padding:0 5px;font-size:.6rem;font-weight:700;margin-left:4px;}
+.at-gc{background:#fce7f3;border:1px solid #f9a8d4;color:#9d174d;border-radius:3px;padding:0 5px;font-size:.6rem;font-weight:700;margin-left:4px;}
+.at-tos{background:#fee2e2;border:1px solid #fca5a5;color:#991b1b;border-radius:3px;padding:0 5px;font-size:.6rem;font-weight:700;margin-left:4px;}
 .rt2{display:inline-block;padding:1px 7px;border-radius:4px;font-size:.61rem;font-weight:600;font-family:'JetBrains Mono',monospace;background:var(--accent-dim);color:var(--accent);border:1px solid var(--accent-light);white-space:nowrap;}
 /* myotome legend row */
 .rt-legend td{padding:6px 12px 8px;background:var(--surface2);border-top:1.5px solid var(--border);}
@@ -242,6 +247,7 @@ const NI={
   axillary        :'nerve-image/axillary.png',
   musculocutaneous:'nerve-image/musculocutaneous.png',
   radial          :'nerve-image/radial.png',
+  radial2         :'nerve-image/radial(2).png',
   median          :'nerve-image/median.png',
   median2         :'nerve-image/median(2).png',
   ulnar           :'nerve-image/ulnar.png',
@@ -288,14 +294,33 @@ const D={
     inj:'<b>주요 손상:</b> Lateral cord 레벨 병변 (견관절 탈구·쇄골 골절)'},
 
   radial:{c:'#d97706',
+    ddxImg:'nerve-image/radial-ddx.png',
+    emgImg:'nerve-image/radial-emg.png',
     pills:[{t:'C5–T1'},{a:1},{t:'All Trunks',g:1},{a:1},{t:'Post. Divisions',g:1},{a:1},{t:'Posterior Cord',g:1},{a:1},{t:'Radial N.',b:1}],
     dt:'photo',pk:'radial',dA:'Arm post. / Forearm post-lat. / Hand dorsum radial',
     dm:'상완 후면 · 전완 후외면 · 손등 요측\n(1–3지 근위 배면 + 4지 요측 반)',
     dn:'PIN 손상 시 감각 완전 정상! (순수 운동 분지). Spiral groove 손상은 손등 감각 저하.',
     br:[{c:'#b45309',l:'①',t:'Posterior cutaneous n. of arm — 상완 후면'},{c:'#92400e',l:'②',t:'Lower lateral cutaneous n. of arm — 상완 외측 하부'},{c:'#78716c',l:'③',t:'Posterior cutaneous n. of forearm — 전완 후면'},{c:'#d97706',l:'④',t:'Superficial radial sensory n. — 손등 요측'}],
-    ms:[{n:'Triceps Brachii',a:'주관절 신전',l:'C6–C8'},{n:'Brachioradialis',a:'주관절 굴곡 (중립위)',l:'C5, C6'},{n:'ECRL',a:'손목 신전 + 요측 편위',l:'C6, C7'},{n:'ECRB',a:'손목 신전',l:'C7, C8'},{n:'Supinator',a:'전완 회외',l:'C6, C7'},{n:'EDC',a:'2–5지 신전',l:'C7, C8'},{n:'ECU',a:'손목 신전 + 척측 편위',l:'C7, C8'},{n:'APL/EPL/EPB',a:'엄지 외전 및 신전',l:'C7, C8'},{n:'Extensor Indicis',a:'검지 독립 신전',l:'C7, C8'}],
+    ms:[
+      {n:'Triceps Brachii',  a:'주관절 신전',              l:'C6–C8'},
+      {n:'Brachioradialis',  a:'주관절 굴곡 (중립위)',      l:'C5, C6', snp:1},
+      {n:'ECRL',             a:'손목 신전 + 요측 편위',     l:'C6, C7', snp:1},
+      {n:'ECRB',             a:'손목 신전',                 l:'C7, C8', snp:1, pin:1},
+      {n:'Supinator',        a:'전완 회외',                 l:'C6, C7', snp:1, pin:1},
+      {n:'EDC',              a:'2–5지 신전',                l:'C7, C8', snp:1, pin:1},
+      {n:'ECU',              a:'손목 신전 + 척측 편위',     l:'C7, C8', snp:1, pin:1},
+      {n:'APL/EPL/EPB',      a:'엄지 외전 및 신전',         l:'C7, C8', snp:1, pin:1},
+      {n:'Extensor Indicis', a:'검지 독립 신전',            l:'C7, C8', snp:1, pin:1}
+    ],
     emg:[{k:'Axilla 손상',v:'Triceps 포함 전체 이상'},{k:'Spiral groove',v:'Triceps 보존. BR·Extensors 이상'},{k:'PIN (요골관)',v:'EDC·ECU 이상 / BR·ECRL 정상 / 감각 완전 정상',n:1},{k:'NCS',v:'Radial SNAP 감소 (PIN 단독은 SNAP 정상)'}],
-    df:[{c:'#dc2626',t:'Spiral Groove vs. PIN — 핵심 감별',b:'<b>Spiral groove:</b> Wrist drop + 손등 감각 저하. <b>PIN:</b> 손목 요측 신전 가능, Finger drop, <b>감각 완전 정상</b>.'},{c:'#d97706',t:'vs. C7 Radiculopathy',b:'C7: Triceps 약화 + <code>FCR</code> 등 굴곡근 이상. 경추 통증·Spurling (+).'},{c:'#7c3aed',t:'Saturday Night Palsy vs. Axilla 손상',b:'SNP = Spiral groove 압박. <b>Triceps 정상</b>이 핵심. Axilla 완전 손상은 Triceps 마비.'}],
+    df:[
+      {c:'#dc2626',t:'Spiral Groove vs. PIN — 핵심 감별',
+       b:'<b>Spiral groove (SNP):</b> Wrist drop + 손등 감각 저하. <code>BR</code>·<code>ECRL</code> 약화.<br><b>PIN:</b> 손목 요측 신전 가능 (BR·ECRL 보존), Finger drop, <b>감각 완전 정상</b>.'},
+      {c:'#d97706',t:'vs. C7 Radiculopathy',
+       b:'C7: <code>Triceps</code> 약화 + <code>FCR</code> 등 굴곡근 이상. 경추 통증·Spurling (+).'},
+      {c:'#7c3aed',t:'Saturday Night Palsy vs. Axilla 손상',
+       b:'SNP = Spiral groove 압박. <b>Triceps 정상</b>이 핵심. Axilla 완전 손상은 Triceps 마비.'}
+    ],
     inj:'<b>주요 손상:</b> Spiral groove 골절 (가장 흔함), Saturday night palsy, PIN 포착'},
 
   median:{c:'#7c3aed',
@@ -331,7 +356,16 @@ const D={
     dm:'새끼손가락 전체 + 약지 척측 반\n손바닥 및 손등 척측',
     dn:'Cubital tunnel: ①②③ 모두 이상. Guyon canal: ①만 이상, ②③ 보존. 손등(③) 감각이 핵심 감별!',
     br:[{c:'#db2777',l:'①',t:'Ulnar digital branches — 손바닥 4½–5지'},{c:'#be185d',l:'②',t:'Palmar cutaneous branch — 손바닥 척측 근위부'},{c:'#9d174d',l:'③',t:'Dorsal ulnar cutaneous branch — 손등 척측 (Cubital 감별 핵심!)'}],
-    ms:[{n:'FCU',a:'손목 굴곡 + 척측 편위',l:'C7, C8'},{n:'FDP 4–5',a:'원위지 굴곡 (4–5지)',l:'C8, T1'},{n:'ADM/FDM/ODM',a:'새끼손가락 외전·굴곡·대립',l:'C8, T1'},{n:'Palmar Interossei ×3',a:'손가락 내전 (PAD)',l:'C8, T1'},{n:'Dorsal Interossei ×4',a:'손가락 외전 (DAB)',l:'C8, T1'},{n:'Lumbricals 3&4',a:'MCP 굴곡, IP 신전 (4·5지)',l:'C8, T1'},{n:'Adductor Pollicis',a:'엄지 내전',l:'C8, T1'},{n:'FPB (deep head)',a:'엄지 굴곡 심층두',l:'C8, T1'}],
+    ms:[
+      {n:'FCU',               a:'손목 굴곡 + 척측 편위',       l:'C7, C8', cuts:1,              tos:1},
+      {n:'FDP 4–5',           a:'원위지 굴곡 (4–5지)',          l:'C8, T1', cuts:1,              tos:1},
+      {n:'ADM/FDM/ODM',       a:'새끼손가락 외전·굴곡·대립',    l:'C8, T1', cuts:1, gc:1, tos:1},
+      {n:'Palmar Interossei ×3',a:'손가락 내전 (PAD)',          l:'C8, T1', cuts:1, gc:1, tos:1},
+      {n:'Dorsal Interossei ×4',a:'손가락 외전 (DAB)',          l:'C8, T1', cuts:1, gc:1, tos:1},
+      {n:'Lumbricals 3&4',    a:'MCP 굴곡, IP 신전 (4·5지)',    l:'C8, T1', cuts:1, gc:1, tos:1},
+      {n:'Adductor Pollicis', a:'엄지 내전',                    l:'C8, T1', cuts:1, gc:1, tos:1},
+      {n:'FPB (deep head)',   a:'엄지 굴곡 심층두',             l:'C8, T1', cuts:1, gc:1, tos:1}
+    ],
     emg:[{k:'Cubital tunnel',v:'내측상과 NCV 저하 (Inching). FCU·FDP(4,5)·내재근 이상'},{k:'Guyon canal',v:'ADM·Interossei 이상 / FCU 정상 / 손등(③) 감각 정상',n:1},{k:'NCS',v:'Ulnar motor DML 지연, SNAP 감소'},{k:'Froment',v:'(+) Adductor pollicis 마비 → FPL 보상 굴곡'}],
     df:[
       {c:'#dc2626',t:'Cubital Tunnel vs. Guyon\'s Canal — 핵심 감별',
@@ -437,9 +471,9 @@ function sel(nid){
   if(src1){
     ph0.style.display='none';
     wrap.style.display='flex';
-    if((nid==='median' && NI.median2)||(nid==='ulnar' && NI.ulnar2)){
-      // dual: two images side by side, each ~50% width
-      const src2=nid==='median'?NI.median2:NI.ulnar2;
+    if((nid==='median' && NI.median2)||(nid==='ulnar' && NI.ulnar2)||(nid==='radial' && NI.radial2)){
+      // dual: two images side by side
+      const src2=nid==='median'?NI.median2:nid==='ulnar'?NI.ulnar2:NI.radial2;
       wrap.className='nimg-wrap nimg-dual';
       wrap.innerHTML=`
         <div class="nimg-thumb" onclick="openM('${src1}')">
@@ -467,15 +501,23 @@ function sel(nid){
   document.getElementById('pf').innerHTML=pills(d.pills,d.c);
   rderm(nid,d);
   document.getElementById('mb').innerHTML=d.ms.map((m,i)=>{
-    // row background: AIN > PS-only > CTS+PS > plain alternating
     let bg;
-    if(m.ai)       bg='#fef9ec';          // amber — AIN
-    else if(m.ps && m.cts) bg='#eff6ff';  // blue — CTS + PS
-    else if(m.ps)  bg='#f0fdf4';          // green — PS only
-    else           bg=i%2?'#f6f9ff':'transparent';
-    const badges=(m.ai?'<span class="at">AIN</span>':'')
-                +(m.ps?'<span class="at-ps">PS</span>':'')
-                +(m.cts?'<span class="at-cts">CTS</span>':'');
+    if     (m.ai)              bg='#fef9ec';  // amber   — AIN
+    else if(m.snp&&m.pin)      bg='#fdf4ff';  // lavender— SNP+PIN
+    else if(m.snp)             bg='#fff7ed';  // orange  — SNP only (PIN spares)
+    else if(m.cuts&&!m.gc)     bg='#f0fdfa';  // teal    — CuTS/TOS only (GC spares)
+    else if(m.cuts&&m.gc)      bg='#fdf2f8';  // pink    — CuTS+GC+TOS
+    else if(m.ps&&m.cts)       bg='#eff6ff';  // blue    — CTS+PS
+    else if(m.ps)              bg='#f0fdf4';  // green   — PS only
+    else                       bg=i%2?'#f6f9ff':'transparent';
+    const badges=(m.ai   ?'<span class="at">AIN</span>':'')
+                +(m.snp  ?'<span class="at-snp">SNP</span>':'')
+                +(m.pin  ?'<span class="at-pin">PIN</span>':'')
+                +(m.cuts ?'<span class="at-cuts">CuTS</span>':'')
+                +(m.gc   ?'<span class="at-gc">GC</span>':'')
+                +(m.tos  ?'<span class="at-tos">TOS</span>':'')
+                +(m.ps   ?'<span class="at-ps">PS</span>':'')
+                +(m.cts  ?'<span class="at-cts">CTS</span>':'');
     return `<tr style="background:${bg}">
       <td><span class="mn">${m.n}</span>${badges}</td>
       <td style="color:var(--text-muted)">${m.a}</td>
@@ -486,6 +528,19 @@ function sel(nid){
     <span class="at">AIN</span>&nbsp;Anterior Interosseous N.&ensp;
     <span class="at-ps">PS</span>&nbsp;Pronator Syndrome&ensp;
     <span class="at-cts">CTS</span>&nbsp;Carpal Tunnel Syndrome
+  </td></tr>`
+  :nid==='radial'?`<tr class="rt-legend"><td colspan="3" style="font-size:.62rem;color:var(--text-muted);line-height:2">
+    <span class="at-snp">SNP</span>&nbsp;Spiral groove / Saturday Night Palsy&ensp;
+    <span class="at-pin">PIN</span>&nbsp;Posterior Interosseous N.&ensp;
+    <span style="font-style:italic">Triceps = 배지 없음 (SNP·PIN 모두 보존)</span>
+  </td></tr>`
+  :nid==='ulnar'?`<tr class="rt-legend"><td colspan="3" style="font-size:.62rem;color:var(--text-muted);line-height:2.1">
+    <span class="at-cuts">CuTS</span>&nbsp;Cubital Tunnel Synd.&ensp;
+    <span class="at-gc">GC</span>&nbsp;Guyon's Canal&ensp;
+    <span class="at-tos">TOS</span>&nbsp;Thoracic Outlet Synd.<br>
+    <span style="color:#991b1b;font-weight:600">⚠ TOS 추가 손상 근육</span>
+    <span style="font-style:italic">&nbsp;(정중신경 medial cord 기여 C8-T1):&nbsp;
+    APB · Opponens Pollicis · FPB (superficial) · Lumbricals 1&amp;2 · FDP 2-3 · FPL</span>
   </td></tr>`:'');
   document.getElementById('eb').innerHTML=d.emg.map(e=>
     `<span class="ek">${e.k}:</span> <span class="${e.n?'en':''}">${e.v}</span><br>`).join('')
