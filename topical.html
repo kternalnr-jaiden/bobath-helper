@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>원내 외용제 통합 관리 시스템 v3.0</title>
+    <title>원내 외용제 통합 관리 시스템 v3.1</title>
     <style>
         :root {
             --primary: #2c3e50;
@@ -112,9 +112,22 @@
             border-left: 6px solid var(--accent);
             animation: fadeIn 0.3s;
         }
+        .res-header { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 10px; }
         .res-code { font-weight: 800; color: var(--accent); font-size: 1.2rem; }
-        .res-info { margin-top: 10px; font-size: 0.95rem; color: #444; line-height: 1.8; }
-        .res-badge { display: inline-block; padding: 3px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: bold; color: white; margin-left: 6px; vertical-align: middle; }
+        .res-code-id { font-size: 0.9rem; color: #888; }
+        .res-info { font-size: 0.95rem; color: #444; line-height: 1.8; }
+        .res-badge { display: inline-block; padding: 3px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: bold; color: white; vertical-align: middle; }
+
+        /* 결과 복사 버튼 (조금 더 눈에 띄게) */
+        .res-copy-btn {
+            display: inline-flex; align-items: center; gap: 4px;
+            padding: 4px 10px; font-size: 0.78rem; font-weight: bold;
+            border: 1.5px solid #3498db; border-radius: 6px;
+            background: white; color: #3498db; cursor: pointer;
+            transition: all 0.15s; white-space: nowrap;
+        }
+        .res-copy-btn:hover { background: #3498db; color: white; }
+        .res-copy-btn.copied { background: #27ae60; border-color: #27ae60; color: white; }
 
         .reset-btn {
             margin-top: 20px;
@@ -143,7 +156,7 @@
     </div>
 
 <div class="container">
-    <h1>🏥 원내 외용제 관리 가이드 (v3.0)</h1>
+    <h1>🏥 원내 외용제 관리 가이드 (v3.1)</h1>
 
     <div class="main-tabs">
         <button class="tab-btn active" onclick="switchMainTab('review', this)">📋 카테고리별 리뷰</button>
@@ -233,6 +246,7 @@
                 <div class="btn-grid">
                     <button class="opt-btn" onclick="finish('O-BEPAN')">🍼 기저귀 발진 / 보습<br><small style="color:#888">스테로이드 無</small></button>
                     <button class="opt-btn" onclick="finish('O-MDCN')">🩹 상처 재생 / 흉터 예방<br><small style="color:#888">마데카솔 케어</small></button>
+                    <button class="opt-btn" onclick="finish('MDC-P')">🌿 삼출물 많은 상처 / 분말 제형<br><small style="color:#888">마데카솔 분말</small></button>
                     <button class="opt-btn" onclick="finish('O-EGF')">⭐ 고도 재생 (냉장 보관)<br><small style="color:#888">EGF 성장인자</small></button>
                     <button class="opt-btn" onclick="finish('CR-VIVIR')">💊 단순포진 / 입술 물집<br><small style="color:#888">항바이러스</small></button>
                     <button class="opt-btn" onclick="finish('L-PRT')">🩸 구내염 / 지혈<br><small style="color:#888">페리터치 액</small></button>
@@ -326,6 +340,10 @@
             note: '병풀(Centella) 추출물이 콜라겐 합성을 촉진해 상처 재생을 돕고, Neomycin이 2차 감염을 예방하는 복합 재생제. 절상·찰과상·수술 후 상처의 흉터 최소화에 적합. 화상에는 실마진이 우선. 드레싱 교체 시마다 도포. 감염 징후(발적·고름) 시 항생제 연고로 전환.'
         },
         {
+            cat: 'etc', code: 'MDC-P', name: '마데카솔 분말', comp: 'Centella asiatica extract (분말 제형)', grade: '-',
+            note: '병풀(Centella) 추출물 성분의 분말(산제) 제형 재생제. 삼출물이 많거나 습윤한 상처 부위에 직접 살포하여 사용. 분말이 과잉 삼출물을 흡수하면서 콜라겐 합성을 촉진해 육아 조직 형성을 돕는다. 절상·찰과상·욕창 등 진물이 많은 창상에 특히 유용. 연고 제형 적용이 어려운 부위나 드레싱 교체 시마다 상처 표면에 얇게 도포. 감염 징후(발적·농성 삼출) 시 항생제 처치 우선 시행 후 적용.'
+        },
+        {
             cat: 'etc', code: 'O-BEPAN', name: '비판텐 연고', comp: 'Dexpanthenol 50mg/g', grade: '-',
             note: '프로비타민 B5 계열의 순수 보습·재생 연고. 스테로이드·항생제 성분 없어 영아 기저귀 발진·신생아 배꼽 관리에 안전하게 사용 가능. 건조하고 민감한 피부 보습, 가벼운 화상·햇볕 화상 진정에도 활용. 임산부도 사용 가능. 부작용 우려 없이 장기 사용 가능한 가장 순한 외용제.'
         },
@@ -405,9 +423,14 @@
         const resBox = document.getElementById('result-display');
         const t = typeMap[item.cat];
         document.getElementById('final-content').innerHTML = `
-            <div class="res-code">
-                ${item.name} <span style="font-size:0.9rem; color:#888;">(${item.code})</span>
+            <div class="res-header">
+                <span class="res-code">${item.name}</span>
                 <span class="res-badge ${t.cls}">${t.label}</span>
+            </div>
+            <div class="code-wrap" style="margin-bottom:12px;">
+                <span style="font-size:0.88rem; color:#555;">원내코드:</span>
+                <strong style="font-size:0.95rem; color:#2c3e50;">${item.code}</strong>
+                <button class="res-copy-btn" onclick="resCodeCopy(this, '${item.code}')">📋 코드 복사</button>
             </div>
             <div class="res-info">
                 <strong>성분:</strong> ${item.comp}${item.grade !== '-' ? ` &nbsp;·&nbsp; <strong>등급:</strong> ${item.grade}` : ''}<br>
@@ -415,6 +438,17 @@
             </div>
         `;
         resBox.style.display = 'block';
+    }
+
+    function resCodeCopy(btn, code) {
+        navigator.clipboard.writeText(code).then(() => {
+            btn.textContent = '✅ 복사됨';
+            btn.classList.add('copied');
+            setTimeout(() => {
+                btn.innerHTML = '📋 코드 복사';
+                btn.classList.remove('copied');
+            }, 1500);
+        });
     }
 
     function resetRec() {
@@ -427,6 +461,5 @@
     renderList(inventory);
     document.getElementById('step1').style.display = 'block';
 </script>
-<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516" integrity="sha512-8DS7rgIrAmghBFwoOTujcf6D9rXvH8xm8JQ1Ja01h9QX8EzXldiszufYa4IFfKdLUKTTrnSFXLDkUEOTrZQ8Qg==" data-cf-beacon='{"version":"2024.11.0","token":"4edd5f8ec12a48cfa682ab8261b80a79","server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
 </body>
 </html>
