@@ -14,7 +14,7 @@
   --danger:#dc2626;--danger-dim:rgba(220,38,38,.08);
   --warn:#d97706;--warn-dim:rgba(217,119,6,.09);
   --ok:#16a34a;--ok-dim:rgba(22,163,74,.09);
-  --fast:#4f46e5;--long:#0f766e;--combo:#c2410c;--new:#6d28d9;
+  --fast:#4f46e5;--long:#0f766e;--combo:#c2410c;--new:#6d28d9;--prev:#0369a1;
   --r:12px;--sh:0 1px 3px rgba(0,0,0,.06),0 1px 2px rgba(0,0,0,.04);
   --sh2:0 4px 12px rgba(0,0,0,.07),0 2px 4px rgba(0,0,0,.04);
 }
@@ -46,6 +46,8 @@ header{background:var(--surface);border-bottom:1px solid var(--border);padding:1
 .tab-btn.active[data-class="지속성"]{background:rgba(15,118,110,.1);border-color:var(--long);color:var(--long);}
 .tab-btn.active[data-class="복합제"]{background:rgba(194,65,12,.09);border-color:var(--combo);color:var(--combo);}
 .tab-btn.active[data-class="신규기전"]{background:rgba(109,40,217,.1);border-color:var(--new);color:var(--new);}
+.tab-btn.active[data-class="예방치료"]{background:rgba(3,105,161,.1);border-color:var(--prev);color:var(--prev);}
+.tab-btn[data-class="예방치료"]{border-color:rgba(3,105,161,.35);color:var(--prev);}
 .tab-btn.active[data-class="비교표"]{background:rgba(15,118,110,.1);border-color:var(--long);color:var(--long);}
 .tab-btn[data-class="비교표"]{border-color:rgba(15,118,110,.35);color:var(--long);}
 
@@ -59,6 +61,7 @@ main{padding:13px 15px 28px;max-width:960px;margin:0 auto;}
 .drug-card[data-class="지속성"] .bar{background:var(--long);}
 .drug-card[data-class="복합제"] .bar{background:var(--combo);}
 .drug-card[data-class="신규기전"] .bar{background:var(--new);}
+.drug-card[data-class="예방치료"] .bar{background:var(--prev);}
 .bar{height:3px;}
 .card-header{display:flex;align-items:center;padding:12px 14px;cursor:pointer;gap:10px;user-select:none;}
 .cls-badge{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;padding:2px 7px;border-radius:5px;flex-shrink:0;}
@@ -66,6 +69,7 @@ main{padding:13px 15px 28px;max-width:960px;margin:0 auto;}
 .badge-지속성{background:rgba(15,118,110,.1);color:var(--long);}
 .badge-복합제{background:rgba(194,65,12,.1);color:var(--combo);}
 .badge-신규기전{background:rgba(109,40,217,.1);color:var(--new);}
+.badge-예방치료{background:rgba(3,105,161,.1);color:var(--prev);}
 .card-names{flex:1;min-width:0;}
 .kor{font-size:14px;font-weight:700;color:var(--text);}
 .eng{font-size:10.5px;color:var(--text-muted);font-family:'JetBrains Mono',monospace;margin-top:1px;}
@@ -140,6 +144,8 @@ main{padding:13px 15px 28px;max-width:960px;margin:0 auto;}
 .fname{font-size:11.5px;color:var(--text-soft);}
 .ftag{font-size:9px;padding:1px 5px;border-radius:3px;font-weight:700;}
 .ftag-outer{background:rgba(79,70,229,.1);color:var(--accent);}
+.ftag-inner{background:var(--ok-dim);color:var(--ok);border:1px solid rgba(22,163,74,.25);}
+.ftag-proc{background:rgba(3,105,161,.1);color:var(--prev);border:1px solid rgba(3,105,161,.25);}
 .ftag-nocode{background:var(--surface3);color:var(--text-muted);border:1px solid var(--border);}
 .no-f{font-size:11.5px;color:var(--text-muted);background:var(--surface2);border-radius:8px;padding:7px 11px;border-left:3px solid var(--border);}
 
@@ -212,6 +218,7 @@ td{padding:9px 12px;vertical-align:middle;}
 .cls-l{background:rgba(15,118,110,.1);color:var(--long);}
 .cls-c{background:rgba(194,65,12,.1);color:var(--combo);}
 .cls-n{background:rgba(109,40,217,.1);color:var(--new);}
+.cls-p{background:rgba(3,105,161,.1);color:var(--prev);}
 .td-code{font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--accent);cursor:pointer;padding:2px 6px;border-radius:4px;background:var(--accent-dim);border:1px solid rgba(79,70,229,.2);transition:all .15s;}
 .td-code:hover{background:var(--accent);color:#fff;}
 .td-code.nocode{color:var(--text-muted);background:var(--surface3);border-color:var(--border);cursor:default;}
@@ -255,6 +262,7 @@ td{padding:9px 12px;vertical-align:middle;}
     <button class="tab-btn" data-class="지속성">지속성 트립탄</button>
     <button class="tab-btn" data-class="복합제">복합제</button>
     <button class="tab-btn" data-class="신규기전">신규 기전</button>
+    <button class="tab-btn" data-class="예방치료">🛡️ 만성두통 예방치료</button>
     <button class="tab-btn" data-class="비교표">📊 마스터 비교표</button>
   </div>
 </header>
@@ -267,6 +275,7 @@ td{padding:9px 12px;vertical-align:middle;}
   <div class="li"><div class="ld" style="background:var(--long)"></div>지속성 트립탄</div>
   <div class="li"><div class="ld" style="background:var(--combo)"></div>복합제</div>
   <div class="li"><div class="ld" style="background:var(--new)"></div>신규 기전</div>
+  <div class="li"><div class="ld" style="background:var(--prev)"></div>만성두통 예방치료</div>
   <div class="li"><div class="ld" style="background:var(--accent)"></div>원외코드 클릭=복사</div>
   <div class="li" style="margin-left:auto;font-size:10px">참고용 · 처방 시 확인 요망</div>
 </div>
@@ -601,6 +610,109 @@ const drugs = [
     contraindications:['강력한 CYP3A4 억제제/유도제 병용','중증 간기능 저하'],
     monitoring:['CYP3A4 병용 약물 확인','간기능','예방 사용 시 두통 빈도 추적'],
     note:'예방 용법: 75mg 격일 복용 (매 48시간). 원내에 등재된 아토게판트(AQUI, 예방 전용)와 기전 동일 — 리메게판트는 급성+예방 겸용. 급성기 2~3회/주 이상이면 예방 요법 병행 고려.'
+  },
+
+  /* ═══════════════ 만성두통 예방치료 ═══════════════ */
+  {
+    id:'atogepant', nameKor:'아토게판트', nameEng:'Atogepant', brand:'아큅타 정 60mg',
+    drugClass:'예방치료', onsetLabel:'예방 전용', onsetTag:'onset-slow',
+    onset:'N/A — 예방 목적 (급성기 치료 불가)', halfLife:'약 11시간', bio:'약 60%', recurrence:'N/A (예방)',
+    formulary:[
+      {code:'AQUI',name:'아큅타 정 60mg',tag:'원내등재',tagCls:'ftag-inner'},
+    ],
+    initDose:'60mg 1일 1회', interval:'매일 정해진 시간', maxDose:'60mg/일',
+    interactionWidget:{show:false},
+    pros:[
+      '경구 CGRP 수용체 길항제 — 예방 주사 거부 환자에게 편의성 높음',
+      '삽화성·만성 편두통 모두 적응증 (월간 편두통 일수 유의미 감소)',
+      '원내 등재 (AQUI) — 즉시 처방 가능, 급여 적용',
+      '단클론항체 대비 반감기 짧아 부작용 발생 시 중단 후 빠른 소실',
+      '심혈관 금기 없음 (혈관 수축 기전 없음)'
+    ],
+    cons:[
+      '급성기 치료 효과 없음 — 두통 발작 시 별도 급성기 약물 필요',
+      '효과 판정까지 최소 4~12주 소요 — 초기 충분한 복약지도 필요',
+      'CYP3A4 강력 억제제 병용 시 용량 조정 (30mg/일로 감량)',
+      'CYP3A4 강력 유도제 병용 시 효과 감소 (병용 피할 것)',
+      '구역·변비·피로감 부작용 보고'
+    ],
+    interactions:[
+      {sev:'high',cls:'sev-high',drugs:'강력한 CYP3A4 억제제 (케토코나졸, 클래리트로마이신 등)',mech:'아토게판트 AUC 상승 → 30mg/일로 감량.'},
+      {sev:'high',cls:'sev-high',drugs:'강력한 CYP3A4 유도제 (리팜핀, 카르바마제핀 등)',mech:'아토게판트 AUC 대폭 감소 → 효과 소실. 병용 피할 것.'},
+      {sev:'mod',cls:'sev-mod',drugs:'리메게판트 (너텍) 동시 처방',mech:'동일 기전 gepant 중복 — 근거 없음. 병용 시 주의.'},
+      {sev:'mod',cls:'sev-mod',drugs:'OATP1B1/1B3 억제제',mech:'혈중 농도 소폭 상승 가능.'}
+    ],
+    contraindications:['강력한 CYP3A4 억제제 병용 (감량 필요)','중증 간기능 저하','임부/수유부 (안전성 미확립)'],
+    monitoring:['복용 순응도 (매일 복용)','월간 편두통 일수 추적 (3개월)','구역·변비 증상','간기능 (중등도 이상 저하 시)','CYP3A4 병용 약물'],
+    note:'효과 평가: 3개월 후 월간 편두통 일수 ≥50% 감소 여부로 판정. 반응 없으면 다른 예방치료(아조비 주사 등)로 전환 고려. 급성기 약물(트립탄, 라스미디탄 등)과 병행 처방 가능.'
+  },
+
+  {
+    id:'fremanezumab', nameKor:'프레마네주맙', nameEng:'Fremanezumab', brand:'아조비 오토인젝터 225mg/1.5mL',
+    drugClass:'예방치료', onsetLabel:'예방 주사', onsetTag:'onset-slow',
+    onset:'N/A — 예방 목적, 효과 발현 1~4주', halfLife:'약 31일', bio:'N/A (피하주사)', recurrence:'N/A (예방)',
+    formulary:[
+      {code:'7AJOV',name:'아조비 오토인젝터 주 225mg',tag:'원내등재',tagCls:'ftag-inner'},
+    ],
+    initDose:'225mg SC 월1회 또는 675mg SC 분기1회', interval:'4주 (월1회) 또는 12주 (분기1회)', maxDose:'675mg/분기',
+    interactionWidget:{show:false},
+    pros:[
+      '항-CGRP 단클론항체 — 편두통 발생 기전 근본 억제',
+      '월1회 또는 분기1회 — 매일 복용 부담 없음, 순응도 우수',
+      '원내 등재 (7AJOV) — 즉시 처방 가능, 급여 적용',
+      '삽화성·만성 편두통 모두 적응증',
+      '오토인젝터 자가 투여 가능 (교육 후)',
+      '약물 상호작용 거의 없음 (단클론항체 기전)'
+    ],
+    cons:[
+      '주사 부위 반응 (발적·통증·가려움) — 가장 흔한 이상반응',
+      '효과 발현까지 1~4주 소요 — 초기 충분한 기대치 설정 필요',
+      '급성기 치료 효과 없음 — 별도 급성기 약물 병용 필요',
+      '냉장 보관 필요 (2~8°C) — 실온 30분 후 투여',
+      '6개월 이상 효과 없을 시 투여 중단 재고'
+    ],
+    interactions:[
+      {sev:'mod',cls:'sev-mod',drugs:'타 CGRP 표적 치료제 (에레누맙, 갈카네주맙, 아토게판트)',mech:'동일 기전 중복 처방 — 근거 없음, 피할 것.'},
+    ],
+    contraindications:['CGRP 또는 부형제 과민반응','임부/수유부 (안전성 미확립)','단클론항체 과민반응 병력'],
+    monitoring:['주사 부위 반응 (발적·통증·경결)','효과 평가 (3~6개월: 월간 편두통 일수)','냉장 보관 상태 확인','과민반응 징후 (투여 후 30분)'],
+    note:'자가 투여 교육: 복부·허벅지·상완에 피하주사. 냉장 보관 후 실온 방치 30분 후 투여 (통증 감소). 분기 투여(675mg = 225mg × 3회 연속 주사)는 순응도 우려 환자 또는 편의성 우선 시 선택.'
+  },
+
+  {
+    id:'botulinum', nameKor:'보나보툴리눔독소신A', nameEng:'OnabotulinumtoxinA', brand:'보톡스 주 100단위 (Botox 100U)',
+    drugClass:'예방치료', onsetLabel:'예방 시술', onsetTag:'onset-slow',
+    onset:'N/A — 시술 후 2~4주 효과 발현, 12주 지속', halfLife:'효과 지속 약 12주', bio:'N/A (근육내 주사)', recurrence:'N/A (예방)',
+    formulary:[
+      {code:'7BTOX',name:'보톡스 주 100단위 (1바이알)',tag:'원내등재',tagCls:'ftag-inner'},
+      {code:'MIGIJ2',name:'편두통 주사술기료 (200단위/2바이알)',tag:'시술코드',tagCls:'ftag-proc'},
+      {code:'MIGIJ',name:'편두통 주사술기료 (100단위/1바이알)',tag:'시술코드',tagCls:'ftag-proc'},
+    ],
+    initDose:'155~195단위 (PREEMPT 프로토콜)', interval:'12주 (3개월)', maxDose:'200단위/12주',
+    interactionWidget:{show:false},
+    pros:[
+      '만성 편두통(월 ≥15두통일) 유일한 시술 예방치료 — FDA/MFDS 승인',
+      '약물 복용 불가/순응도 낮은 환자에 3개월 1회 시술로 대안 제공',
+      '두통 일수·강도·약물 사용량 유의미 감소 (PREEMPT 연구)',
+      '전신 흡수 극미량 — 전신 이상반응 매우 낮음',
+      '반복 시술로 효과 축적 (2~3회 후 최대 효과)'
+    ],
+    cons:[
+      '만성 편두통(월 ≥15두통일) 진단 후에만 급여 적용',
+      '목·어깨 근력 약화, 경부통, 주사 부위 통증',
+      '안검하수(ptosis), 안면 비대칭 (전두부 주사 시)',
+      '연하곤란 (극히 드묾 — 경부 근육 주사 시 주의)',
+      '효과 발현 2~4주 소요 — 초기 충분한 안내 필요',
+      '12주마다 의료기관 방문 필요'
+    ],
+    interactions:[
+      {sev:'ci',cls:'sev-ci',drugs:'아미노글리코사이드 계 항생제 (젠타마이신 등)',mech:'신경근 차단 효과 상가 → 보툴리눔 독소 효과 과도 증강.'},
+      {sev:'high',cls:'sev-high',drugs:'근이완제 (바클로펜, 다이아제팜 등)',mech:'신경근 차단 상가 → 근력 약화 심화.'},
+      {sev:'mod',cls:'sev-mod',drugs:'콜린에스테라아제 억제제 (도네페질 등)',mech:'보툴리눔 효과 감쇠 가능.'}
+    ],
+    contraindications:['보툴리눔 독소 또는 부형제 과민반응','중증 근무력증·Lambert-Eaton 증후군','주사 부위 감염','임신 중 (상대적 금기, 위험-이익 판단)','월 두통일 <15일 (급여 기준 미충족)'],
+    monitoring:['두통 일수 기록 (월별 추적)','목·어깨 근력','안검하수 (전두부 주사 후)','연하 기능 (경부 주사 후)','12주 간격 정기 시술 일정 관리'],
+    note:'📋 처방 구성: ① 전체 시술(155~195단위): 7BTOX × 2바이알 + MIGIJ2(시술기료) ② 절반 시술(약 100단위): 7BTOX × 1바이알 + MIGIJ(시술기료). PREEMPT 프로토콜: 두피·이마·측두·후두·경부·승모근 총 31~39 고정 주사점. 급여기준: 만성 편두통(월 15두통일 이상 × 3개월 이상) + 3가지 이상 예방약 실패.'
   }
 ];
 
@@ -608,40 +720,43 @@ const drugs = [
 function buildTable() {
   const tv = document.getElementById('tableView');
   const rows = drugs.map(d=>{
-    const codeCell = d.formulary[0].nocode
-      ? `<span class="td-code nocode">${d.formulary[0].code}</span>`
-      : `<span class="td-code" onclick="cc('${d.formulary[0].code}',this)">${d.formulary[0].code}</span>`;
-    const clsCls = {속효성:'cls-f',지속성:'cls-l',복합제:'cls-c',신규기전:'cls-n'}[d.drugClass];
+    const codeCells = d.formulary.map(f=>
+      f.nocode
+        ? `<span class="td-code nocode">${f.code}</span>`
+        : `<span class="td-code" onclick="cc('${f.code}',this)" title="${f.name}" style="margin:1px;display:inline-block">${f.code}</span>`
+    ).join(' ');
+    const clsCls = {속효성:'cls-f',지속성:'cls-l',복합제:'cls-c',신규기전:'cls-n',예방치료:'cls-p'}[d.drugClass]||'cls-f';
+    const isPrev = d.drugClass==='예방치료';
     return `<tr>
       <td><div class="td-drug">${d.nameKor}</div><div class="td-eng">${d.nameEng}</div><div style="font-size:10px;color:var(--text-muted);margin-top:2px">${d.brand}</div></td>
       <td><span class="td-cls ${clsCls}">${d.drugClass}</span></td>
-      <td>${codeCell}</td>
+      <td style="white-space:nowrap">${codeCells}</td>
       <td class="td-hl">${d.halfLife}</td>
-      <td>${d.onset}</td>
+      <td style="font-size:11px">${d.onset}</td>
       <td class="td-hl">${d.initDose}</td>
       <td class="td-hl">${d.maxDose}</td>
-      <td class="td-hl">${d.bio}</td>
-      <td><span class="${d.recurrence.includes('낮')||d.recurrence.includes('최저')?'td-ok':d.recurrence.includes('높')?'td-warn':''}">${d.recurrence}</span></td>
+      <td>${isPrev?'<span style="font-size:10px;color:var(--text-muted)">예방 전용</span>':d.bio}</td>
+      <td><span class="${d.recurrence.includes('낮')||d.recurrence.includes('최저')||d.recurrence.includes('N/A')?'td-ok':d.recurrence.includes('높')?'td-warn':''}">${d.recurrence}</span></td>
     </tr>`;
   }).join('');
   tv.innerHTML = `
     <div class="tbl-header">
-      <h2>📊 트립탄 & 편두통 급성기 치료제 마스터 비교표</h2>
-      <p>전체 ${drugs.length}종 한눈 비교 · 원외코드 클릭 시 복사</p>
+      <h2>📊 트립탄 & 편두통 치료제 마스터 비교표</h2>
+      <p>전체 ${drugs.length}종 한눈 비교 · 코드 클릭 시 복사 · 원내등재(🟢) / 원외처방(🔵) / 시술코드(🔷)</p>
     </div>
     <div class="tbl-wrap">
       <table>
         <thead><tr>
-          <th>성분명 / 상품명</th><th>분류</th><th>원외코드</th>
-          <th>반감기</th><th>효과 발현</th><th>초회량</th><th>일최대량</th>
+          <th>성분명 / 상품명</th><th>분류</th><th>처방코드</th>
+          <th>반감기</th><th>효과 발현 / 용법</th><th>초회량 / 투여</th><th>최대량</th>
           <th>생체이용률</th><th>재발률</th>
         </tr></thead>
         <tbody>${rows}</tbody>
       </table>
     </div>
     <div class="notebox" style="margin-top:12px;">
-      <div class="nl">⚠️ 트립탄 공통 금기 (전 성분 동일 적용)</div>
-      <p>허혈성 심질환(협심증·심근경색), 변이형 협심증, 뇌졸중·TIA 병력, 조절되지 않는 고혈압, 말초혈관 질환 · MAO 억제제 병용 및 14일 이내 · 에르고타민 함유 제제 24시간 이내 · 타 트립탄 24시간 이내 병용 절대 금기. ※ 라스미디탄(dittan)·리메게판트(gepant)는 트립탄 금기 심혈관 환자에 사용 가능하나 MAOIs 금기 공통 적용.</p>
+      <div class="nl">⚠️ 공통 금기 & 예방치료 급여 기준</div>
+      <p><strong>[트립탄 공통 금기]</strong> 허혈성 심질환·변이형 협심증·뇌졸중/TIA 병력·조절 불량 고혈압·말초혈관 질환·MAOIs 14일 이내·에르고타민 24시간 이내·타 트립탄 24시간 이내. ※ 라스미디탄(dittan)·리메게판트·아토게판트(gepant)는 심혈관 금기 해당 없음. <br><strong>[보톡스 급여 기준]</strong> 만성 편두통(월 15두통일 이상 3개월 이상) + 예방약 3가지 이상 실패. 전체 시술: 7BTOX×2 + MIGIJ2 / 절반 시술: 7BTOX×1 + MIGIJ.</p>
     </div>`;
 }
 
@@ -657,7 +772,7 @@ function renderDrug(d) {
 
   const fblock = d.formulary.length
     ? `<div class="fsec">
-        <div class="ftitle">🏥 원외처방 코드</div>
+        <div class="ftitle">🏥 ${d.drugClass==='예방치료'?'원내 처방 코드':'원외처방 코드'}</div>
         <div class="fgrid">${d.formulary.map(f=>
           f.nocode
             ? `<div class="fpill"><span class="fcode" style="color:var(--text-muted)">${f.code}</span><span class="fname">${f.name}</span><span class="ftag ${f.tagCls}">${f.tag}</span></div>`
