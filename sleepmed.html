@@ -497,7 +497,7 @@
         <div class="flow-row">
           <div class="flow-branch">
             <div class="flow-branch-lbl">입면 장애</div>
-            <div class="flow-result">Ramelteon<br>→ Zolpidem IR</div>
+            <div class="flow-result">Ramelteon<br>→ Zolpidem IR / Zaleplon</div>
           </div>
           <div class="flow-branch">
             <div class="flow-branch-lbl">수면 유지</div>
@@ -510,6 +510,11 @@
         </div>
         <div class="flow-arrow" style="margin-top:6px;">↓ 고령자</div>
         <div class="flow-diamond" style="border-color:var(--red);background:var(--red-bg);color:var(--red-text);font-size:11px;">BZD·Z-drug 회피 (BEERS)<br>Melatonin / Doxepin 3mg 우선</div>
+        <div class="flow-arrow" style="margin-top:6px;">↓ 한밤중 각성 → 재입면 불가</div>
+        <div class="flow-diamond" style="border-color:var(--teal);background:var(--teal-bg);color:var(--teal-text);font-size:11px;">
+          Zaleplon 10mg PRN <span style="font-weight:400;font-size:10px;">(원외처방)</span><br>
+          <span style="font-weight:400;">잔여수면 <strong>≥ 4h</strong> 확인 필수 &nbsp;·&nbsp; 반드시 공복 복용</span>
+        </div>
       </div>
     </div>
     <div class="guide-card">
@@ -543,6 +548,7 @@
     <ul class="warning-list">
       <li>병용 처방: CNS 억제 효과 증폭 → 단일 요법 원칙. 불가피 시 호흡 억제 모니터링.</li>
       <li>Zolpidem (IR·CR): 여성은 남성 대비 혈중 농도 50% 높음 → FDA 권고 최저용량 필수.</li>
+      <li>Zaleplon: 한밤중 PRN 복용 시 잔여수면 ≥ 4h 미충족 → 다음날 졸음·이상행동 위험. 식후 복용 시 Tmax 약 2h 지연으로 효과 현저히 감소 — 공복 복용 필수.</li>
       <li>Suvorexant: CYP3A4 강력 억제제 (clarithromycin, ketoconazole) 병용 CI.</li>
       <li>Ramelteon: 중증 간장애 시 AUC 급증 → 금기.</li>
       <li>장기 처방 시 3~6개월마다 인지 기능·낙상·의존성 재평가 권고.</li>
@@ -596,6 +602,19 @@ const drugs = [
     isCR: true,
     risks: { elderly:'caution', respiratory:'warn', substance:'caution', hepatic:'caution', renal:'ok' },
     interactions: ['알코올', 'CNS 억제제', 'Rifampicin']
+  },
+  {
+    id: 'zaleplon',
+    name: 'Zaleplon', brand: 'Sonata', drugClass: 'Z-drug',
+    halfLife: '~1h', halfLifeVal: 1, cognitive: 'Low', cogVal: 1,
+    usage: 'Onset', dose: '10mg (고령자 5mg), 취침 직전',
+    mechanism: 'GABA-A 수용체 α1 subunit 선택적 결합 (pyrazolopyrimidine계). 주 대사: Aldehyde oxidase → CYP 상호작용 최소',
+    effects: '두통, 어지럼증, 기억장애, 이상수면행동 (FDA 블랙박스 경고)',
+    contraindications: '중증 간기능 저하, 수면무호흡, 근무력증',
+    tip: 'Z-drug 중 반감기 최단(~1h) → 숙취 最少. 공복 복용 필수 (식후 Tmax 약 2h 지연). 잔여수면 ≥4h 확보 시 한밤중 복용도 FDA 허가. CYP 아닌 Aldehyde oxidase 주 대사 → CYP 약물상호작용 적음. 수면유지 불면에는 효과 없음.',
+    formulary: 'external', formularyCode: null, coverage: null,
+    risks: { elderly:'caution', respiratory:'warn', substance:'caution', hepatic:'warn', renal:'ok' },
+    interactions: ['알코올', 'CNS 억제제', 'Cimetidine (Aldehyde oxidase 억제 → 혈중농도↑)', 'Rifampicin (CYP3A4 유도 → 노출↓)']
   },
   {
     id: 'eszopiclone',
