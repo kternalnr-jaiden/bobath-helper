@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>영양제 처방가이드</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #f5f6f8;
+    --surface: #ffffff;
+    --surface2: #f0f2f5;
+    --border: #e2e5ea;
+    --border-strong: #c8cdd6;
+    --text: #1a1d23;
+    --text-2: #4a5062;
+    --text-3: #8a91a0;
+    --accent: #1a56a0;
+    --accent-bg: #e8f0fb;
+    --accent-text: #0d3a78;
+    --teal: #0b7b6e;
+    --teal-bg: #e6f5f3;
+    --teal-text: #074d45;
+    --red: #c0392b;
+    --red-bg: #fdf0ee;
+    --red-text: #7b1e15;
+    --amber: #9a6200;
+    --amber-bg: #fff8e6;
+    --amber-text: #6b4300;
+    --green: #2d7a3a;
+    --green-bg: #edf7ef;
+    --green-text: #1a4d23;
+    --purple: #5a3fa5;
+    --purple-bg: #f0ecfc;
+    --purple-text: #3a2870;
+    --radius-sm: 6px;
+    --radius-md: 10px;
+    --radius-lg: 14px;
+  }
+  body { font-family: 'Pretendard', 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif; background: var(--bg); color: var(--text); font-size: 14px; min-height: 100vh; }
+
+  header{background:var(--surface);border-bottom:1px solid var(--border);padding:14px 18px;position:sticky;top:0;z-index:100;box-shadow:0 1px 3px rgba(0,0,0,0.06),0 1px 2px rgba(0,0,0,0.04);}
+  .header-top{display:flex;align-items:center;gap:10px;max-width:1140px;margin:0 auto;}
+  .home-btn{display:inline-flex;align-items:center;gap:4px;background:var(--surface2);border:1px solid var(--border);color:var(--text-2);font-size:11.5px;font-weight:600;padding:5px 10px;border-radius:8px;cursor:pointer;transition:all .18s;flex-shrink:0;font-family:'Malgun Gothic','Apple SD Gothic Neo','Noto Sans KR',sans-serif;}
+  .home-btn:hover{background:rgba(26,86,160,0.08);border-color:var(--accent);color:var(--accent);}
+  .header-brand{flex:1;min-width:0;}
+  .header-title{font-family:'Malgun Gothic','Apple SD Gothic Neo','Noto Sans KR',sans-serif;font-size:18px;font-weight:700;letter-spacing:-.3px;color:var(--text);line-height:1.2;}
+  .header-sub{font-size:10px;color:var(--text-3);letter-spacing:.4px;text-transform:uppercase;margin-top:2px;}
+
+  .main { max-width: 1140px; margin: 0 auto; padding: 20px 24px 60px; }
+  .view { display: none; }
+  .view.active { display: block; }
+
+  /* ===== Finder CTA (top of home) ===== */
+  .finder-cta { background: linear-gradient(135deg, #1a56a0 0%, #5a3fa5 100%); border-radius: var(--radius-lg); padding: 22px 26px; margin-bottom: 22px; display: flex; justify-content: space-between; align-items: center; gap: 20px; flex-wrap: wrap; cursor: pointer; transition: transform .12s, box-shadow .12s; box-shadow: 0 4px 16px rgba(26,86,160,0.18); }
+  .finder-cta:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(26,86,160,0.25); }
+  .finder-cta-left h2 { font-size: 17px; font-weight: 700; color: #fff; margin-bottom: 5px; }
+  .finder-cta-left p { font-size: 12.5px; color: rgba(255,255,255,0.85); line-height: 1.5; }
+  .finder-cta-btn { background: #fff; color: var(--accent-text); font-size: 13px; font-weight: 700; padding: 11px 20px; border-radius: 100px; white-space: nowrap; flex-shrink: 0; border: none; }
+
+  /* ===== Home view ===== */
+  .home-intro { font-size: 12.5px; color: var(--text-2); line-height: 1.6; margin-bottom: 18px; max-width: 74ch; }
+  .cat-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 14px; }
+  .cat-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 18px; cursor: pointer; transition: border-color .15s, box-shadow .15s, transform .1s; }
+  .cat-card:hover { border-color: var(--accent); box-shadow: 0 4px 12px rgba(0,0,0,0.07); transform: translateY(-1px); }
+  .cat-num-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+  .cat-num { width: 30px; height: 30px; border-radius: 9px; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 800; color: #fff; flex-shrink: 0; }
+  .cat-emoji { font-size: 20px; }
+  .cat-title { font-size: 15.5px; font-weight: 700; color: var(--text); }
+  .cat-desc { font-size: 12px; color: var(--text-2); line-height: 1.55; margin-bottom: 10px; }
+  .cat-meta { display: flex; gap: 6px; flex-wrap: wrap; }
+  .cat-tag { font-size: 10.5px; font-weight: 600; padding: 2px 8px; border-radius: 100px; background: var(--surface2); color: var(--text-3); }
+
+  /* ===== Category view ===== */
+  .cat-header { display: flex; align-items: center; gap: 12px; margin-bottom: 6px; }
+  .cat-header-num { width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 800; color: #fff; flex-shrink: 0; }
+  .cat-header-title { font-size: 19px; font-weight: 700; }
+  .cat-header-sub { font-size: 12px; color: var(--text-3); margin-top: 2px; }
+
+  .common-box { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 16px 18px; margin: 16px 0 20px; }
+  .common-box h4 { font-size: 12.5px; font-weight: 700; margin-bottom: 9px; color: var(--text); display:flex; align-items:center; gap:6px; }
+  .indic-list { list-style: none; display: flex; flex-direction: column; gap: 7px; }
+  .indic-item { display: flex; gap: 9px; font-size: 12px; line-height: 1.6; color: var(--text-2); }
+  .indic-dot { width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0; margin-top: 6px; }
+  .indic-item strong { color: var(--text); }
+
+  .item-list { display: flex; flex-direction: column; gap: 10px; }
+  .item-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; }
+  .item-card.highlight { border: 2px solid var(--accent); }
+  .item-card-head { padding: 14px 16px; display: flex; align-items: center; justify-content: space-between; gap: 12px; cursor: pointer; flex-wrap: wrap; }
+  .item-card-head:hover { background: var(--surface2); }
+  .item-title-block { display: flex; align-items: center; gap: 10px; min-width: 0; flex: 1; }
+  .item-small-num { font-size: 11px; font-weight: 700; color: var(--text-3); flex-shrink: 0; }
+  .item-code { font-family: monospace; font-size: 12.5px; font-weight: 700; color: var(--accent-text); background: var(--accent-bg); padding: 2px 8px; border-radius: 4px; flex-shrink: 0; }
+  .item-comp-preview { font-size: 12px; color: var(--text-2); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .item-base-badge { font-size: 11px; font-weight: 700; color: var(--teal-text); background: var(--teal-bg); padding: 3px 9px; border-radius: 100px; flex-shrink: 0; white-space: nowrap; }
+  .item-price { font-size: 14px; font-weight: 700; color: var(--text); flex-shrink: 0; }
+  .item-price.tbd { font-size: 12px; font-weight: 600; color: var(--amber-text); }
+  .item-chevron { font-size: 12px; color: var(--text-3); transition: transform .15s; flex-shrink: 0; }
+  .item-card.open .item-chevron { transform: rotate(90deg); }
+
+  .item-detail { display: none; padding: 0 16px 16px; border-top: 1px solid var(--border); }
+  .item-card.open .item-detail { display: block; }
+
+  .detail-row { display: flex; gap: 20px; flex-wrap: wrap; margin-top: 14px; }
+  .detail-col { flex: 1; min-width: 240px; }
+  .detail-lbl { font-size: 10.5px; font-weight: 700; color: var(--text-3); margin-bottom: 6px; }
+  .comp-chip-row { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 4px; }
+  .comp-chip { background: var(--teal-bg); color: var(--teal-text); font-size: 11.5px; font-weight: 600; padding: 4px 9px; border-radius: 6px; }
+  .comp-chip.new { background: var(--amber-bg); color: var(--amber-text); }
+  .comp-chip .ingr { font-weight: 400; opacity: .8; margin-left: 4px; }
+  .base-box { font-size: 12px; color: var(--text-2); background: var(--surface2); padding: 8px 10px; border-radius: var(--radius-sm); line-height: 1.5; }
+  .pick-box { font-size: 12px; color: var(--purple-text); background: var(--purple-bg); padding: 8px 10px; border-radius: var(--radius-sm); line-height: 1.55; }
+  .dosing-box { font-size: 12px; color: var(--teal-text); background: var(--teal-bg); padding: 8px 10px; border-radius: var(--radius-sm); line-height: 1.55; }
+
+  .pc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 14px; }
+  .pc-box { border-radius: var(--radius-sm); padding: 10px 12px; }
+  .pc-box.pro { background: var(--green-bg); }
+  .pc-box.con { background: var(--amber-bg); }
+  .pc-box h5 { font-size: 11px; font-weight: 700; margin-bottom: 6px; }
+  .pc-box.pro h5 { color: var(--green-text); }
+  .pc-box.con h5 { color: var(--amber-text); }
+  .pc-box ul { list-style: none; display: flex; flex-direction: column; gap: 4px; }
+  .pc-box li { font-size: 11.5px; line-height: 1.55; padding-left: 10px; position: relative; }
+  .pc-box.pro li { color: var(--green-text); }
+  .pc-box.con li { color: var(--amber-text); }
+  .pc-box li::before { content: '·'; position: absolute; left: 0; font-weight: 700; }
+
+  .copy-btn { display: inline-flex; align-items: center; gap: 4px; font-size: 10.5px; font-weight: 700; padding: 4px 9px; border-radius: 6px; border: 1px solid var(--accent); background: var(--accent-bg); color: var(--accent-text); cursor: pointer; transition: all 0.12s; font-family: monospace; white-space: nowrap; }
+  .copy-btn:hover { background: var(--accent); color: #fff; }
+  .copy-btn.copied { background: var(--green); border-color: var(--green); color: #fff; }
+  .copy-btn svg { width: 10px; height: 10px; flex-shrink: 0; }
+
+  /* ===== Finder view ===== */
+  .finder-wrap { max-width: 620px; margin: 0 auto; }
+  .finder-progress { display: flex; gap: 5px; margin-bottom: 22px; }
+  .finder-dot { height: 4px; flex: 1; background: var(--border); border-radius: 2px; }
+  .finder-dot.done { background: var(--accent); }
+  .finder-dot.current { background: var(--purple); }
+
+  .quiz-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 24px; }
+  .quiz-q { font-size: 16px; font-weight: 700; color: var(--text); margin-bottom: 18px; line-height: 1.5; }
+  .quiz-options { display: flex; flex-direction: column; gap: 9px; }
+  .quiz-opt { text-align: left; background: var(--surface2); border: 1.5px solid transparent; border-radius: var(--radius-md); padding: 13px 16px; font-size: 13.5px; font-weight: 600; color: var(--text-2); cursor: pointer; transition: all .12s; }
+  .quiz-opt:hover { border-color: var(--accent); background: var(--accent-bg); color: var(--accent-text); }
+
+  .quiz-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 18px; }
+  .quiz-back { font-size: 12px; color: var(--text-3); cursor: pointer; background: none; border: none; padding: 6px 4px; }
+  .quiz-back:hover { color: var(--accent); }
+  .quiz-restart { font-size: 12px; color: var(--text-3); cursor: pointer; background: none; border: none; padding: 6px 4px; }
+
+  /* Result card */
+  .result-card { background: var(--surface); border: 2px solid var(--accent); border-radius: var(--radius-lg); padding: 24px; }
+  .result-eyebrow { font-size: 11px; font-weight: 700; color: var(--purple-text); background: var(--purple-bg); display: inline-block; padding: 3px 10px; border-radius: 100px; margin-bottom: 12px; }
+  .result-title { font-size: 20px; font-weight: 800; color: var(--text); margin-bottom: 4px; }
+  .result-code { font-family: monospace; font-size: 13px; font-weight: 700; color: var(--accent-text); background: var(--accent-bg); padding: 5px 10px 5px 12px; border-radius: 6px; display: inline-flex; align-items: center; gap: 6px; margin-bottom: 14px; cursor: pointer; border: 1px solid transparent; transition: all .12s; }
+  .result-code:hover { border-color: var(--accent); background: #dceafc; }
+  .result-code.copied { background: var(--green-bg); color: var(--green-text); border-color: var(--green); }
+  .result-code svg { width: 12px; height: 12px; flex-shrink: 0; }
+  .result-price { font-size: 22px; font-weight: 800; color: var(--text); margin-bottom: 14px; }
+  .result-price span { font-size: 13px; font-weight: 600; color: var(--text-3); }
+  .result-btns { display: flex; gap: 8px; margin-top: 18px; flex-wrap: wrap; }
+  .result-btn { flex: 1; text-align: center; padding: 11px 16px; border-radius: var(--radius-md); font-size: 13px; font-weight: 700; cursor: pointer; border: none; min-width: 140px; }
+  .result-btn.primary { background: var(--accent); color: #fff; }
+  .result-btn.secondary { background: var(--surface2); color: var(--text-2); border: 1px solid var(--border); }
+
+  footer { text-align:center; padding: 18px 0 4px; font-size: 11px; color: var(--text-3); }
+
+  @media (max-width: 720px) {
+    .main { padding: 12px; }
+    .pc-grid { grid-template-columns: 1fr; }
+    .item-card-head { flex-direction: column; align-items: flex-start; }
+    .item-price { align-self: flex-end; }
+    .finder-cta { flex-direction: column; align-items: flex-start; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-top">
+    <button class="home-btn" id="homeBtn" onclick="goHome()" style="display:none;">← 전체 목록</button>
+    <div class="header-brand">
+      <div class="header-title" id="headerTitle">영양제 처방가이드</div>
+      <div class="header-sub" id="headerSub">하남보바스병원 · EMR 등재 비타민/영양수액 요법</div>
+    </div>
+  </div>
+</header>
+
+<div class="main">
+
+  <!-- HOME VIEW -->
+  <div class="view active" id="view-home">
+    <div class="finder-cta" onclick="startFinder()">
+      <div class="finder-cta-left">
+        <h2>🔍 나에게 알맞는 영양주사 찾기</h2>
+        <p>몇 가지 질문에 답하면 8개 계열 중 가장 적합한 처방코드를 추천해드립니다.</p>
+      </div>
+      <button class="finder-cta-btn">시작하기 →</button>
+    </div>
+
+    <p class="home-intro">원내 EMR에 등재된 비타민·영양수액 요법 8개 계열을 정리했습니다. 각 계열 카드를 선택하면 세부 처방코드별 구성 성분·베이스 수액·가격과 함께 적응증·장단점을 확인할 수 있습니다.</p>
+    <div class="cat-grid" id="catGrid"></div>
+  </div>
+
+  <!-- CATEGORY VIEW (rendered dynamically) -->
+  <div class="view" id="view-category">
+    <div class="cat-header">
+      <div class="cat-header-num" id="catHeaderNum"></div>
+      <div>
+        <div class="cat-header-title" id="catHeaderTitle"></div>
+        <div class="cat-header-sub" id="catHeaderSub"></div>
+      </div>
+    </div>
+    <div class="common-box">
+      <h4>🎯 계열 공통 적응증</h4>
+      <ul class="indic-list" id="catCommonIndic"></ul>
+    </div>
+    <div class="item-list" id="itemList"></div>
+  </div>
+
+  <!-- FINDER VIEW -->
+  <div class="view" id="view-finder">
+    <div class="finder-wrap">
+      <div class="finder-progress" id="finderProgress"></div>
+      <div id="finderStage"></div>
+    </div>
+  </div>
+
+</div>
+
+<footer>영양제 처방가이드(EMR 등재 요법 + 항노화 신규요법) · 내부 검토용</footer>
+
+<script>
+const COLORS = ['#c55a11','#0b7b6e','#5a3fa5','#1a56a0','#9a6200','#2d7a3a','#c0392b','#a01060'];
+
+const CATEGORIES = [
+  {
+    num: 1, id: 'garlic', emoji: '🧄', title: '마늘요법 (MV2요법)',
+    desc: '활성형 비타민B1(푸르티아민) 단일제 기반 신경계·피로 보조요법',
+    common: [
+      '비타민B1 결핍·말초신경병증, 알콜성 신경병증 보조',
+      '근육통·전신피로, 식욕부진 환자의 단일성분 B1 보충',
+      '마늘향 특유의 냄새로 개원가에서 통칭 "마늘주사"'
+    ],
+    items: [
+      { code:'NT-MV2A', title:'MV2요법 A', comp:[{n:'푸르티아민 주', i:'fursultiamine 50㎎'}],
+        base:'5DW250 (5%포도당 250mL) 베이스', baseShort:'5DW250', price:35000,
+        pick:'당류 보충을 겸하고 싶거나 공복 상태인 환자에게 적합',
+        pros:['당류 공급으로 즉시 에너지 보충 효과 겸용','베이스 수액 자체도 열량 보조 역할'],
+        cons:['당뇨환자는 혈당 모니터링 필요','고령/신장질환자는 수분부담 고려'], dosing:'필요시 1회 또는 주 1~2회 × 2~4주 단기 코스' },
+      { code:'NT-MV2B', title:'MV2요법 B', comp:[{n:'푸르티아민 주', i:'fursultiamine 50㎎'}],
+        base:'NS110 (중외엔에스 110mL) 베이스', baseShort:'NS110', price:35000,
+        pick:'당뇨환자 등 혈당 모니터링이 필요한 경우 우선 선택',
+        pros:['혈당에 영향 없어 당뇨환자에도 무난','전해질 밸런스 위주 보충'],
+        cons:['열량 보충 효과는 없음','공복감 개선에는 A안 대비 약함'], dosing:'필요시 1회 또는 주 1~2회 × 2~4주 단기 코스' },
+      { code:'NT-MV2C', title:'MV2요법 C', comp:[{n:'푸르티아민 주', i:'fursultiamine 50㎎'},{n:'닥터라민 100mL', i:'아미노산 복합'}],
+        base:'닥터라민100 (아미노산) 병용 베이스', baseShort:'닥터라민100', price:65000,
+        pick:'영양상태 저하가 동반되어 아미노산 보충까지 필요한 경우',
+        pros:['아미노산 동시 공급으로 영양보충 효과 강화','장기 재활입원 환자 등에 적합'],
+        cons:['A/B안 대비 가격이 약 2배','단순 B1 보충 목적이라면 과잉처방 우려'], dosing:'필요시 1회 또는 주 1~2회 × 2~4주 단기 코스' },
+    ]
+  },
+  {
+    num: 2, id: 'licorice', emoji: '🌿', title: '감초요법 (MV3요법)',
+    desc: '글리시리진(네오미노화겐씨) 단일제 기반 간기능·항염 보조요법',
+    common: [
+      '만성 간질환 보조요법, 간수치 상승 시 간기능 보조',
+      '알러지성 피부질환(습진·두드러기) 보조치료',
+      'Stronger Neo-Minophagen C 계열의 전형적 적응증'
+    ],
+    items: [
+      { code:'NT-MV3A', title:'MV3요법 A', comp:[{n:'네오미노화겐씨 주', i:'glycyrrhizin 복합제'}],
+        base:'5DW250 (5%포도당 250mL) 베이스', baseShort:'5DW250', price:35000,
+        pick:'당류 보충을 겸하고 싶거나 공복 상태인 환자',
+        pros:['당류 공급 겸용'], cons:['당뇨환자 혈당 모니터링 필요'], dosing:'필요시 1회 또는 주 1~2회 × 2~4주 단기 코스' },
+      { code:'NT-MV3B', title:'MV3요법 B', comp:[{n:'네오미노화겐씨 주', i:'glycyrrhizin 복합제'}],
+        base:'NS110 (중외엔에스 110mL) 베이스', baseShort:'NS110', price:35000,
+        pick:'당뇨환자 등 혈당 모니터링이 필요한 경우',
+        pros:['혈당 영향 없음'], cons:['열량 보충 효과 없음'], dosing:'필요시 1회 또는 주 1~2회 × 2~4주 단기 코스' },
+      { code:'NT-MV3C', title:'MV3요법 C', comp:[{n:'네오미노화겐씨 주', i:'glycyrrhizin 복합제'},{n:'닥터라민 100mL', i:'아미노산 복합'}],
+        base:'닥터라민100 (아미노산) 병용 베이스', baseShort:'닥터라민100', price:65000,
+        pick:'간기능 저하와 함께 영양상태 저하가 동반된 경우',
+        pros:['아미노산 동시 공급'], cons:['A/B안 대비 가격 약 2배'], dosing:'필요시 1회 또는 주 1~2회 × 2~4주 단기 코스' },
+    ]
+  },
+  {
+    num: 3, id: 'garlic-licorice', emoji: '🧄🌿', title: '마늘+감초요법 (MV4요법)',
+    desc: '푸르티아민 + 네오미노화겐씨 병용, B1결핍과 간기능저하 동시 보조',
+    common: [
+      'B1결핍(신경계 증상·피로)과 간기능저하가 동반된 경우',
+      '재활입원환자 중 식욕부진 + 간수치 이상이 함께 있는 경우',
+      'MV2(마늘)+MV3(감초) 병용에 해당하는 복합 처방'
+    ],
+    items: [
+      { code:'NT-MV4A', title:'MV4요법 A', comp:[{n:'푸르티아민 주', i:'fursultiamine 50㎎'},{n:'네오미노화겐씨 주', i:'glycyrrhizin 복합제'}],
+        base:'5DW250 (5%포도당 250mL) 베이스', baseShort:'5DW250', price:60000,
+        pick:'당류 보충을 겸하고 싶은 경우',
+        pros:['두 계열 동시 보조로 재처방 번거로움 감소'], cons:['둘 다 필요하지 않은 환자에겐 과잉처방 우려'], dosing:'필요시 1회 또는 주 1~2회 × 2~4주 단기 코스' },
+      { code:'NT-MV4B', title:'MV4요법 B', comp:[{n:'푸르티아민 주', i:'fursultiamine 50㎎'},{n:'네오미노화겐씨 주', i:'glycyrrhizin 복합제'}],
+        base:'NS110 (중외엔에스 110mL) 베이스', baseShort:'NS110', price:60000,
+        pick:'당뇨환자 등 혈당 모니터링이 필요한 경우',
+        pros:['혈당 영향 없음'], cons:['단가가 단일요법 대비 높음'], dosing:'필요시 1회 또는 주 1~2회 × 2~4주 단기 코스' },
+      { code:'NT-MV4C', title:'MV4요법 C', comp:[{n:'푸르티아민 주', i:'fursultiamine 50㎎'},{n:'네오미노화겐씨 주', i:'glycyrrhizin 복합제'},{n:'닥터라민 100mL', i:'아미노산 복합'}],
+        base:'NS110 + 닥터라민100 병용 베이스 (2종 동시 사용)', baseShort:'NS110+닥터라민100', price:90000,
+        pick:'영양보충까지 필요한 중증·장기재활 환자',
+        pros:['B1+간기능+아미노산까지 한번에 커버'], cons:['3계열 중 가장 고가, 필요성 재확인 후 처방 권장'], dosing:'필요시 1회 또는 주 1~2회 × 2~4주 단기 코스' },
+    ]
+  },
+  {
+    num: 4, id: 'multivit', emoji: '💊', title: '종합비타민 (MV1요법)',
+    desc: '멀티비타 주(비타민A~E) 기반, 세느비트 대체 종합영양 보충요법',
+    common: [
+      '장기입원·경구섭취 부족 환자의 지용성+수용성 종합비타민(A~E) 보충',
+      '전반적 영양지지가 필요한 재활치료 환자',
+      '생산중단된 세느비트를 대체하는 품목'
+    ],
+    items: [
+      { code:'NT-MV1A', title:'MV1요법 A', comp:[{n:'멀티비타 주', i:'multi vitamins (A~E 종합)'}],
+        base:'5DW250 (5%포도당 250mL) 베이스', baseShort:'5DW250', price:40000,
+        pick:'당류 보충을 겸하고 싶은 경우',
+        pros:['당류 공급 겸용'], cons:['당뇨환자 혈당 모니터링 필요'], dosing:'' },
+      { code:'NT-MV1B', title:'MV1요법 B', comp:[{n:'멀티비타 주', i:'multi vitamins (A~E 종합)'}],
+        base:'NS110 (중외엔에스 110mL) 베이스', baseShort:'NS110', price:40000,
+        pick:'당뇨환자 등 혈당 모니터링이 필요한 경우',
+        pros:['혈당 영향 없음'], cons:['열량 보충 효과 없음'], dosing:'' },
+      { code:'NT-MV1C', title:'MV1요법 C', comp:[{n:'멀티비타 주', i:'multi vitamins (A~E 종합)'},{n:'닥터라민 100mL', i:'아미노산 복합'}],
+        base:'닥터라민100 (아미노산) 병용 베이스', baseShort:'닥터라민100', price:70000,
+        pick:'경구섭취 부족이 심해 아미노산 보충까지 필요한 경우',
+        pros:['종합비타민+아미노산 동시 공급'], cons:['A/B안 대비 가격 약 1.75배'], dosing:'' },
+    ]
+  },
+  {
+    num: 5, id: 'bluedoctor', emoji: '🔷', title: '블루닥터 (BLUEHEX)',
+    desc: '미량원소 5종 + 아미노산(닥터라민) 병용, 장기 영양지지 요법',
+    common: [
+      '장기 금식·경구섭취 불량 환자의 미량원소 결핍 예방',
+      '욕창·상처치유 지연 환자의 아연 보충',
+      '장기 재활입원 환자의 전반적 영양지지'
+    ],
+    items: [
+      { code:'BLUEHEX', title:'블루닥터', comp:[{n:'멀티블루5 주 10mL', i:'Cr·Cu·Mn·Se·Zn 미량원소5종'},{n:'닥터라민 250mL', i:'아미노산 복합'}],
+        base:'닥터라민250mL 베이스에 멀티블루5 혼합 (단일 옵션)', baseShort:'닥터라민250', price:90000,
+        pick:'베이스 선택지 없는 단일 처방 — 미량원소+아미노산이 함께 필요할 때',
+        pros:['미량원소 5종을 한 번에 보충','두 성분 모두 원내 기존코드로 즉시 처방 가능'],
+        cons:['베이스 수액 선택 옵션이 없음','구성이 단순한 편에 비해 상대적으로 고가(90,000원)'], dosing:'' },
+    ]
+  },
+  {
+    num: 6, id: 'brain', emoji: '🧠', title: '뇌영양제 (세레브레인 기반)',
+    desc: '세레브레인(뇌단백가수분해물) 공통 베이스 + 추가 성분 3종 라인업',
+    common: [
+      '뇌졸중·외상성뇌손상 등 재활환자의 인지기능·신경회복 보조',
+      '경도인지장애·어지럼증·기억력저하 보조치료',
+      '세레브레인주 20mL은 별도산정 항목 — 총비용에 별도 반영 필요'
+    ],
+    items: [
+      { code:'BR-MV2B', title:'뇌영양제1', comp:[{n:'세레브레인 주 20mL', i:'뇌단백가수분해물(별도산정)'},{n:'푸르티아민 주', i:'fursultiamine 50㎎'}],
+        base:'NS100 + NS110 베이스', baseShort:'NS100+NS110', price:40000,
+        pick:'B1결핍(신경계 증상)이 동반된 경우',
+        pros:['3계열 중 가장 저렴','B1 보조가 필요한 재활환자에 적합'],
+        cons:['영양·미량원소 보강은 없음 — 필요시 2·3안 고려'], dosing:'' },
+      { code:'BR-MV2C', title:'뇌영양제2', comp:[{n:'세레브레인 주 20mL', i:'뇌단백가수분해물(별도산정)'},{n:'닥터라민 100mL', i:'아미노산 복합'},{n:'푸르티아민 주', i:'fursultiamine 50㎎'}],
+        base:'NS100 베이스', baseShort:'NS100', price:65000,
+        pick:'전신 영양상태 저하가 동반된 경우',
+        pros:['아미노산 영양보충까지 추가'], cons:['1안 대비 가격 상승'], dosing:'' },
+      { code:'BR-BLUEHEX', title:'뇌영양제3', comp:[{n:'세레브레인 주 20mL', i:'뇌단백가수분해물(별도산정)'},{n:'닥터라민 100mL', i:'아미노산 복합'},{n:'멀티블루5 주', i:'미량원소5종'}],
+        base:'NS100 베이스', baseShort:'NS100', price:85000,
+        pick:'미량원소 결핍이 동반된 경우 (푸르티아민 대신 미량원소로 대체)',
+        pros:['미량원소까지 보강한 가장 포괄적인 구성'], cons:['3안 중 가장 고가'], dosing:'' },
+    ]
+  },
+  {
+    num: 7, id: 'myers', emoji: '💉', title: '마이어스 칵테일 (HTV 고용량비타민치료)',
+    desc: '비타민B군+C+Mg 클래식 조합, 항산화(글루타치온) 추가 옵션 포함',
+    common: [
+      '전신피로·컨디션저하·만성피로 등 일반적 컨디션 관리 목적',
+      'MYERS3/4는 글루타치온(화이치온) 추가로 항산화 보강',
+      '화이치온 라벨 적응증은 항암화학요법 신경병증 예방 — 일반 피로/미용 목적 사용은 오프라벨'
+    ],
+    items: [
+      { code:'MYERS1', title:'HTV 고용량 비타민 치료-1', comp:[{n:'메가그린 주', i:'비타민C'},{n:'삐콤헥사 주', i:'비타민B군'},{n:'티아민/피리독신/비타모/비타일이', i:'B1/B6/판토텐산/B12'},{n:'마시 주사', i:'magnesium sulfate'}],
+        base:'생리식염키트주 250mL(NS) 베이스', baseShort:'NS250', price:85000,
+        pick:'당뇨환자 등 NS 베이스가 필요한 경우 — 클래식 마이어스칵테일 기본형',
+        pros:['가장 기본적인 클래식 조합','혈당 영향 없음'],
+        cons:['MYERS2와 가격이 동일 — 베이스 수액(NS vs D5W) 차이만 존재'], dosing:'' },
+      { code:'MYERS2', title:'HTV 고용량 비타민 치료-2', comp:[{n:'메가그린 주', i:'비타민C'},{n:'삐콤헥사 주', i:'비타민B군'},{n:'티아민/피리독신/비타모/비타일이', i:'B1/B6/판토텐산/B12'},{n:'마시 주사', i:'magnesium sulfate'}],
+        base:'5%포도당키트주 250mL(D5W) 베이스', baseShort:'D5W250', price:85000,
+        pick:'당류 보충을 겸하고 싶은 경우 — MYERS1과 베이스만 다름',
+        pros:['당류 공급 겸용'], cons:['당뇨환자 혈당 모니터링 필요'], dosing:'' },
+      { code:'MYERS3', title:'HTV 고용량 비타민 치료-3', comp:[{n:'화이치온 주', i:'glutathione(reduced)'},{n:'메가그린 주', i:'비타민C'},{n:'삐콤헥사 주', i:'비타민B군'},{n:'티아민/피리독신/비타모/비타일이', i:'B1/B6/판토텐산/B12'},{n:'마시 주사', i:'magnesium sulfate'},{n:'중외엔에스 110mL', i:'전해질'}],
+        base:'NS250 + 중외엔에스110mL 베이스', baseShort:'NS250+NS110', price:110000,
+        pick:'항산화 강화가 필요한 경우, NS 베이스',
+        pros:['글루타치온 추가로 항산화 보강'], cons:['화이치온 사용목적이 라벨 적응증(항암화학요법 신경병증 예방)과 다름 — 오프라벨 설명 필요'], dosing:'' },
+      { code:'MYERS4', title:'HTV 고용량 비타민 치료-4', comp:[{n:'화이치온 주', i:'glutathione(reduced)'},{n:'메가그린 주', i:'비타민C'},{n:'삐콤헥사 주', i:'비타민B군'},{n:'티아민/피리독신/비타모/비타일이', i:'B1/B6/판토텐산/B12'},{n:'마시 주사', i:'magnesium sulfate'},{n:'중외엔에스 110mL', i:'전해질'}],
+        base:'D5W250 + 중외엔에스110mL 베이스', baseShort:'D5W250+NS110', price:110000,
+        pick:'항산화 강화 + 당류 보충을 함께 원하는 경우',
+        pros:['글루타치온 추가로 항산화 보강', '당류 공급 겸용'], cons:['오프라벨 설명 필요(MYERS3과 동일)', '당뇨환자 혈당 모니터링 필요'], dosing:'' },
+    ]
+  },
+  {
+    num: 8, id: 'antiaging', emoji: '💜', title: '항노화 주사 (AGE777) — 신규요법',
+    desc: 'NAD+ 대사경로(니아신)+항산화(치옥트산)+비타민B군 조합의 항노화 라인',
+    common: [
+      '만성 피로·컨디션 저하 — 세포 에너지대사(NAD+ 경로)와 항산화 보조가 함께 필요한 경우',
+      '산화스트레스 관련 신경계 증상(손발저림 등) — 치옥트산의 항산화 기전',
+      '정기적 항노화 관리를 원하는 웰니스 목적 내원객'
+    ],
+    items: [
+      { code:'AGE777', title:'항노화 주사 (묶음)', comp:[{n:'브이트리 주', i:'niacin 50㎎', have:true},{n:'지씨 치옥트산 주', i:'alpha lipoic acid', have:false},{n:'삐콤헥사+비타일이', i:'비타민B군+B12', have:true}],
+        base:'전 성분 수액백 혼합, 단일 정맥주입', baseShort:'정맥혼합', price:120000,
+        pick:'항노화 전반(대사+항산화+비타민)을 종합적으로 관리하고 싶은 경우',
+        pros:['대사(니아신)+항산화(치옥트산) 2중 기전 결합','3성분 중 2성분은 원내보유(신규도입은 치옥트산 1종뿐)','수액백 혼합 단일 정맥주입으로 시술 간단'],
+        cons:['치옥트산 신규도입 필요','브이트리(니아신)를 "NAD+ 직접 공급"처럼 설명하지 않도록 상담 스크립트 주의'], dosing:'' },
+      { code:'THIOC777', title:'치옥트산 단독', comp:[{n:'지씨 치옥트산 주', i:'alpha lipoic acid', have:false}],
+        base:'단독 처방 (베이스수액 별도)', baseShort:'베이스별도', price:null,
+        pick:'묶음이 아닌 항산화 단일요법만 필요한 경우 (예: 당뇨병성 말초신경병증 보조)',
+        pros:['필요한 사람만 선택적으로 처방 가능','상대적으로 저렴한 단일성분 처방'],
+        cons:['치옥트산 신규도입 필요','단독 처방 소비자가 별도 책정 필요(미정)'], dosing:'' },
+      { code:'CINDE777', title:'신데렐라 주사 (글루타치온 단독)', comp:[{n:'화이치온 주', i:'glutathione(reduced)', have:true}],
+        base:'NS100 (생리식염주사 100mL) 베이스', baseShort:'NS100', price:30000,
+        pick:'미백·피부톤 개선을 위한 글루타치온 단독요법을 원하는 경우 (일명 "신데렐라주사")',
+        pros:['원내보유 성분(화이치온)만으로 구성해 신규도입 불필요','저렴한 가격으로 미백 단독 관리 가능'],
+        cons:['화이치온 라벨 적응증은 항암화학요법 신경병증 예방 — 미백 목적 사용은 오프라벨','산화가 빠른 성분으로 믹스 후 즉시 주입 필요'],
+        dosing:'로딩기: 주 1~2회 × 4~8주 / 유지기: 2~4주 1회' },
+    ]
+  },
+];
+
+// ===================== HOME / CATEGORY RENDER =====================
+
+function fmtPrice(p) {
+  return p == null ? '확인필요' : p.toLocaleString('ko-KR') + '원';
+}
+
+function renderHome() {
+  const grid = document.getElementById('catGrid');
+  grid.innerHTML = CATEGORIES.map((c, idx) => `
+    <div class="cat-card" onclick="openCategory('${c.id}')">
+      <div class="cat-num-row">
+        <div class="cat-num" style="background:${COLORS[idx % COLORS.length]}">${c.num}</div>
+        <span class="cat-emoji">${c.emoji}</span>
+        <div class="cat-title">${c.title}</div>
+      </div>
+      <div class="cat-desc">${c.desc}</div>
+      <div class="cat-meta"><span class="cat-tag">${c.items.length}개 처방코드</span></div>
+    </div>
+  `).join('');
+}
+
+function openCategory(id, highlightCode) {
+  const c = CATEGORIES.find(x => x.id === id);
+  if (!c) return;
+  const idx = CATEGORIES.indexOf(c);
+  document.getElementById('catHeaderNum').style.background = COLORS[idx % COLORS.length];
+  document.getElementById('catHeaderNum').textContent = c.num;
+  document.getElementById('catHeaderTitle').textContent = c.emoji + ' ' + c.title;
+  document.getElementById('catHeaderSub').textContent = c.desc;
+  document.getElementById('catCommonIndic').innerHTML = c.common.map(t => `
+    <li class="indic-item"><span class="indic-dot" style="background:${COLORS[idx % COLORS.length]}"></span><span>${t}</span></li>
+  `).join('');
+
+  document.getElementById('itemList').innerHTML = c.items.map((it, i) => `
+    <div class="item-card${highlightCode===it.code?' highlight':''}" id="item-${it.code}">
+      <div class="item-card-head" onclick="toggleItem('${it.code}')">
+        <div class="item-title-block">
+          <span class="item-small-num">${i+1})</span>
+          <span class="item-code">${it.code}</span>
+          <span class="item-comp-preview">${it.title} · ${it.comp.map(x=>x.n).join(' + ')}</span>
+        </div>
+        <span class="item-base-badge">${it.baseShort}</span>
+        <span class="${it.price==null?'item-price tbd':'item-price'}">${fmtPrice(it.price)}</span>
+        <span class="item-chevron">▶</span>
+      </div>
+      <div class="item-detail">
+        <div class="detail-row">
+          <div class="detail-col">
+            <div class="detail-lbl">구성 성분</div>
+            <div class="comp-chip-row">
+              ${it.comp.map(x => `<span class="comp-chip${x.have===false?' new':''}">${x.n}<span class="ingr">(${x.i})</span></span>`).join('')}
+            </div>
+          </div>
+          <div class="detail-col">
+            <div class="detail-lbl">베이스 수액</div>
+            <div class="base-box">${it.base}</div>
+          </div>
+        </div>
+        <div class="detail-row">
+          <div class="detail-col" style="flex-basis:100%;">
+            <div class="detail-lbl">이 버전을 선택하는 경우</div>
+            <div class="pick-box">${it.pick}</div>
+          </div>
+        </div>
+        ${it.dosing ? `
+        <div class="detail-row">
+          <div class="detail-col" style="flex-basis:100%;">
+            <div class="detail-lbl">🗓️ 추천 투여주기</div>
+            <div class="dosing-box">${it.dosing}</div>
+          </div>
+        </div>` : ''}
+        <div class="pc-grid">
+          <div class="pc-box pro">
+            <h5>👍 장점</h5>
+            <ul>${it.pros.map(p=>`<li>${p}</li>`).join('')}</ul>
+          </div>
+          <div class="pc-box con">
+            <h5>⚠️ 단점·고려사항</h5>
+            <ul>${it.cons.map(p=>`<li>${p}</li>`).join('')}</ul>
+          </div>
+        </div>
+        <div style="margin-top:12px;">
+          <button class="copy-btn" onclick="event.stopPropagation(); copyCode('${it.code}', this)" title="${it.code} 복사">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            ${it.code} 복사
+          </button>
+        </div>
+      </div>
+    </div>
+  `).join('');
+
+  document.getElementById('view-home').classList.remove('active');
+  document.getElementById('view-finder').classList.remove('active');
+  document.getElementById('view-category').classList.add('active');
+  document.getElementById('homeBtn').style.display = 'inline-flex';
+  document.getElementById('headerTitle').textContent = c.emoji + ' ' + c.title;
+  document.getElementById('headerSub').textContent = '하남보바스병원 · EMR 등재 비타민/영양수액 요법';
+  window.scrollTo(0,0);
+
+  if (highlightCode) {
+    setTimeout(() => {
+      const el = document.getElementById('item-' + highlightCode);
+      if (el) { el.classList.add('open'); el.scrollIntoView({behavior:'smooth', block:'center'}); }
+    }, 60);
+  }
+}
+
+function goHome() {
+  document.getElementById('view-category').classList.remove('active');
+  document.getElementById('view-finder').classList.remove('active');
+  document.getElementById('view-home').classList.add('active');
+  document.getElementById('homeBtn').style.display = 'none';
+  document.getElementById('headerTitle').textContent = '영양제 처방가이드';
+  document.getElementById('headerSub').textContent = '하남보바스병원 · EMR 등재 비타민/영양수액 요법';
+  window.scrollTo(0,0);
+}
+
+function toggleItem(code) {
+  const el = document.getElementById('item-' + code);
+  el.classList.toggle('open');
+}
+
+function copyCode(code, btn) {
+  navigator.clipboard.writeText(code).then(() => showCopied(btn)).catch(() => {
+    const el = document.createElement('textarea');
+    el.value = code; el.style.position = 'fixed'; el.style.opacity = '0';
+    document.body.appendChild(el); el.select();
+    document.execCommand('copy'); document.body.removeChild(el);
+    showCopied(btn);
+  });
+}
+function showCopied(btn) {
+  const original = btn.innerHTML;
+  btn.classList.add('copied');
+  btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> 복사됨`;
+  setTimeout(() => { btn.classList.remove('copied'); btn.innerHTML = original; }, 1600);
+}
+
+// ===================== FINDER (recommendation flow) =====================
+
+const FINDER_NODES = {
+  start: {
+    q: '가장 불편하거나 개선을 원하시는 부분은 무엇인가요?',
+    options: [
+      { label:'피로감·기력저하', next:'fatigue' },
+      { label:'간기능·피부 알러지', next:'liver_or_both' },
+      { label:'인지기능저하·뇌졸중 재활', next:'brain' },
+      { label:'전반적 영양부족 (장기입원 등)', next:'nutrition' },
+      { label:'미량원소결핍·욕창/상처치유', next:'trace' },
+      { label:'항노화·피부 컨디션 관리 (웰니스)', next:'antiaging' },
+    ]
+  },
+  fatigue: {
+    q: '비타민B1 결핍이 의심되거나(잦은 음주력, 손발저림 등), 간수치 이상도 함께 있나요?',
+    options: [
+      { label:'B1 결핍 증상만 있음', next:'diab_garlic' },
+      { label:'간수치 이상도 함께 있음', next:'diab_both' },
+      { label:'둘 다 아니고 그냥 전반적 피로', next:'fatigue2' },
+    ]
+  },
+  fatigue2: {
+    q: '항산화(글루타치온) 보강까지 원하시나요?',
+    options: [
+      { label:'예, 항산화까지 원함', next:'diab_myers34' },
+      { label:'아니요, 기본 비타민 보충이면 충분', next:'diab_myers12' },
+    ]
+  },
+  liver_or_both: {
+    q: '동반된 피로감·근육통 등 B1 결핍 증상도 있나요?',
+    options: [
+      { label:'예, 함께 있음', next:'diab_both' },
+      { label:'아니요, 간기능 문제만', next:'diab_licorice' },
+    ]
+  },
+  brain: {
+    q: '다음 중 함께 동반된 상태가 있나요?',
+    options: [
+      { label:'B1 결핍(신경계 증상) 동반', result:{ cat:'brain', code:'BR-MV2B' } },
+      { label:'전신 영양상태 저하 동반', result:{ cat:'brain', code:'BR-MV2C' } },
+      { label:'미량원소 결핍 동반', result:{ cat:'brain', code:'BR-BLUEHEX' } },
+      { label:'특별히 동반된 것 없음 (기본형)', result:{ cat:'brain', code:'BR-MV2B' } },
+    ]
+  },
+  nutrition: {
+    q: '아미노산(단백질) 보충까지 함께 필요하신가요?',
+    options: [
+      { label:'예', result:{ cat:'multivit', code:'NT-MV1C' } },
+      { label:'아니요, 비타민 보충이면 충분', next:'diab_multivit' },
+    ]
+  },
+  trace: { result:{ cat:'bluedoctor', code:'BLUEHEX' } },
+  antiaging: {
+    q: '어떤 방향의 관리를 원하시나요?',
+    options: [
+      { label:'세포 대사+항산화 종합관리 (항노화 묶음)', result:{ cat:'antiaging', code:'AGE777' } },
+      { label:'미백·피부톤 개선 위주 (글루타치온 단독)', result:{ cat:'antiaging', code:'CINDE777' } },
+    ]
+  },
+
+  diab_garlic: {
+    q: '당뇨병이 있으신가요? (베이스 수액 선택에 참고합니다)',
+    options: [
+      { label:'예', result:{ cat:'garlic', code:'NT-MV2B' } },
+      { label:'아니요', result:{ cat:'garlic', code:'NT-MV2A' } },
+      { label:'아미노산 보충도 필요함', result:{ cat:'garlic', code:'NT-MV2C' } },
+    ]
+  },
+  diab_licorice: {
+    q: '당뇨병이 있으신가요?',
+    options: [
+      { label:'예', result:{ cat:'licorice', code:'NT-MV3B' } },
+      { label:'아니요', result:{ cat:'licorice', code:'NT-MV3A' } },
+      { label:'아미노산 보충도 필요함', result:{ cat:'licorice', code:'NT-MV3C' } },
+    ]
+  },
+  diab_both: {
+    q: '당뇨병이 있으신가요?',
+    options: [
+      { label:'예', result:{ cat:'garlic-licorice', code:'NT-MV4B' } },
+      { label:'아니요', result:{ cat:'garlic-licorice', code:'NT-MV4A' } },
+      { label:'아미노산 보충도 필요함', result:{ cat:'garlic-licorice', code:'NT-MV4C' } },
+    ]
+  },
+  diab_myers12: {
+    q: '당뇨병이 있으신가요?',
+    options: [
+      { label:'예', result:{ cat:'myers', code:'MYERS1' } },
+      { label:'아니요', result:{ cat:'myers', code:'MYERS2' } },
+    ]
+  },
+  diab_myers34: {
+    q: '당뇨병이 있으신가요?',
+    options: [
+      { label:'예', result:{ cat:'myers', code:'MYERS3' } },
+      { label:'아니요', result:{ cat:'myers', code:'MYERS4' } },
+    ]
+  },
+  diab_multivit: {
+    q: '당뇨병이 있으신가요?',
+    options: [
+      { label:'예', result:{ cat:'multivit', code:'NT-MV1B' } },
+      { label:'아니요', result:{ cat:'multivit', code:'NT-MV1A' } },
+    ]
+  },
+};
+
+let finderHistory = [];
+let finderCurrent = 'start';
+
+function startFinder() {
+  finderHistory = [];
+  finderCurrent = 'start';
+  document.getElementById('view-home').classList.remove('active');
+  document.getElementById('view-category').classList.remove('active');
+  document.getElementById('view-finder').classList.add('active');
+  document.getElementById('homeBtn').style.display = 'inline-flex';
+  document.getElementById('headerTitle').textContent = '🔍 나에게 알맞는 영양주사 찾기';
+  document.getElementById('headerSub').textContent = '질문에 답하면 추천 처방코드를 알려드립니다';
+  renderFinderNode();
+  window.scrollTo(0,0);
+}
+
+function renderProgress() {
+  const total = Math.max(finderHistory.length + 2, 4);
+  const wrap = document.getElementById('finderProgress');
+  let html = '';
+  for (let i = 0; i < total; i++) {
+    let cls = 'finder-dot';
+    if (i < finderHistory.length) cls += ' done';
+    else if (i === finderHistory.length) cls += ' current';
+    html += `<div class="${cls}"></div>`;
+  }
+  wrap.innerHTML = html;
+}
+
+function renderFinderNode() {
+  renderProgress();
+  const node = FINDER_NODES[finderCurrent];
+  const stage = document.getElementById('finderStage');
+
+  if (node.result) {
+    renderFinderResult(node.result);
+    return;
+  }
+
+  stage.innerHTML = `
+    <div class="quiz-card">
+      <div class="quiz-q">${node.q}</div>
+      <div class="quiz-options">
+        ${node.options.map((o, i) => `<button class="quiz-opt" onclick="finderChoose(${i})">${o.label}</button>`).join('')}
+      </div>
+      <div class="quiz-nav">
+        <button class="quiz-back" onclick="finderBack()" ${finderHistory.length===0?'style="visibility:hidden;"':''}>← 이전 질문</button>
+        <button class="quiz-restart" onclick="startFinder()">처음부터 다시</button>
+      </div>
+    </div>
+  `;
+}
+
+function finderChoose(i) {
+  const node = FINDER_NODES[finderCurrent];
+  const opt = node.options[i];
+  finderHistory.push(finderCurrent);
+  if (opt.result) {
+    finderCurrent = '__result__';
+    renderProgress();
+    renderFinderResult(opt.result);
+  } else {
+    finderCurrent = opt.next;
+    renderFinderNode();
+  }
+}
+
+function finderBack() {
+  if (!finderHistory.length) return;
+  finderCurrent = finderHistory.pop();
+  renderFinderNode();
+}
+
+function renderFinderResult(result) {
+  const cat = CATEGORIES.find(c => c.id === result.cat);
+  const item = cat.items.find(it => it.code === result.code);
+  const idx = CATEGORIES.indexOf(cat);
+  const stage = document.getElementById('finderStage');
+
+  stage.innerHTML = `
+    <div class="result-card">
+      <span class="result-eyebrow">추천 결과</span>
+      <div class="result-title">${cat.emoji} ${item.title}</div>
+      <div class="result-code" onclick="copyCode('${item.code}', this)" title="${item.code} 복사">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+        ${item.code}
+      </div>
+      <div class="result-price">${fmtPrice(item.price)}${item.price!=null?'<span> · 비급여</span>':''}</div>
+      <div class="detail-lbl">구성 성분</div>
+      <div class="comp-chip-row" style="margin:6px 0 14px;">
+        ${item.comp.map(x => `<span class="comp-chip${x.have===false?' new':''}">${x.n}<span class="ingr">(${x.i})</span></span>`).join('')}
+      </div>
+      <div class="pick-box">${item.pick}</div>
+      ${item.dosing ? `<div class="dosing-box" style="margin-top:8px;">🗓️ 추천 투여주기: ${item.dosing}</div>` : ''}
+      <div class="result-btns">
+        <button class="result-btn primary" onclick="openCategory('${cat.id}','${item.code}')">자세히 보기 (적응증·장단점)</button>
+        <button class="result-btn secondary" onclick="startFinder()">다시 찾기</button>
+      </div>
+    </div>
+  `;
+}
+
+renderHome();
+</script>
+
+</body>
+</html>
