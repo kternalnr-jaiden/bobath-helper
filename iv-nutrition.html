@@ -41,7 +41,7 @@
 
   header{background:var(--surface);border-bottom:1px solid var(--border);padding:14px 18px;position:sticky;top:0;z-index:100;box-shadow:0 1px 3px rgba(0,0,0,0.06),0 1px 2px rgba(0,0,0,0.04);}
   .header-top{display:flex;align-items:center;gap:10px;max-width:1140px;margin:0 auto;}
-  .home-btn{display:inline-flex;align-items:center;gap:4px;background:var(--surface2);border:1px solid var(--border);color:var(--text-2);font-size:11.5px;font-weight:600;padding:5px 10px;border-radius:8px;cursor:pointer;transition:all .18s;flex-shrink:0;font-family:'Malgun Gothic','Apple SD Gothic Neo','Noto Sans KR',sans-serif;}
+  .home-btn{display:inline-flex;align-items:center;gap:4px;background:var(--surface2);border:1px solid var(--border);color:var(--text-2);font-size:11.5px;font-weight:600;padding:5px 10px;border-radius:8px;cursor:pointer;text-decoration:none;transition:all .18s;flex-shrink:0;font-family:'Malgun Gothic','Apple SD Gothic Neo','Noto Sans KR',sans-serif;}
   .home-btn:hover{background:rgba(26,86,160,0.08);border-color:var(--accent);color:var(--accent);}
   .header-brand{flex:1;min-width:0;}
   .header-title{font-family:'Malgun Gothic','Apple SD Gothic Neo','Noto Sans KR',sans-serif;font-size:18px;font-weight:700;letter-spacing:-.3px;color:var(--text);line-height:1.2;}
@@ -179,6 +179,7 @@
 
 <header>
   <div class="header-top">
+    <a href="index.html" class="home-btn">🏠 홈</a>
     <button class="home-btn" id="homeBtn" onclick="goHome()" style="display:none;">← 전체 목록</button>
     <div class="header-brand">
       <div class="header-title" id="headerTitle">영양제 처방가이드</div>
@@ -412,16 +413,11 @@ const CATEGORIES = [
         pick:'항노화 전반(대사+항산화+비타민)을 종합적으로 관리하고 싶은 경우',
         pros:['대사(니아신)+항산화(치옥트산) 2중 기전 결합','3성분 중 2성분은 원내보유(신규도입은 치옥트산 1종뿐)','수액백 혼합 단일 정맥주입으로 시술 간단'],
         cons:['치옥트산 신규도입 필요','브이트리(니아신)를 "NAD+ 직접 공급"처럼 설명하지 않도록 상담 스크립트 주의'], dosing:'' },
-      { code:'THIOC777', title:'치옥트산 단독', comp:[{n:'지씨 치옥트산 주', i:'alpha lipoic acid', have:false}],
-        base:'단독 처방 (베이스수액 별도)', baseShort:'베이스별도', price:null,
-        pick:'묶음이 아닌 항산화 단일요법만 필요한 경우 (예: 당뇨병성 말초신경병증 보조)',
-        pros:['필요한 사람만 선택적으로 처방 가능','상대적으로 저렴한 단일성분 처방'],
-        cons:['치옥트산 신규도입 필요','단독 처방 소비자가 별도 책정 필요(미정)'], dosing:'' },
-      { code:'CINDE777', title:'신데렐라 주사 (글루타치온 단독)', comp:[{n:'화이치온 주', i:'glutathione(reduced)', have:true}],
+      { code:'THIOC777', title:'치옥트산 단독 (신데렐라 주사)', comp:[{n:'지씨 치옥트산 주', i:'alpha lipoic acid', have:false}],
         base:'NS100 (생리식염주사 100mL) 베이스', baseShort:'NS100', price:30000,
-        pick:'미백·피부톤 개선을 위한 글루타치온 단독요법을 원하는 경우 (일명 "신데렐라주사")',
-        pros:['원내보유 성분(화이치온)만으로 구성해 신규도입 불필요','저렴한 가격으로 미백 단독 관리 가능'],
-        cons:['화이치온 라벨 적응증은 항암화학요법 신경병증 예방 — 미백 목적 사용은 오프라벨','산화가 빠른 성분으로 믹스 후 즉시 주입 필요'],
+        pick:'묶음이 아닌 항산화 단일요법만 필요한 경우 (예: 당뇨병성 말초신경병증 보조, 또는 컨디션관리 목적의 "신데렐라주사")',
+        pros:['필요한 사람만 선택적으로 처방 가능','저렴한 가격으로 항산화 단독 관리 가능','단일성분+단일베이스로 처방이 간단함'],
+        cons:['치옥트산 신규도입 필요'],
         dosing:'로딩기: 주 1~2회 × 4~8주 / 유지기: 2~4주 1회' },
     ]
   },
@@ -622,7 +618,7 @@ const FINDER_NODES = {
     q: '어떤 방향의 관리를 원하시나요?',
     options: [
       { label:'세포 대사+항산화 종합관리 (항노화 묶음)', result:{ cat:'antiaging', code:'AGE777' } },
-      { label:'미백·피부톤 개선 위주 (글루타치온 단독)', result:{ cat:'antiaging', code:'CINDE777' } },
+      { label:'항산화 단일요법 위주 (치옥트산 단독/신데렐라주사)', result:{ cat:'antiaging', code:'THIOC777' } },
     ]
   },
 
