@@ -400,7 +400,7 @@ const CATEGORIES = [
     ]
   },
   {
-    num: 8, id: 'antiaging', emoji: '💜', title: '항노화 주사 (AGE777) — 신규요법',
+    num: 8, id: 'antiaging', emoji: '💜', title: '항노화 주사 (NAD1) — 신규요법',
     desc: 'NAD+ 대사경로(니아신)+항산화(치옥트산)+비타민B군 조합의 항노화 라인',
     common: [
       '만성 피로·컨디션 저하 — 세포 에너지대사(NAD+ 경로)와 항산화 보조가 함께 필요한 경우',
@@ -408,16 +408,16 @@ const CATEGORIES = [
       '정기적 항노화 관리를 원하는 웰니스 목적 내원객'
     ],
     items: [
-      { code:'AGE777', title:'항노화 주사 (묶음)', comp:[{n:'브이트리 주', i:'niacin 50㎎', have:true},{n:'지씨 치옥트산 주', i:'alpha lipoic acid', have:false},{n:'삐콤헥사+비타일이', i:'비타민B군+B12', have:true}],
+      { code:'NAD1', title:'항노화 주사 (묶음)', comp:[{n:'브이트리 주', i:'niacin 50㎎', have:true},{n:'지씨 치옥트산 주', i:'alpha lipoic acid (7THOT)', have:true},{n:'삐콤헥사+비타일이', i:'비타민B군+B12', have:true}],
         base:'전 성분 수액백 혼합, 단일 정맥주입', baseShort:'정맥혼합', price:120000,
         pick:'항노화 전반(대사+항산화+비타민)을 종합적으로 관리하고 싶은 경우',
-        pros:['대사(니아신)+항산화(치옥트산) 2중 기전 결합','3성분 중 2성분은 원내보유(신규도입은 치옥트산 1종뿐)','수액백 혼합 단일 정맥주입으로 시술 간단'],
-        cons:['치옥트산 신규도입 필요','브이트리(니아신)를 "NAD+ 직접 공급"처럼 설명하지 않도록 상담 스크립트 주의'], dosing:'' },
-      { code:'THIOC777', title:'치옥트산 단독 (신데렐라 주사)', comp:[{n:'지씨 치옥트산 주', i:'alpha lipoic acid', have:false}],
+        pros:['대사(니아신)+항산화(치옥트산) 2중 기전 결합','3성분 모두 원내보유(7VB3/7THOT/7VBX+7VB12) — 신규도입 없이 바로 처방 가능','수액백 혼합 단일 정맥주입으로 시술 간단'],
+        cons:['브이트리(니아신)를 "NAD+ 직접 공급"처럼 설명하지 않도록 상담 스크립트 주의'], dosing:'' },
+      { code:'THIOC777', title:'치옥트산 단독 (신데렐라 주사)', comp:[{n:'지씨 치옥트산 주', i:'alpha lipoic acid (7THOT)', have:true}],
         base:'NS100 (생리식염주사 100mL) 베이스', baseShort:'NS100', price:30000,
         pick:'묶음이 아닌 항산화 단일요법만 필요한 경우 (예: 당뇨병성 말초신경병증 보조, 또는 컨디션관리 목적의 "신데렐라주사")',
-        pros:['필요한 사람만 선택적으로 처방 가능','저렴한 가격으로 항산화 단독 관리 가능','단일성분+단일베이스로 처방이 간단함'],
-        cons:['치옥트산 신규도입 필요'],
+        pros:['필요한 사람만 선택적으로 처방 가능','저렴한 가격으로 항산화 단독 관리 가능','원내보유 성분(7THOT)만으로 구성해 신규도입 불필요'],
+        cons:['단독 처방이라 대사(니아신)·비타민B군과의 병용 시너지는 없음'],
         dosing:'로딩기: 주 1~2회 × 4~8주 / 유지기: 2~4주 1회' },
     ]
   },
@@ -617,7 +617,7 @@ const FINDER_NODES = {
   antiaging: {
     q: '어떤 방향의 관리를 원하시나요?',
     options: [
-      { label:'세포 대사+항산화 종합관리 (항노화 묶음)', result:{ cat:'antiaging', code:'AGE777' } },
+      { label:'세포 대사+항산화 종합관리 (항노화 묶음)', result:{ cat:'antiaging', code:'NAD1' } },
       { label:'항산화 단일요법 위주 (치옥트산 단독/신데렐라주사)', result:{ cat:'antiaging', code:'THIOC777' } },
     ]
   },
