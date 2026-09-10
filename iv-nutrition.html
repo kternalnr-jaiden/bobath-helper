@@ -434,7 +434,7 @@ const CATEGORIES = [
         pick:'항노화 전반(대사+항산화+비타민)을 종합적으로 관리하고 싶은 경우',
         pros:['대사(니아신)+항산화(치옥트산) 2중 기전 결합','3성분 모두 원내보유(7VB3/7THOT/7VBX+7VB12) — 신규도입 없이 바로 처방 가능','수액백 혼합 단일 정맥주입으로 시술 간단'],
         cons:['브이트리(니아신)를 "NAD+ 직접 공급"처럼 설명하지 않도록 상담 스크립트 주의'], dosing:'', renal:null },
-      { code:'THIOC777', title:'치옥트산 단독 (신데렐라 주사)', comp:[{n:'지씨 치옥트산 주', i:'alpha lipoic acid (7THOT)', have:true}],
+      { code:'AO1', title:'치옥트산 단독 (신데렐라 주사)', comp:[{n:'지씨 치옥트산 주', i:'alpha lipoic acid (7THOT)', have:true}],
         base:'NS100 (생리식염주사 100mL) 베이스', baseShort:'NS100', price:30000,
         pick:'묶음이 아닌 항산화 단일요법만 필요한 경우 (예: 당뇨병성 말초신경병증 보조, 또는 컨디션관리 목적의 "신데렐라주사")',
         pros:['필요한 사람만 선택적으로 처방 가능','저렴한 가격으로 항산화 단독 관리 가능','원내보유 성분(7THOT)만으로 구성해 신규도입 불필요'],
@@ -692,7 +692,7 @@ const FINDER_NODES = {
     q: '어떤 방향의 관리를 원하시나요?',
     options: [
       { label:'세포 대사+항산화 종합관리 (항노화 묶음)', result:{ cat:'antiaging', code:'NAD1' } },
-      { label:'항산화 단일요법 위주 (치옥트산 단독/신데렐라주사)', result:{ cat:'antiaging', code:'THIOC777' } },
+      { label:'항산화 단일요법 위주 (치옥트산 단독/신데렐라주사)', result:{ cat:'antiaging', code:'AO1' } },
     ]
   },
 
